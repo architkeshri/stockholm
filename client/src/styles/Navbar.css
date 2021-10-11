@@ -1,0 +1,22 @@
+nav{
+    width: 30%;
+    padding: 0%;
+    border: 2px solid pink;
+    text-align: center;
+    margin: 1% auto;
+    border-radius: 10px;
+    background-color: rgb(206, 165, 245);
+}
+nav img{
+    display: inline;
+    padding: 1% 5%;
+    margin: 0%;
+    vertical-align: middle;
+    border-radius: 10px;
+}
+
+nav img:hover{
+    cursor: pointer;
+    background-color: bisque;
+    box-shadow: 0 0 15px 5px rgb(236, 204, 165);
+}
