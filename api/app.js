@@ -4,12 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv'); 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var testAPIRouter = require("./routes/testAPI");
 
 var app = express();
+dotenv.config({path:'../.env'});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,6 +29,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/testAPI", testAPIRouter);
+
+//connection to MongoDB Atlas
+mongoose.connect(process.env.DATABASE_URL, {
+  useNewUrlParser: true, 
+  useUnifiedTopology: true, 
+}).then(() => {
+  console.log('Connection to DB Successful!');
+}).catch((err) => { console.log(err);});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
