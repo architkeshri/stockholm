@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import Navbar from './components/Navbar';
-import Login from './components/Login';
+import Loginpage from './components/Loginpage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 class App extends Component {
   render() {
     return (
-      
-        <Login />    
-      
+     
+       <Loginpage /> 
+    
     );
   }
 }
