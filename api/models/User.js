@@ -1,11 +1,11 @@
 const mongoose= require('mongoose');
 const bcrypt = require('bcryptjs');
 
+// User Table
 const userSchema= new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        max: 64
     },
     email: {
         type: String,
@@ -17,7 +17,50 @@ const userSchema= new mongoose.Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    dob: {
+        type: Date,
+        required: true,
+        default: Date.now()
+    },
+    about: {
+        type: String,
+        required: true,
+        default: "default"
+    },
+    emergency_contact: {
+        type: String,
+        required: true,
+        default: "default"
+    },
+    gender: {
+        type: String,
+        required: true,
+        default: "default"
+    },
+    sexual_preference: {
+        type: String,
+        required: true,
+        default: "default"
+    },
+    location: String,
+    education: String,
+    occupation: String,
+    activated: {
+        type: Boolean,
+        default: false
+    },
+    verified: {
+        type: Boolean,
+        default: false
+    },
+    interests: Array,
+    matches: Array,
+    likes: Array,
+    liked_by: Array,
+    fb_link: String,
+    ig_link: String,
+    imagesurl: [{type: String}]
 })
 
 userSchema.pre('save', async function(next){
