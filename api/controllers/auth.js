@@ -28,11 +28,8 @@ module.exports.signup= (req,res)=>{
                 return res.status(400).json({error: err});
             }
             const token = createToken(newUser._id);
-            res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge*1000});
-            res.status(201).json({
-                user: newUser._id,
-                message: "Signup successful!"
-            })
+            res.cookie('usercookiejwt', token, {httpOnly: true, maxAge: maxAge*1000});
+            res.status(201).json({user: newUser})
         })
     });
 }
@@ -44,11 +41,9 @@ module.exports.login= async (req,res)=>{
     try{
         const user= await User.login(email,password);
         const token= createToken(user._id);
-        res.cookie('jwt',token, { httpOnly: true,maxAge: maxAge*1000});
-        res.status(200).json({
-            user: user._id, 
-            message: "Login Successful!"
-        });
+        res.cookie('usercookiejwt',token, { httpOnly: true,maxAge: maxAge*1000});
+        console.log(user._id);
+        res.status(200).json({user: user});
     }
     catch(error) {
         res.status(400).json({error: error});
@@ -71,8 +66,8 @@ module.exports.googlelogin = (req, res) => {
                 } else {
                     if(user) {                                                        //login
                         const token= createToken(user._id);
-                        const {_id, name, email} = user;
-                        res.json({token, user: {_id, name, email}})
+                        res.cookie('jwt',token, { httpOnly: true,maxAge: maxAge*1000});
+                        res.status(200).json({user: user});
                     } else {
                         let password = email+process.env.JWT_SECRET_USER;
                         let newUser = new User({name,email,password});
@@ -83,8 +78,10 @@ module.exports.googlelogin = (req, res) => {
                                 })
                             } else {
                                 const token= createToken(data._id);
-                                const {_id, name, email} = newUser;
-                                res.json({token, user: {_id, name, email}})
+                                //const {_id, name, email} = newUser;
+                                //res.json({token, user: {_id, name, email}})
+                                res.cookie('jwt',token, { httpOnly: true,maxAge: maxAge*1000});
+                                res.status(200).json({user: newUser});
                             }
                         })
 
