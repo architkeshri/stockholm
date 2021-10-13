@@ -1,15 +1,19 @@
-import axios from 'axios';
+//import axios from 'axios';
+import API from '../utils/API';
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
 import { Col } from 'react-bootstrap';
 const Socialauth = ({setUser}) => {
     const responseSuccessGoogle = (response) => {    //function called for login/signup with Google: success
-        console.log(response);
-        axios({
-          method: "POST",
-          url: "http://localhost:9000/googlelogin",
-          data: { tokenId: response.tokenId }
-        }).then(response => {
+        //console.log(response);
+        const body = {tokenId: response.tokenId};
+        const config = {headers: {"Content-Type":"application/json"}};
+        API.post("/googlelogin",body,config)
+        //axios({
+        //  method: "POST",
+        //  url: "http://localhost:9000/googlelogin",
+        //  data: { tokenId: response.tokenId }})
+          .then(response => {
           //setUser(response.profileObj);
           setUser(response.data);
           console.log("Google Login success", response);
@@ -21,12 +25,15 @@ const Socialauth = ({setUser}) => {
       }
   
       const responseFacebook = (response) => {        //function called for login/signup with facebook
-        console.log("FB login success!", response);
-        axios({
-          method: "POST",
-          url: "http://localhost:9000/facebooklogin",
-          data: { accessToken: response.accessToken, userID: response.userID }
-        }).then(response => {
+        //console.log("FB login success!", response);
+        const body = {accessToken: response.accessToken, userID: response.userID};
+        const config = {headers: {"Content-Type":"application/json"}};
+        API.post("/facebooklogin",body,config)
+        //axios({
+        //  method: "POST",
+        //  url: "http://localhost:9000/facebooklogin",
+        //  data: { accessToken: response.accessToken, userID: response.userID }})
+        .then(response => {
             setUser(response.data);
           console.log("Facebook Login success", response);
         })
