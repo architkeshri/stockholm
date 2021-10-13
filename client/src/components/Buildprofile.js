@@ -18,7 +18,7 @@ const Buildprofile = ({user, setUser}) => {
     const handleSubmit = () => {
         
         const body = {
-            _id: user.user._id,
+            _id: user._id,
             dob: dob.current.value,
             about: about.current.value,
             emergency_contact: emergency_contact.current.value,
