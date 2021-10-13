@@ -1,5 +1,5 @@
 import '../styles/login.css';
-import { Component, useRef, useState } from "react";
+import { useRef, useState } from "react";
 //import axios from 'axios';
 import API from '../utils/API';
 import { Row, Col, Container, Stack, Button } from 'react-bootstrap';
@@ -12,12 +12,9 @@ const Signup = ({setUser}) => {
       const body = {name: name.current.value.trim(), email: email.current.value.trim(), password: password.current.value};
       const config = {headers: {"Content-Type":"application/json"}};
       API.post("/signup",body,config)
-      //axios({
-      //  method: "POST",
-      //  url: "http://localhost:9000/signup",
-      //  data: {name: name.current.value.trim(), email: email.current.value.trim(), password: password.current.value}})
+      
         .then(response => {
-        setUser(response.data);
+        setUser(response.data.user);
         console.log("Login success", response);
       }).catch(() => {
         alert("Invalid Credentials!!");
