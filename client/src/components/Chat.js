@@ -4,7 +4,6 @@ import Loginpage from "./Loginpage";
 import "../styles/chat.css";
 const Chat = () => {
   const [users, setUser] = useState(null);
-  const [show, setShow] = useState([]);
 
   const id = localStorage.getItem("userId");
   console.log(id);
@@ -26,22 +25,12 @@ const Chat = () => {
     return (
       <main>
         <section className="container-chat">
-          {users.map((user, i) => {
+          {users.map((user) => {
             const { name, img } = user;
 
             return (
               <>
-                <article
-                  key={id}
-                  className="person-chat"
-                  onClick={() => setShow(!show[i])}
-                >
-                  <img src={img} alt={name} />
-                  <div>
-                    <h4>{name}</h4>
-                  </div>
-                  {show && <Openchat />}
-                </article>
+                <Chathead name={name} img={img} />
               </>
             );
           })}
@@ -53,10 +42,39 @@ const Chat = () => {
   }
 };
 
-const Openchat = () => {
+const Chathead = (props) => {
+  const [show, setShow] = useState(false);
+  const [msg, setMsg] = useState(true);
+  const handleset = () => {
+    setShow(!show);
+    setMsg(!msg);
+  };
+
   return (
     <>
-      <h1>head</h1>
+      <article className="person-chat">
+        <img src={props.img} alt={props.name} onClick={handleset} />
+        <div>
+          <h4 onClick={handleset}>{props.name}</h4>
+          {show && <Openchat />}
+          {msg && <p>hey how have you been</p>}
+        </div>
+      </article>
+    </>
+  );
+};
+
+const Openchat = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("abc");
+  };
+  return (
+    <>
+      <form className="form" onSubmit={handleSubmit}>
+        <input type="text" />
+        <button type="submit">send</button>
+      </form>
     </>
   );
 };
