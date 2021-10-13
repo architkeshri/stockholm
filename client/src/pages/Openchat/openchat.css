@@ -1,0 +1,38 @@
+.messageContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.messageHead {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.img {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+.messageHead h3 {
+  margin-top: 8px;
+  margin-left: 2px;
+}
+.topMessage {
+  display: flex;
+  justify-content: center;
+}
+.message {
+  background-color: pink;
+  padding: 1rem;
+  border-radius: 20%;
+  max-width: 500px;
+}
+.bottomMessage {
+  display: flex;
+  justify-content: center;
+}

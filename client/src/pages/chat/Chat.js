@@ -1,52 +1,58 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import Loginpage from "./Loginpage";
-import "../styles/chat.css";
-const Chat = () => {
-  const [users, setUser] = useState(null);
+import { Link } from "react-router-dom";
 
-  const id = localStorage.getItem("userId");
-  console.log(id);
+import "./chat.css";
+const Chat = () => {
+  const [matches, setMachtes] = useState(null);
+
+  //get current user from local storage
+
+  const uid = localStorage.getItem("userId");
+  // console.log(id);
+
+  //once we get the user we send an request to api getting all the matches
   useEffect(() => {
     axios({
       method: "POST",
-      url: `http://localhost:9000/chat/${id}`,
+      url: `http://localhost:9000/chat/${uid}`,
     })
       .then((response) => {
         // const { data } = response.data;
-        setUser(response.data);
+        // matches are set to matches
+        setMachtes(response.data);
         console.log(response);
       })
       .catch(() => {
         console.log("Invalid Credentials!!");
       });
   }, []);
-  if (users != null) {
+  if (matches != null) {
     return (
       <main>
         <section className="container-chat">
-          {users.map((user) => {
-            const { name, img } = user;
+          {matches.map((match) => {
+            const { id, name, img } = match;
 
             return (
               <>
-                <Chathead name={name} img={img} />
+                <Link className="link" to={`/openchat/${id}`}>
+                  <Chathead name={name} img={img} uid={id} />
+                </Link>
               </>
             );
           })}
         </section>
       </main>
     );
-  } else {
-    return <Loginpage />;
   }
+  return <h1>chats</h1>;
 };
 
 const Chathead = (props) => {
   const [show, setShow] = useState(false);
   const [msg, setMsg] = useState(true);
   const handleset = () => {
-    setShow(!show);
     setMsg(!msg);
   };
 
@@ -56,25 +62,10 @@ const Chathead = (props) => {
         <img src={props.img} alt={props.name} onClick={handleset} />
         <div>
           <h4 onClick={handleset}>{props.name}</h4>
-          {show && <Openchat />}
+
           {msg && <p>hey how have you been</p>}
         </div>
       </article>
-    </>
-  );
-};
-
-const Openchat = () => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("abc");
-  };
-  return (
-    <>
-      <form className="form" onSubmit={handleSubmit}>
-        <input type="text" />
-        <button type="submit">send</button>
-      </form>
     </>
   );
 };

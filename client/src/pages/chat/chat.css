@@ -149,6 +149,7 @@ main {
   padding: 1.5rem 2rem;
   box-shadow: var(--dark-shadow);
 }
+
 .container-chat h3 {
   font-weight: normal;
   text-transform: none;
@@ -161,6 +162,7 @@ main {
   margin-bottom: 1.5rem;
   align-items: center;
 }
+
 .person-chat img {
   width: 75px;
   height: 75px;
@@ -170,6 +172,9 @@ main {
 }
 .person-chat h4 {
   margin-bottom: 0.35rem;
+}
+.person-chat:hover {
+  background-color: rgb(243, 243, 243);
 }
 .person-chat p {
   margin-bottom: 0;
@@ -188,4 +193,7 @@ main {
   border-radius: var(--radius);
   outline: 1px solid rgba(242, 138, 178, 0.8);
   cursor: pointer;
+}
+.link {
+  text-decoration: none;
 }
