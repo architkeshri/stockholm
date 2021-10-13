@@ -1,6 +1,7 @@
 import '../styles/login.css';
 import { Component, useRef} from "react";
-import axios from 'axios';
+//import axios from 'axios';
+import API from '../utils/API';
 import { Row, Col, Container, Stack, Button } from 'react-bootstrap';
 import Socialauth from './Socialauth';
 const Login = ({setUser}) => {
@@ -8,11 +9,14 @@ const Login = ({setUser}) => {
     const email = useRef(undefined);
     const password = useRef(undefined);
     const sendData = (e) =>{
-      axios({
-        method: "POST",
-        url: "http://localhost:9000/login",
-        data: {email: email.current.value.trim(), password: password.current.value}
-      }).then(response => {
+      const body = {email: email.current.value.trim(), password: password.current.value};
+      const config = {headers: {"Content-Type": "application/json"}};
+      API.post("/login",body,config)
+      //axios({
+      //  method: "POST",
+      //  url: "http://localhost:9000/login",
+      //  data: {email: email.current.value.trim(), password: password.current.value}}
+        .then(response => {
         setUser(response.data);
         console.log("Login success", response);
       }).catch(() => {
@@ -43,7 +47,7 @@ const Login = ({setUser}) => {
                     </Row>
                     <Row><Col className="text-center"><Button variant="primary" size="lg" onClick={(e) => sendData(e)} active>Login</Button></Col></Row>
                     <Row className="text-center">
-                      <h5>Or Sign in with social plateform</h5>
+                      <h5>Or Sign in with social platforms</h5>
                     </Row>
                     <Row>
                         <Socialauth setUser={setUser}/>

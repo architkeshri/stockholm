@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 //import controller
-const {signup, login, googlelogin, facebooklogin} = require("../controllers/auth");
+const {signup, login, googlelogin, facebooklogin, logout} = require("../controllers/auth");
+const {checkUser} = require('../middleware/auth');
 const {updateprofile} = require("../controllers/user");
 
 /* GET home page. */
@@ -14,6 +15,9 @@ router.post('/signup', signup);                 //custom signup
 router.post('/login',login);                    //custom login
 router.post('/googlelogin', googlelogin);       //google login/signup
 router.post('/facebooklogin', facebooklogin);   //facebook login/ signup
+
+router.use(checkUser);                          //all the routes after this are secure/protected
 router.post('/updateprofile',updateprofile);    //update user profile
+router.get('/logout', logout);
 
 module.exports = router;
