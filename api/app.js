@@ -12,6 +12,9 @@ var usersRouter = require("./routes/users");
 var testAPIRouter = require("./routes/testAPI");
 var chatRouter = require("./routes/chat");
 
+var conversationRouter = require("./routes/conversation");
+var messageRouter = require("./routes/message");
+
 var app = express();
 dotenv.config({ path: "../.env" });
 
@@ -30,6 +33,8 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/testAPI", testAPIRouter);
 app.use("/chat", chatRouter);
+app.use("/conversation", conversationRouter);
+app.use("/message", messageRouter);
 
 //connection to MongoDB Atlas
 mongoose

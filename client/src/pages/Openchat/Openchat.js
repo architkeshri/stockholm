@@ -57,24 +57,36 @@ const Openchat = () => {
   return (
     <>
       <section className="messageContainer">
-        <div className="messageHead">
-          <img
-            className="img"
-            src="https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg"
-          />
-          <h3>UserName{id}</h3>
-        </div>
+        <div className="topBox">
+          <div className="messageHead">
+            <img
+              className="img"
+              src="https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg"
+            />
+            <h3>UserName{id}</h3>
+          </div>
 
-        <div className="topMessage">
-          <img
-            className="img"
-            src="https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg"
-          />
-          <p className="message">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero a
-            molestiae sed exercitationem soluta sunt aperiam eligendi dolores
-            laboriosam velit.
-          </p>
+          <div className="topMessage">
+            <img
+              className="img"
+              src="https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg"
+            />
+            <p className="message">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero a
+              molestiae sed exercitationem soluta sunt aperiam eligendi dolores
+              laboriosam velit.
+            </p>
+          </div>
+        </div>
+        <div className="bottomBox">
+          <textarea
+            name="message"
+            id="message"
+            placeholder="Type Message.."
+            cols="30"
+            rows="10"
+          ></textarea>
+          <button type="submit">Send</button>
         </div>
       </section>
     </>
