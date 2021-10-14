@@ -54,14 +54,28 @@ const userSchema= new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    interests: Array,
-    matches: Array,
-    likes: Array,
-    liked_by: Array,
+    interests: {
+        type: Array,
+        default: []
+    },
+    matches: {
+        type: Array,
+        default: []
+    },
+    likes: {
+        type: Array,
+        default: []
+    },
+    liked_by: {
+        type: Array,
+        default: []
+    },
     fb_link: String,
     ig_link: String,
-    imagesurl: [{type: String}]
-})
+    imagesurl: String
+}, 
+{timestamps: true}
+);
 
 userSchema.pre('save', async function(next){
     const salt= await bcrypt.genSalt();                        //password encryption
