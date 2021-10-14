@@ -15,8 +15,30 @@ const Buildprofile = ({user, setUser}) => {
     const about = useRef(undefined);
     const image_url = useRef(undefined);
     const occupation = useRef(undefined);
+    var img_link ="";
+
+    //const [loading,setLoading] = useState(false);
+    //const[image,setImage] = useState("");
+
+    const uploadImage = async e => {
+        console.log("uploading image");
+        const files = e.target.files;
+        const data = new FormData();
+        data.append('file',files[0]);
+        data.append('upload_preset','webster_images');
+      //  setLoading(true);
+        const res1 = await fetch("https://api.cloudinary.com/v1_1/cloudoj/image/upload", {
+            method: 'POST',
+            body: data
+        })
+        const file = await res1.json();
+        console.log(file);
+        console.log(file.url);
+        img_link=file.url;
+    }
+    
+
     const handleSubmit = () => {
-        
         const body = {
             _id: user._id,
             dob: dob.current.value,
@@ -30,7 +52,7 @@ const Buildprofile = ({user, setUser}) => {
             interests: [],
             fb_link: fb_link.current.value,
             ig_link: ig_link.current.value,
-            image_url: null
+            imagesurl: img_link
         };
       const config = {headers: {"Content-Type": "application/json"}};
       API.post("/updateprofile",body,config)
@@ -101,7 +123,7 @@ const Buildprofile = ({user, setUser}) => {
             </Stack>
             <Row className="justify-content-md-center" style={{margin: '2%'}}>
                 <Col xs md="3" className="text-center"><h5 style={{margin: '8%'}}>Upload DP</h5></Col>
-                <Col xs md="4" className="text-center"><input type="file" style={{margin: '5%', backgroundColor: '#fff'}} ref={image_url} placeholder="Image" /></Col>
+                <Col xs md="4" className="text-center"><input type="file" onChange={uploadImage} style={{margin: '5%', backgroundColor: '#fff'}} ref={image_url} placeholder="Image" /></Col>
             </Row>
             <Row>
                 <Col className="text-center"><Button variant="primary" size="lg" onClick={() => handleSubmit()} active>Let's Go</Button></Col>
