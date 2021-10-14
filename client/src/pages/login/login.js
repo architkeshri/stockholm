@@ -1,32 +1,27 @@
-import "../styles/login.css";
-import { Component, useRef } from "react";
+import "./login.css";
+import { Component, useRef, useContext } from "react";
 import axios from "axios";
 import { Row, Col, Container, Stack, Button } from "react-bootstrap";
-import Socialauth from "./Socialauth";
-const Login = ({ setUser }) => {
+import Socialauth from "../../components/Socialauth";
+import { loginCall } from "../../apiCalls";
+import { AuthContext } from "../../context/AuthContext";
+import Signup from "../../components/Signup";
+import { Link } from "react-router-dom";
+const Login = () => {
   const email = useRef(undefined);
   const password = useRef(undefined);
+  const { user, isFetching, error, dispatch } = useContext(AuthContext);
   const sendData = (e) => {
-    axios({
-      method: "POST",
-      url: "http://localhost:9000/login",
-      data: {
+    loginCall(
+      {
         email: email.current.value.trim(),
         password: password.current.value,
       },
-    })
-      .then((response) => {
-        setUser(response.data);
-        console.log(response.data);
-        localStorage.setItem("userId", response.data.user);
-        console.log("Login success", response);
-      })
-      .catch(() => {
-        alert("Invalid Credentials!!");
-        console.log("Invalid Credentials!!");
-      });
+      dispatch
+    );
   };
 
+  console.log(user, isFetching, error);
   let login = {
     position: "relative",
     top: "100px",
@@ -67,10 +62,11 @@ const Login = ({ setUser }) => {
             <h5>Or Sign in with social plateform</h5>
           </Row>
           <Row>
-            <Socialauth setUser={setUser} />
+            <Socialauth />
           </Row>
         </Stack>
       </Container>
+      <Link to="/signup"> Register</Link>
     </>
   );
 };

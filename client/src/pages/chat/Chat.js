@@ -1,44 +1,37 @@
-import axios from "axios";
-import React, { useState, useEffect } from "react";
+// import axios from "axios";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import API from "../../utils/API";
 
 import "./chat.css";
 const Chat = () => {
-  const [matches, setMachtes] = useState(null);
+  const [conversations, setConversations] = useState([]);
 
-  //get current user from local storage
+  const { user } = useContext(AuthContext);
 
-  const uid = localStorage.getItem("userId");
-  // console.log(id);
-
-  //once we get the user we send an request to api getting all the matches
   useEffect(() => {
-    axios({
-      method: "POST",
-      url: `http://localhost:9000/chat/${uid}`,
-    })
-      .then((response) => {
-        // const { data } = response.data;
-        // matches are set to matches
-        setMachtes(response.data);
-        console.log(response);
-        console.log(response.data);
-      })
-      .catch(() => {
-        console.log("Invalid Credentials!!");
-      });
+    const getConversation = async () => {
+      try {
+        const res = await API.get("/conversation/" + user.user._id);
+
+        setConversations(res.data);
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getConversation();
   }, []);
-  if (matches != null) {
+  if (conversations.length !== 0) {
     return (
       <main>
         <section className="container-chat">
-          {matches.map((match) => {
-            const { id, name, img } = match;
-
+          {conversations.map((conversation) => {
             return (
               <>
-                <Link className="link" to={`/openchat/${id}`}>
-                  <Chathead name={name} img={img} uid={id} />
+                <Link className="link" to={`/openchat/${conversation._id}`}>
+                  <Chathead conversation={conversation} currentUser={user} />
                 </Link>
               </>
             );
@@ -50,23 +43,46 @@ const Chat = () => {
   return <h1>chats</h1>;
 };
 
-const Chathead = (props) => {
-  const [show, setShow] = useState(false);
+const Chathead = ({ conversation, currentUser }) => {
+  const [user, setUser] = useState(null);
   const [msg, setMsg] = useState(true);
   const handleset = () => {
     setMsg(!msg);
   };
 
+  useEffect(() => {
+    const matchId = conversation.members.find(
+      (m) => m !== currentUser.user._id
+    );
+
+    const getMatch = async () => {
+      const res = await API.get("/users/" + matchId);
+      setUser(res.data);
+    };
+
+    getMatch();
+  }, [currentUser, conversation]);
   return (
     <>
-      <article className="person-chat">
-        <img src={props.img} alt={props.name} onClick={handleset} />
-        <div>
-          <h4 onClick={handleset}>{props.name}</h4>
-
-          {msg && <p>hey how have you been</p>}
-        </div>
-      </article>
+      {user ? (
+        <article className="person-chat">
+          <img
+            src={
+              " https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg"
+            }
+            alt={user.name}
+            onClick={handleset}
+          />
+          <div>
+            <h4 onClick={handleset}>{user.name}</h4>
+            {/* TODO: Show New messages here */}
+            {msg && <p>See Messages</p>}
+          </div>
+          {/* <h1>{user ? user.name : "userName"}</h1> */}
+        </article>
+      ) : (
+        <p>loadig...</p>
+      )}
     </>
   );
 };
