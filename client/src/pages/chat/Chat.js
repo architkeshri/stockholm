@@ -22,6 +22,7 @@ const Chat = () => {
         // matches are set to matches
         setMachtes(response.data);
         console.log(response);
+        console.log(response.data);
       })
       .catch(() => {
         console.log("Invalid Credentials!!");
