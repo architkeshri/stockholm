@@ -21,7 +21,7 @@ router.use(checkUser);                          //all the routes after this are 
 router.post('/updateprofile',updateprofile);    //update user profile
 router.post('/addpost',addpost);
 router.post('/deletepost/:id',deletepost);
-router.get('/timeline',timeline);
+router.post('/timeline',timeline);
 router.get('/recommendations', recommendations);
 router.get('/logout', logout);
 
