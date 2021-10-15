@@ -56,8 +56,12 @@ const Chathead = ({ conversation, currentUser }) => {
     );
 
     const getMatch = async () => {
-      const res = await API.get("/users/" + matchId);
-      setUser(res.data);
+      try {
+        const res = await API.get("/users/" + matchId);
+        setUser(res.data);
+      } catch (err) {
+        console.log(err);
+      }
     };
 
     getMatch();

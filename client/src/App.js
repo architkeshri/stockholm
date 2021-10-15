@@ -30,7 +30,11 @@ function App() {
             {user ? <Chat /> : <Login />}
           </Route>
 
-          <Route exact path="/openchat/:id" children={<Openchat />}></Route>
+          <Route
+            exact
+            path="/openchat/:id"
+            children={user ? <Openchat /> : <Login />}
+          ></Route>
         </Switch>
       </Router>
     </>

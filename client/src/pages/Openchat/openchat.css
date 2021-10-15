@@ -24,13 +24,22 @@
 }
 .topMessage {
   display: flex;
+  /* flex-direction: column; */
   justify-content: center;
 }
-.message {
+.ownMessage {
   background-color: pink;
   padding: 1rem;
   border-radius: 20%;
   max-width: 500px;
+}
+
+.otherMessage {
+  color: rgb(236, 234, 234);
+  padding: 1rem;
+  border-radius: 20%;
+  max-width: 500px;
+  background-color: rgb(41, 31, 182);
 }
 .bottomMessage {
   display: flex;

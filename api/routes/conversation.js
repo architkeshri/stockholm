@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-//getting convo of user
+//getting all the conversation of current logged in user with user>_id
 
 router.get("/:id", async (req, res) => {
   try {
@@ -24,6 +24,18 @@ router.get("/:id", async (req, res) => {
       members: { $in: [req.params.id] },
     });
     res.status(200).json(conversation);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// geting  receciver information by conversation id => to be filtred out in frontend
+// why ? => to show profile picture and name in the chat box
+
+router.get("/receiver/:id", async (req, res) => {
+  try {
+    const reciever = await Conversation.findById(req.params.id);
+    res.status(200).json(reciever);
   } catch (err) {
     res.status(500).json(err);
   }

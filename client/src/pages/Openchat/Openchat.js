@@ -1,59 +1,121 @@
-import React from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import API from "../../utils/API";
+import { format } from "timeago.js";
 
+import { io } from "socket.io-client";
 import "./openchat.css";
 
-const data = {
-  id: "6166a22edaba7c1840cffc8f",
-  name: "Prakhar Gupta",
-  email: "prakhar.gupta.1106@gmail.com",
-  password: "$2a$10$ne27Z2KkanSTjaiKa.G2Cu9ox1R9R8v8gz0CEwDUkEs8Wa.mxDNh6",
-  dob: null,
-  about: "",
-  emergency_contact: "",
-  gender: "Female",
-  sexual_preference: "",
-  activated: true,
-  verified: false,
-  interests: [],
-  matches: [
-    {
-      id: "1",
-      name: "archit",
-      img: "https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg",
-    },
-    {
-      id: "2",
-      name: "oj",
-      img: "https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg",
-    },
-    {
-      id: "3",
-      name: "pk",
-      img: "https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg",
-    },
-    {
-      uid: "4",
-      name: "lk",
-      img: "https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg",
-    },
-  ],
-  likes: [],
-  liked_by: [],
-  imagesurl: [],
-  __v: { $numberInt: "0" },
-  education: "",
-  fb_link: "",
-  ig_link: "",
-  location: "",
-  occupation: "",
-};
 const Openchat = () => {
-  const currenUser = localStorage.getItem("userId");
   const { id } = useParams();
+  // const[uid,setUid] = useState('');
+  const { user } = useContext(AuthContext);
+  console.log(user);
+  const [messages, setMessages] = useState(null);
+  const [newMessage, setNewMessage] = useState("");
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  // const [socket, setSocket] = useState(null);
+  const socket = useRef(io("ws://localhost:8900"));
+  const [convoBetween, setConvoBetween] = useState([]);
+  // const [openedChatUser, setOpenedChatUser] = useState(null);
 
-  //   console.log(uid);
-  //find conoversation with id = uid and display here
+  // console.log(convoBetween);
+
+  useEffect(() => {
+    const getConvoBetween = async () => {
+      try {
+        const res = await API.get("conversation/receiver/" + id);
+        setConvoBetween(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getConvoBetween();
+  }, []);
+
+  // // console.log("user", user);
+  // useEffect(() => {
+  //   const getMatch = async () => {
+  //     const matchId = convoBetween.members?.find((m) => m !== user?.user._id);
+
+  //     console.log("mid", matchId);
+  //     try {
+  //       const res = await API.get("/users/" + matchId);
+  //       setOpenedChatUser(res.data);
+  //       console.log(res.data);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+
+  //   getMatch();
+  // }, []);
+
+  // console.log(convoBetween);
+  // console.log(openedChatUser);
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:8900");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+        createdAt: Date.now(),
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    arrivalMessage &&
+      convoBetween?.members.includes(arrivalMessage.sender) &&
+      setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, convoBetween]);
+
+  useEffect(() => {
+    socket.current.emit("addUser", user.user._id);
+    socket.current.on("getUsers", (users) => {
+      console.log(users);
+    });
+  }, [user.user]);
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        const res = await API.get("/message/" + id);
+        setMessages(res.data);
+        // console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMessages();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const message = {
+      sender: user.user._id,
+      text: newMessage,
+      conversationId: id,
+    };
+
+    const matchId = convoBetween.members?.find((m) => m !== user?.user._id);
+
+    socket.current.emit("sendMessage", {
+      senderId: user.user._id,
+      receiverId: matchId,
+      text: newMessage,
+    });
+
+    try {
+      const res = await API.post("/message", message);
+      setMessages([...messages, res.data]);
+      setNewMessage("");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <section className="messageContainer">
@@ -63,19 +125,40 @@ const Openchat = () => {
               className="img"
               src="https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg"
             />
-            <h3>UserName{id}</h3>
+            {/* <h3>{openedChatUser?.name}</h3> */}
+            <h1>{id}</h1>
           </div>
-
-          <div className="topMessage">
-            <img
-              className="img"
-              src="https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg"
-            />
+          {/* <div className="topMessage">
             <p className="message">
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero a
               molestiae sed exercitationem soluta sunt aperiam eligendi dolores
               laboriosam velit.
             </p>
+          </div> */}
+
+          <div>
+            {messages?.map((message) => {
+              return (
+                <>
+                  <div className="topMessage">
+                    <img
+                      className="img"
+                      src="https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg"
+                    />
+                    <p
+                      className={
+                        user?.user._id === message.sender
+                          ? "ownMessage"
+                          : "otherMessage"
+                      }
+                    >
+                      {message.text}
+                    </p>
+                    <p className="message-time">{format(message.createdAt)}</p>
+                  </div>
+                </>
+              );
+            })}
           </div>
         </div>
         <div className="bottomBox">
@@ -85,8 +168,12 @@ const Openchat = () => {
             placeholder="Type Message.."
             cols="30"
             rows="10"
+            onChange={(e) => setNewMessage(e.target.value)}
+            value={newMessage}
           ></textarea>
-          <button type="submit">Send</button>
+          <button type="submit" onClick={handleSubmit}>
+            Send
+          </button>
         </div>
       </section>
     </>
