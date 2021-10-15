@@ -20,7 +20,7 @@ router.post('/facebooklogin', facebooklogin);   //facebook login/ signup
 router.use(checkUser);                          //all the routes after this are secure/protected
 router.post('/updateprofile',updateprofile);    //update user profile
 router.post('/addpost',addpost);
-router.get('/timeline',timeline);
+router.post('/timeline',timeline);
 router.get('/logout', logout);
 
 module.exports = router;
