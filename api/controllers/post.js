@@ -1,9 +1,9 @@
 const Post= require('../models/Post');
 const User= require('../models/User');
 
-module.exports.addpost= (req,res) => {
+module.exports.addpost= async (req,res) => {
     const{userId, name, imageurl,desc }= req.body;
-    let newPost = new Post({userId, name, imageurl,desc});
+    let newPost = await new Post({userId, name, imageurl,desc});
     newPost.save((err,success)=> {
             if(err) {
                 console.log("Error in uploading Post: ", err);
