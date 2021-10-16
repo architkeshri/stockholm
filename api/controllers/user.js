@@ -27,7 +27,6 @@ module.exports.updateprofile= (req,res)=>{
 }
 
 module.exports.recommendations = (req,res) => {
-    // if(sexual_preference) == req.body.sexualpref
     const pref = req.body.sexual_preference;
     if(pref==='Male' || pref==='Female' || pref==='Other') {
         User.find({gender: pref}).exec((err, users)=>{
@@ -38,7 +37,6 @@ module.exports.recommendations = (req,res) => {
         }
         );
     } else if(pref==='Both') {
-        //{"breed" : { $in : ["Pitbull", "Great Dane", "Pug"]}}
         User.find({gender : { $in : ['Male', 'Female']}}).exec((err, users)=>{
             if(err) {
                 return res.status(400).json(err);
