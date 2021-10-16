@@ -25,3 +25,24 @@ module.exports.updateprofile= (req,res)=>{
             }
         })
 }
+
+module.exports.recommendations = (req,res) => {
+    const pref = req.body.sexual_preference;
+    if(pref==='Male' || pref==='Female' || pref==='Other') {
+        User.find({gender: pref}).exec((err, users)=>{
+            if(err) {
+                return res.status(400).json(err);
+            }
+            return res.status(201).json(users);
+        }
+        );
+    } else if(pref==='Both') {
+        User.find({gender : { $in : ['Male', 'Female']}}).exec((err, users)=>{
+            if(err) {
+                return res.status(400).json(err);
+            }
+            return res.status(201).json(users);
+        }
+        );
+    }
+}

@@ -3,8 +3,9 @@ import { Card } from "react-bootstrap";
 import '../styles/card.css';
 import API from '../utils/API';
 const Createpost = ({user}) => {
-    const [img_link, setimg_link] = useState("");
-    const description = useRef("");
+    //const [img_link, setimg_link] = useState("");
+    const description = useRef(undefined);
+    var img_link="";
    
     
     const handlePost = async () => {
@@ -20,19 +21,40 @@ const Createpost = ({user}) => {
                 body: data
             })
             const file = await res1.json();
-            setimg_link(file.url);
-            document.getElementById('file').value = null;
+            //setimg_link(file.url);
+            img_link=file.url;
+            //document.getElementById('file').value = null;
         }
         else{
             alert('No file Choosen');
         }
-        
-    }
-   /*Error occuring here*/
-    useEffect(() => {
         if(img_link !== ""){
             const body = {
                 userId: user.user._id,
+                name: user.user.name,
+                imageurl: img_link,
+                desc: description.current.value
+            }
+            const config = {headers: {"Content-Type": "application/json"}};
+            console.log(body);
+            API.post("/addpost",body,config)
+            .then(response => {
+            console.log("data: ", response.data);
+            }).catch((err) => {
+                console.log(err)
+            alert("Error Occured while posting feed!!");
+            })
+            console.log(img_link);
+            //setimg_link("");
+        }
+        
+    }
+   /*Error occuring here*/
+    /*useEffect(() => {
+        if(img_link !== ""){
+            const body = {
+                userId: user.user._id,
+                name: user.user.name,
                 imageurl: img_link,
                 desc: description
             }
@@ -47,7 +69,7 @@ const Createpost = ({user}) => {
             setimg_link("");
         }
         
-    }, [img_link]);
+    }, [img_link]); */
 
     return (
         <Card className= "createpost" style={{ width: '35rem', margin: '1% auto', borderRadius: '20px', transitionDuration: '0.5s', cursor: 'pointer' }}>

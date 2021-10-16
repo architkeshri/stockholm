@@ -1,10 +1,9 @@
 const Post= require('../models/Post');
 const User= require('../models/User');
 
-module.exports.addpost= (req,res) => {
-    const {userId, imageurl, desc } = req.body;
-    console.log(userId);
-    let newPost = new Post({userId, imageurl,desc});
+module.exports.addpost= async (req,res) => {
+    const{userId, name, imageurl,desc }= req.body;
+    let newPost = await new Post({userId, name, imageurl,desc});
     newPost.save((err,success)=> {
             if(err) {
                 console.log("Error in uploading Post: ", err);
@@ -26,6 +25,20 @@ module.exports.timeline= async (req,res) => {
         res.json(userPosts.concat(...matchedPosts))
     }catch (err) {
         console.log(err);
+        res.status(500).json(err);
+    }
+}
+
+module.exports.deletepost = async (req,res) => {
+    try{
+        const post = await Post.findById(req.params.id);
+        if(post.userId === req.body.userId) {
+            await post.deleteOne();
+            res.status(403).json("Post has been deleted");
+        } else {
+            res.status(403).json("You can only delete your post!");
+        }
+     } catch (err) {
         res.status(500).json(err);
     }
 }
