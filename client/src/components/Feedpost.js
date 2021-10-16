@@ -1,12 +1,12 @@
 import { Card } from "react-bootstrap";
-import test from './testdata.js'
+import '../styles/card.css';
 const Feedpost = ({feeds}) => {
 
     const print = feeds.map((item)=>{
         return (
-            <Card style={{ width: '35rem', margin: '1% auto', borderRadius: '20px' }}>
+            <Card className= "cardi" style={{ width: '35rem', margin: '1% auto', borderRadius: '20px', transitionDuration: '0.5s', cursor: 'pointer' }}>
                 <Card.Body>
-                    <Card.Title>{item.userId}</Card.Title>
+                    <Card.Title>{item.name}</Card.Title>
                     <Card.Subtitle className="mb-1 text-muted">Posted on: {item.createdAt}</Card.Subtitle>
                     <Card.Text>{item.desc}</Card.Text>
                 </Card.Body>

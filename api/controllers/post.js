@@ -2,7 +2,8 @@ const Post= require('../models/Post');
 const User= require('../models/User');
 
 module.exports.addpost= (req,res) => {
-    const{userId, imageurl,desc }= req.body;
+    const {userId, imageurl, desc } = req.body;
+    console.log(userId);
     let newPost = new Post({userId, imageurl,desc});
     newPost.save((err,success)=> {
             if(err) {
