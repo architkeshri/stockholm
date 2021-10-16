@@ -29,7 +29,7 @@ module.exports.updateprofile= (req,res)=>{
 module.exports.recommendations = (req,res) => {
     // if(sexual_preference) == req.body.sexualpref
     const pref = req.body.sexual_preference;
-    if(pref==='Male' || 'Female' || 'Other') {
+    if(pref==='Male' || pref==='Female' || pref==='Other') {
         User.find({gender: pref}).exec((err, users)=>{
             if(err) {
                 return res.status(400).json(err);
@@ -38,7 +38,8 @@ module.exports.recommendations = (req,res) => {
         }
         );
     } else if(pref==='Both') {
-        User.find({$or:[{gender: Male},{gender: Female}]}).exec((err, users)=>{
+        //{"breed" : { $in : ["Pitbull", "Great Dane", "Pug"]}}
+        User.find({gender : { $in : ['Male', 'Female']}}).exec((err, users)=>{
             if(err) {
                 return res.status(400).json(err);
             }

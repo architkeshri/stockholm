@@ -6,7 +6,7 @@ const Feedpost = ({feeds}) => {
         return (
             <Card style={{ width: '35rem', margin: '1% auto', borderRadius: '20px' }}>
                 <Card.Body>
-                    <Card.Title>{item.userId}</Card.Title>
+                    <Card.Title>{item.name}</Card.Title>
                     <Card.Subtitle className="mb-1 text-muted">Posted on: {item.createdAt}</Card.Subtitle>
                     <Card.Text>{item.desc}</Card.Text>
                 </Card.Body>

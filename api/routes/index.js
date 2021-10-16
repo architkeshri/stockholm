@@ -22,7 +22,7 @@ router.post('/updateprofile',updateprofile);    //update user profile
 router.post('/addpost',addpost);
 router.post('/deletepost/:id',deletepost);
 router.post('/timeline',timeline);
-router.get('/recommendations', recommendations);
+router.post('/recommendations', recommendations);
 router.get('/logout', logout);
 
 module.exports = router;
