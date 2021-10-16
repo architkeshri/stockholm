@@ -9,13 +9,13 @@ const Loginpage = () => {
 
     const [user, setUser] = useState(null);
 
-    // useEffect(() => {
-    //   setUser(window.localStorage.getItem('user'));
-    // }, [])
+    useEffect(() => {
+      setUser(JSON.parse(window.localStorage.getItem('user')));
+    }, [])
 
-    // useEffect(() => {
-    //   window.localStorage.setItem('user', user);
-    // }, [user]);
+    useEffect(() => {
+      window.localStorage.setItem('user', JSON.stringify(user));
+    }, [user]);
 
     return (
       <>

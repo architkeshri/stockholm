@@ -32,7 +32,6 @@ const Buildprofile = ({user, setUser}) => {
             body: data
         })
         const file = await res1.json();
-        console.log(file);
         console.log(file.url);
         img_link=file.url;
     }
