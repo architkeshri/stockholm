@@ -1,5 +1,6 @@
 import Navbar from "./Navbar";
 import Feedpost from './Feedpost';
+import Createpost from './Createpost'
 import API from '../utils/API';
 import { useState } from "react";
 
@@ -23,6 +24,7 @@ const Home = ({user, setUser}) => {
     return(
         <>
             <Navbar callFeed={callFeed} setUser={setUser}/>
+            <Createpost user={user}/>
             <Feedpost feeds={feeds} />
         </>
     )
