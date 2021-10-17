@@ -1,6 +1,6 @@
 import { Stack, Row, Col, Button } from "react-bootstrap";
 import { useRef } from "react";
-import API from '../utils/API';
+import API from '../../utils/API';
 const Buildprofile = ({ user, setUser }) => {
 
     const dob = useRef(undefined);

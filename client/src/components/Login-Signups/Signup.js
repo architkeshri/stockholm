@@ -1,9 +1,7 @@
 import { Component, useRef, useState, useContext } from "react";
-import axios from "axios";
-import { Row, Col, Container, Stack, Button } from "react-bootstrap";
-import Socialauth from "./Socialauth";
-import { signupCall } from "../apiCalls";
-import { AuthContext } from "../context/AuthContext";
+import { signupCall } from "../../apiCalls";
+import { AuthContext } from "../../context/AuthContext";
+import API from "../../utils/API";
 
 const Signup = ({ setUser }) => {
   const name = useRef(undefined);
@@ -11,24 +9,17 @@ const Signup = ({ setUser }) => {
   const password = useRef(undefined);
   const { user, isFetching, error, dispatch } = useContext(AuthContext);
   const sendData = (e) => {
-    // axios({
-    //   method: "POST",
-    //   url: "http://localhost:9000/signup",
-    //   data: {
-    //     name: name.current.value.trim(),
-    //     email: email.current.value.trim(),
-    //     password: password.current.value,
-    //   },
-    // })
-    //   .then((response) => {
-    //     setUser(response.data);
-    //     localStorage.setItem("userId", response.data.user);
-    //     console.log("Login success", response);
-    //   })
-    //   .catch(() => {
-    //     alert("Invalid Credentials!!");
-    //     console.log("error");
-    //   });
+      const body = {name: name.current.value.trim(), email: email.current.value.trim(), password: password.current.value};
+      const config = {headers: {"Content-Type":"application/json"}};
+      API.post("/signup",body,config)
+      
+        .then(response => {
+        setUser(response.data.user);
+        console.log("Login success", response);
+      }).catch(() => {
+        alert("Invalid Credentials!!");
+        console.log("error");
+      })
     signupCall(
       {
         name: name.current.value.trim(),

@@ -1,10 +1,10 @@
-import "../styles/loginsign.css";
+import "../../styles/loginsign.css";
 import { useRef, useContext } from "react";
 //import axios from 'axios';
-import { loginCall } from "../apiCalls";
-import API from "../utils/API";
+import { loginCall } from "../../apiCalls";
+import API from "../../utils/API";
 import Socialauth from "./Socialauth";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 const Login = ({ setUser }) => {
   const email = useRef(undefined);
   const password = useRef(undefined);

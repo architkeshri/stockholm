@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import Signup from "./Signup";
 import Login from "./Login";
-import Home from "./Home";
+import Home from "../Home";
 import Buildprofile from "./Buildprofile";
-import "../styles/loginsign.css";
+import "../../styles/loginsign.css";
 const Loginpage = () => {
   const [user, setUser] = useState(null);
 
