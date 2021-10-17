@@ -16,8 +16,8 @@ const Buildprofile = ({ user, setUser }) => {
     var img_link = "";
     var gender = "";
     var sex_preference = "";
-    var latitude="";
-    var longitude="";
+    var lat="";
+    var long="";
 
     const handleGender = (e) => {
         gender = e.target.value;
@@ -52,9 +52,9 @@ const Buildprofile = ({ user, setUser }) => {
     }
 
     const getCoordinates=(position) =>{
-        latitude= position.coords.latitude;
-        longitude= position.coords.longitude;
-        console.log(latitude,longitude);
+        lat= position.coords.latitude;
+        long= position.coords.longitude;
+        console.log(lat,long);
     }
 
     const handleLocationError=(error)=> {
@@ -77,7 +77,6 @@ const Buildprofile = ({ user, setUser }) => {
 
 
     const handleSubmit = () => {
-        getLocation();
         const body = {
             _id: user._id,
             dob: dob.current.value,
@@ -91,7 +90,9 @@ const Buildprofile = ({ user, setUser }) => {
             interests: [],
             fb_link: fb_link.current.value,
             ig_link: ig_link.current.value,
-            imagesurl: img_link
+            imagesurl: img_link,
+            latitude: lat,
+            longitude: long
         };
         const config = { headers: { "Content-Type": "application/json" } };
         API.post("/updateprofile", body, config)
@@ -170,7 +171,7 @@ const Buildprofile = ({ user, setUser }) => {
                                         <Col ><h6>Location</h6></Col>
                                     </Row>
                                     <Row>
-                                        <Col><input type='text' ref={location}/></Col>
+                                        <Col><input type='text' ref={location} onChange={getLocation}/></Col>
                                     </Row>
                                 </Stack>
                             </Col>

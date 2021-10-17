@@ -20,9 +20,7 @@ module.exports.signup = (req, res) => {
   const { name, email, password } = req.body;
   User.findOne({ email }).exec((err, user) => {
     if (user) {
-      return res
-        .status(400)
-        .json({ error: "user with this email already exists!" });
+      return res.status(400).json({ error: "user with this email already exists!" });
     }
 
     let newUser = new User({ name, email, password });
@@ -64,18 +62,17 @@ module.exports.login = async (req, res) => {
 //Google Login/ Signup: Extracting email from response and checking if that user exists. If exists: login, else signup
 module.exports.googlelogin = (req, res) => {
   const { tokenId } = req.body;
-  client
-    .verifyIdToken({
+  client.verifyIdToken({
       idToken: tokenId,
-      audience:
-        "946133447752-iu32go0864pc5pino7jkh8b8k1qafr36.apps.googleusercontent.com",
-    })
-    .then((response) => {
+      audience: "946133447752-iu32go0864pc5pino7jkh8b8k1qafr36.apps.googleusercontent.com",
+    }).then((response) => {
       const { email_verified, name, email } = response.payload;
       //console.log(response.payload);
       if (email_verified) {
         User.findOne({ email }).exec((err, user) => {
           if (err) {
+            console.log("error1");
+            console.log(err);
             return res.status(400).json({
               error: "1. something went wrong!",
             });
@@ -83,21 +80,25 @@ module.exports.googlelogin = (req, res) => {
             if (user) {
               //login
               const token = createToken(user._id);
-              const { _id, name, email } = user;
-              res.json({ token, user: { _id, name, email } });
+              res.cookie("jwt", token, {
+                secure: process.env.NODE_ENV === "production"? true: false,
+                httpOnly: process.env.NODE_ENV === "production"? true: false,
+                maxAge: maxAge * 1000,
+              });
+              res.status(201).json({ user: user });
             } else {
               let password = email + process.env.JWT_SECRET_USER;
               let newUser = new User({ name, email, password });
               newUser.save((err, data) => {
                 //signup
                 if (err) {
+                    console.log(err);
                   return res.status(400).json({
                     error: "2. something went wrong!",
                   });
                 } else {
-                  if (user) {
                     //login
-                    const token = createToken(user._id);
+                    const token = createToken(data._id);
                     res.cookie("jwt", token, {
                       secure:
                         process.env.NODE_ENV === "production" ? true : false,
@@ -105,43 +106,15 @@ module.exports.googlelogin = (req, res) => {
                         process.env.NODE_ENV === "production" ? true : false,
                       maxAge: maxAge * 1000,
                     });
-                    res.status(200).json({ user: user });
-                  } else {
-                    let password = email + process.env.JWT_SECRET_USER;
-                    let newUser = new User({ name, email, password });
-                    newUser.save((err, data) => {
-                      //signup
-                      if (err) {
-                        return res.status(400).json({
-                          error: "2. something went wrong!",
-                        });
-                      } else {
-                        const token = createToken(data._id);
-                        //const {_id, name, email} = newUser;
-                        //res.json({token, user: {_id, name, email}})
-                        res.cookie("jwt", token, {
-                          secure:
-                            process.env.NODE_ENV === "production"
-                              ? true
-                              : false,
-                          httpOnly:
-                            process.env.NODE_ENV === "production"
-                              ? true
-                              : false,
-                          maxAge: maxAge * 1000,
-                        });
-                        res.status(200).json({ user: newUser });
-                      }
-                    });
-                  }
-                }
-              });
-            }
+                    res.status(200).json({ user: newUser });
+                  } 
+            })
           }
-        });
-      }
-    });
-};
+        }
+      })
+    }
+});
+}
 
 //Facebook Login/ Signup: Extracting email from response and checking if that user exists. If exists: login, else signup
 module.exports.facebooklogin = (req, res) => {

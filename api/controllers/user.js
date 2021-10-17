@@ -1,14 +1,20 @@
 const User= require('../models/User');
 
 module.exports.updateprofile= (req,res)=>{
-    const{_id, dob, about,emergency_contact,gender,sexual_preference,location,education,occupation,interests, fb_link,ig_link,imagesurl} = req.body;
+    const{_id, dob, about,emergency_contact,gender,sexual_preference,location,education,occupation,interests, fb_link,ig_link,imagesurl, latitude, longitude} = req.body;
     User.updateOne({_id: _id},
         {$set:{dob: dob, 
             about:about,
             emergency_contact: emergency_contact,
             gender: gender,
             sexual_preference: sexual_preference,
-            location: location,
+            location: {
+                coordinates: [
+                    longitude,
+                    latitude
+                ],
+                address: location
+            },
             education: education,
             occupation: occupation,
             activated: true,

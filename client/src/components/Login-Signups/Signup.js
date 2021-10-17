@@ -20,14 +20,14 @@ const Signup = ({ setUser }) => {
         alert("Invalid Credentials!!");
         console.log("error");
       })
-    signupCall(
+    /*signupCall(
       {
         name: name.current.value.trim(),
         email: email.current.value.trim(),
         password: password.current.value,
       },
       dispatch
-    );
+    );*/
   };
   return (
     <>

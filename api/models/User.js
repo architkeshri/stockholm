@@ -44,7 +44,16 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: "default",
     },
-    location: String,
+    location: {
+        type: {
+          type: String, 
+          enum: ['Point'], 
+        },
+        coordinates: {
+          type: [Number]
+        },
+        address: String
+    },    
     education: String,
     occupation: String,
     activated: {
