@@ -1,10 +1,11 @@
 import "../styles/Navbar.css";
-
-const Navbar = ({ callFeed, setUser, user }) => {
+import API from "../utils/API";
+const Navbar = ({ callFeed, setUser, user, setrecommendations }) => {
   const sendData = (e) => {
     // e.preventDefault();
-    // API.get("/logout");
+    API.get("/logout");
     setUser(null);
+    
   };
   return (
     <>
