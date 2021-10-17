@@ -46,6 +46,7 @@ const Signup = ({ setUser }) => {
           <input type="password" placeholder="Password" ref={password} />
         </div>
         <input
+          type="submit"
           style={{
             backgroundColor: "#5995fd",
             color: "#fff",
