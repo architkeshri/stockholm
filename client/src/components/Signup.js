@@ -1,9 +1,8 @@
-import '../styles/login.css';
-import { useRef, useState } from "react";
+import '../styles/loginsign.css';
+import { useRef } from "react";
 //import axios from 'axios';
 import API from '../utils/API';
-import { Row, Col, Container, Stack, Button } from 'react-bootstrap';
-import Socialauth from './Socialauth';
+
 const Signup = ({setUser}) => {
     const name = useRef(undefined);
     const email = useRef(undefined);
@@ -23,31 +22,26 @@ const Signup = ({setUser}) => {
     
     }
 
-    let login = {
-        position : 'relative',
-        top: '100px',
-        padding: '15px'
-      };
     return(
         <>
-            <Container style={login}>
-                  
-                  <Stack gap={4}>
-                    <Row>
-                      <h1 style={{textAlign: "center"}}>Sign up</h1>
-                    </Row>
-                    <Row>
-                      <Col className="text-center"><i class="fas fa-user"></i><input type="text" placeholder="Username" ref={name}/></Col>
-                    </Row>
-                    <Row>
-                      <Col className="text-center"><i class="fas fa-user"></i><input type="text" placeholder="Email" ref={email}/></Col>
-                    </Row>
-                    <Row>
-                      <Col className="text-center"><i class="fas fa-lock"></i><input type="password" placeholder="Password" ref={password}/></Col>
-                    </Row>
-                    <Row><Col className="text-center"><Button variant="primary" size="lg" onClick={(e) => sendData(e)} active>Signup</Button></Col></Row>
-                </Stack>
-            </Container>
+           
+
+          <div id="form" class="sign-up-form">
+            <h2 class="title">Sign up</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" placeholder="Username" ref={name}/>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="email" placeholder="Email" ref={email}/>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" placeholder="Password" ref={password}/>
+            </div>
+            <input style={{ backgroundColor: '#5995fd', color: '#fff', fontWeight: '700', borderRadius: '49px'}} class="btn" value="Sign up" onClick={(e) => sendData(e)}/>
+          </div>
         </>
     )
 }
