@@ -1,0 +1,30 @@
+.outer{
+    display: flex;
+}
+.inner{
+    display: flexbox;
+    width: 33%;
+}
+
+.inner h2{
+    text-align: center;
+}
+
+.recommend-card{
+    
+    border: 2px solid black;
+    margin: 4% 10%;
+    border-radius: 10px;
+    padding: 1% 5%;
+}
+
+.recommend-card h4{
+    display: inline;
+    margin: 5% 10%;
+}
+
+.recommend-card img{
+    
+    width: 15%;
+    border-radius: 50%;
+}
