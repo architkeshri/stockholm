@@ -1,0 +1,23 @@
+.cardi:hover{
+    background-color: bisque;
+}
+
+.createpost textarea{
+    border: none;
+    outline: none;
+}
+
+.createpost button{
+    border-radius: 10px;
+    border: none;
+    padding: 1% 3%;
+    color:rgb(255, 255, 255);
+    font-weight: 700;
+    background-color: rgb(145, 143, 253);
+    transition-duration: 0.3s;
+    box-shadow: 0 0 5px 2px rgba(166, 164, 255, 0.7);
+}
+
+.createpost button:hover{
+    background-color: rgb(100, 97, 238);
+}

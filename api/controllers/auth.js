@@ -32,11 +32,12 @@ module.exports.signup = (req, res) => {
         return res.status(400).json({ error: err });
       }
       const token = createToken(newUser._id);
-      res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-      res.status(201).json({
-        user: newUser._id,
-        message: "Signup successful!",
+      res.cookie("jwt", token, {
+        secure: process.env.NODE_ENV === "production" ? true : false,
+        httpOnly: process.env.NODE_ENV === "production" ? true : false,
+        maxAge: maxAge * 1000,
       });
+      res.status(201).json({ user: newUser });
     });
   });
 };
@@ -48,8 +49,13 @@ module.exports.login = async (req, res) => {
   try {
     const user = await User.login(email, password);
     const token = createToken(user._id);
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(200).json({ user });
+    res.cookie("jwt", token, {
+      secure: process.env.NODE_ENV === "production" ? true : false,
+      httpOnly: process.env.NODE_ENV === "production" ? true : false,
+      maxAge: maxAge * 1000,
+    });
+    console.log(user._id);
+    res.status(200).json({ user: user });
   } catch (error) {
     res.status(400).json({ error: error });
   }
@@ -89,9 +95,45 @@ module.exports.googlelogin = (req, res) => {
                     error: "2. something went wrong!",
                   });
                 } else {
-                  const token = createToken(data._id);
-                  const { _id, name, email } = newUser;
-                  res.json({ token, user: { _id, name, email } });
+                  if (user) {
+                    //login
+                    const token = createToken(user._id);
+                    res.cookie("jwt", token, {
+                      secure:
+                        process.env.NODE_ENV === "production" ? true : false,
+                      httpOnly:
+                        process.env.NODE_ENV === "production" ? true : false,
+                      maxAge: maxAge * 1000,
+                    });
+                    res.status(200).json({ user: user });
+                  } else {
+                    let password = email + process.env.JWT_SECRET_USER;
+                    let newUser = new User({ name, email, password });
+                    newUser.save((err, data) => {
+                      //signup
+                      if (err) {
+                        return res.status(400).json({
+                          error: "2. something went wrong!",
+                        });
+                      } else {
+                        const token = createToken(data._id);
+                        //const {_id, name, email} = newUser;
+                        //res.json({token, user: {_id, name, email}})
+                        res.cookie("jwt", token, {
+                          secure:
+                            process.env.NODE_ENV === "production"
+                              ? true
+                              : false,
+                          httpOnly:
+                            process.env.NODE_ENV === "production"
+                              ? true
+                              : false,
+                          maxAge: maxAge * 1000,
+                        });
+                        res.status(200).json({ user: newUser });
+                      }
+                    });
+                  }
                 }
               });
             }
@@ -142,4 +184,13 @@ module.exports.facebooklogin = (req, res) => {
         }
       });
     });
+};
+
+module.exports.logout = async (req, res) => {
+  res.cookie("jwt", "expiredtoken", {
+    expires: new Date(Date.now() + 5000),
+    secure: process.env.NODE_ENV === "production" ? true : false,
+    httpOnly: process.env.NODE_ENV === "production" ? true : false,
+  });
+  res.status(200).json({ status: "logout success!" });
 };
