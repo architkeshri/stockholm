@@ -1,69 +1,38 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+
 import { AuthContext } from "../../context/AuthContext";
 import API from "../../utils/API";
-import { format } from "timeago.js";
+import Message from "../../components/Message/Message";
+
+import Picker from "emoji-picker-react";
 
 import { io } from "socket.io-client";
 import "./openchat.css";
+import ChatHead from "../../components/ChatHead/ChatHead";
+import Navbar from "../../components/Navbar";
 
 const Openchat = () => {
-  const { id } = useParams();
-  // const[uid,setUid] = useState('');
+  //getting  logged in user
   const { user } = useContext(AuthContext);
+
+  //states
 
   const [messages, setMessages] = useState(null);
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
-  // const [socket, setSocket] = useState(null);
-  const socket = useRef();
-  const [convoBetween, setConvoBetween] = useState([]);
-  // const [openedChatUser, setOpenedChatUser] = useState(null);
+  const [currentChat, setCurrentChat] = useState(null);
+  const [conversations, setConversations] = useState([]);
+  const [emojiBtn, setEmojiBtn] = useState(false);
+  const [emojiObj, setEmojiObj] = useState(null);
+
+  // refs
   const scrollRef = useRef();
-  // console.log(convoBetween);
+  const socket = useRef();
 
-  useEffect(() => {
-    const getConvoBetween = async () => {
-      try {
-        const res = await API.get("conversation/receiver/" + id);
-        setConvoBetween(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getConvoBetween();
-  }, []);
-
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  // // console.log("user", user);
-  // useEffect(() => {
-  //   const getMatch = async () => {
-  //     const matchId = convoBetween.members?.find((m) => m !== user?.user._id);
-
-  //     console.log("mid", matchId);
-  //     try {
-  //       const res = await API.get("/users/" + matchId);
-  //       setOpenedChatUser(res.data);
-  //       console.log(res.data);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-
-  //   getMatch();
-  // }, []);
-
-  // console.log(convoBetween);
-  // console.log(openedChatUser);
+  // connect to web socket and get the message from socket
 
   useEffect(() => {
     socket.current = io("ws://localhost:8900");
-  }, []);
-
-  useEffect(() => {
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
@@ -73,11 +42,12 @@ const Openchat = () => {
     });
   }, []);
 
+  // add new message to messages
   useEffect(() => {
     arrivalMessage &&
-      convoBetween?.members.includes(arrivalMessage.sender) &&
+      currentChat?.members.includes(arrivalMessage.sender) &&
       setMessages((prev) => [...prev, arrivalMessage]);
-  }, [arrivalMessage, convoBetween]);
+  }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
     socket.current.emit("addUser", user.user._id);
@@ -85,35 +55,57 @@ const Openchat = () => {
       console.log(users);
     });
   }, [user.user]);
+
+  // API call to conversation/:id to get all conversation of the current user
+  useEffect(() => {
+    const getConversation = async () => {
+      try {
+        const res = await API.get("/conversation/" + user.user._id);
+
+        setConversations(res.data);
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getConversation();
+  }, [user.user._id]);
+
+  // of All the conversations currentChat contains the opened chat
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const res = await API.get("/message/" + id);
+        const res = await API.get("/message/" + currentChat?._id);
         setMessages(res.data);
-        // console.log(res);
       } catch (err) {
         console.log(err);
       }
     };
     getMessages();
-  }, []);
+  }, [currentChat]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const message = {
       sender: user.user._id,
       text: newMessage,
-      conversationId: id,
+      conversationId: currentChat._id,
     };
 
-    const matchId = convoBetween.members?.find((m) => m !== user?.user._id);
+    // filtering out array to get the other user .ie a match
+
+    const matchId = currentChat.members?.find((m) => m !== user?.user._id);
 
     socket.current.emit("sendMessage", {
       senderId: user.user._id,
       receiverId: matchId,
       text: newMessage,
     });
-
+    // post in Message table
     try {
       const res = await API.post("/message", message);
       setMessages([...messages, res.data]);
@@ -122,57 +114,81 @@ const Openchat = () => {
       console.log(err);
     }
   };
-
+  const onEmojiClick = (e, emojiObj) => {
+    setEmojiObj(emojiObj);
+    setNewMessage(newMessage + emojiObj?.emoji);
+  };
   return (
     <>
-      <section className="messageContainer">
-        <div className="topBox">
-          <div>
-            {messages?.map((message) => {
+      <Navbar />
+      <div className="messenger">
+        <div className="chatMenu">
+          <div className="chatMenuWrapper">
+            {conversations.map((c) => {
               return (
                 <>
-                  <div ref={scrollRef}>
-                    <div className="topMessage">
-                      <div
-                        className={
-                          user?.user._id === message.sender
-                            ? "ownMessage"
-                            : "otherMessage"
-                        }
-                      >
-                        <img
-                          className="img"
-                          src="https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg"
-                        />
-                        <p>{message.text}</p>
-                      </div>
-                      <p className="bottomMessage">
-                        {format(message.createdAt)}
-                      </p>
-                    </div>
+                  <div onClick={() => setCurrentChat(c)}>
+                    <ChatHead conversation={c} currentUser={user} />
                   </div>
                 </>
               );
             })}
           </div>
         </div>
-        <div className="bottomBox">
-          <textarea
-            name="message"
-            id="message"
-            placeholder="Type Message.."
-            cols="30"
-            rows="10"
-            onChange={(e) => setNewMessage(e.target.value)}
-            value={newMessage}
-          ></textarea>
-          <button type="submit" onClick={handleSubmit}>
-            Send
-          </button>
+        <div className="chatBox">
+          <div className="chatBoxWrapper">
+            {currentChat ? (
+              <>
+                <div className="chatBoxTop">
+                  {messages.map((message) => {
+                    return (
+                      <>
+                        <div ref={scrollRef}>
+                          <Message
+                            message={message}
+                            own={message.sender === user.user._id}
+                          />
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
+                <div className="chatBoxBottom">
+                  <textarea
+                    className="chatMessageInput"
+                    placeholder="write something..."
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    value={newMessage}
+                  ></textarea>
+                  <button className="chatSubmitButton" onClick={handleSubmit}>
+                    Send
+                  </button>
+                  <button
+                    onClick={() => setEmojiBtn(!emojiBtn)}
+                    className="chatSubmitButton"
+                  >
+                    Emoji
+                  </button>
+
+                  {emojiBtn && (
+                    <Picker
+                      onEmojiClick={onEmojiClick}
+                      disableSearchBar={true}
+                    />
+                  )}
+                </div>
+              </>
+            ) : (
+              <h1>Open a convo</h1>
+            )}
+          </div>
         </div>
-      </section>
+
+        <div className="matches">
+          <p>All the new Matches goes here</p>
+        </div>
+      </div>
     </>
   );
 };
-
 export default Openchat;

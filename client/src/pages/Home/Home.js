@@ -9,11 +9,6 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <ul>
-        <li>
-          <Link to="/Chat"> Chat</Link>
-        </li>
-      </ul>
     </>
   );
 };

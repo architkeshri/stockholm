@@ -13,7 +13,7 @@ import { AuthContext } from "./context/AuthContext";
 
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/login";
-import Chat from "./pages/Chat/Chat";
+
 import Openchat from "./pages/Openchat/Openchat";
 import Signup from "./components/Signup";
 function App() {
@@ -26,13 +26,10 @@ function App() {
             {user ? <Home /> : <Login />}
           </Route>
           <Route path="/signup">{user ? <Home /> : <Signup />}</Route>
-          <Route exact path="/chat">
-            {user ? <Chat /> : <Login />}
-          </Route>
 
           <Route
             exact
-            path="/openchat/:id"
+            path="/openchat"
             children={user ? <Openchat /> : <Login />}
           ></Route>
         </Switch>
