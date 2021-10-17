@@ -61,8 +61,8 @@ const Createpost = ({user, callFeed}) => {
                 <Card.Title>Create Post</Card.Title>
                 {/* <Card.Subtitle className="mb-1 text-muted">Posted on: {item.createdAt}</Card.Subtitle> */}
                 <textarea id="description" style={{width: '100%'}} placeHolder="Write Something Here..." ref={description}/>
-                <input id="file" type='file'/>
-                <button id="submit" onClick={handlePost}>Post</button>
+                <input id="file" style={{marginLeft: '5%'}} type='file'/>
+                <button id="submit" style={{marginLeft: '20%'}} onClick={handlePost}>Post</button>
             </Card.Body>
             {/* <Card.Img variant="top" style={{border: '2px solid #bebebe', borderRadius: '20px', margin: '2%', width: '96%'}} src={item.imageurl} /> */}
         </Card>
