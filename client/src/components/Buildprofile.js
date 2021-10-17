@@ -16,6 +16,8 @@ const Buildprofile = ({ user, setUser }) => {
     var img_link = "";
     var gender = "";
     var sex_preference = "";
+    var latitude="";
+    var longitude="";
 
     const handleGender = (e) => {
         gender = e.target.value;
@@ -41,8 +43,41 @@ const Buildprofile = ({ user, setUser }) => {
         img_link = file.url;
     }
 
+    const getLocation= ()=> {
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(getCoordinates, handleLocationError);
+        } else {
+            alert("Geolocation is not supported by this browser");
+        }
+    }
+
+    const getCoordinates=(position) =>{
+        latitude= position.coords.latitude;
+        longitude= position.coords.longitude;
+        console.log(latitude,longitude);
+    }
+
+    const handleLocationError=(error)=> {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+              alert("User denied the request for Geolocation.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              alert("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              alert("The request to get user location timed out.");
+              break;
+            case error.UNKNOWN_ERROR:
+              alert("An unknown error occurred.")
+              break;
+            default: alert("An unknown error occurred.");
+          }
+    }
+
 
     const handleSubmit = () => {
+        getLocation();
         const body = {
             _id: user._id,
             dob: dob.current.value,
