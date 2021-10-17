@@ -1,20 +1,19 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
-
-import { AuthContext } from "../../context/AuthContext";
-import API from "../../utils/API";
-import Message from "../../components/Message/Message";
-
-import Picker from "emoji-picker-react";
-
-import { io } from "socket.io-client";
+//css files
 import "./openchat.css";
+
+//node pacakages
+import React, { useState, useEffect, useRef } from "react";
+import Picker from "emoji-picker-react";
+import { io } from "socket.io-client";
+
+// Api calls
+import API from "../../utils/API";
+
+// components
+import Message from "../../components/Message/Message";
 import ChatHead from "../../components/ChatHead/ChatHead";
-import Navbar from "../../components/Navbar";
 
-const Openchat = () => {
-  //getting  logged in user
-  const { user } = useContext(AuthContext);
-
+const Openchat = ({ user }) => {
   //states
 
   const [messages, setMessages] = useState(null);
@@ -120,7 +119,6 @@ const Openchat = () => {
   };
   return (
     <>
-      <Navbar />
       <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">
