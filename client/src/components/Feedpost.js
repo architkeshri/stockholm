@@ -10,7 +10,7 @@ const Feedpost = ({feeds}) => {
                     <Card.Subtitle className="mb-1 text-muted">Posted on: {item.createdAt}</Card.Subtitle>
                     <Card.Text>{item.desc}</Card.Text>
                 </Card.Body>
-                <Card.Img variant="top" style={{border: '2px solid #bebebe', borderRadius: '20px', margin: '2%', width: '96%'}} src={item.imageurl} />
+                <Card.Img variant="top" style={{border: '2px solid #bebebe', borderRadius: '20px', margin: '2%', width: '96%', maxHeight: '600px'}} src={item.imageurl} />
             </Card>
         )
     })

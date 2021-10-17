@@ -2,7 +2,7 @@
 import API from '../utils/API';
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
-import { Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 const Socialauth = ({setUser}) => {
     const responseSuccessGoogle = (response) => {    //function called for login/signup with Google: success
         //console.log(response);
@@ -41,22 +41,24 @@ const Socialauth = ({setUser}) => {
   
     return(
         <>
-            <Col className="text-center"> 
-                <GoogleLogin
-                clientId="946133447752-iu32go0864pc5pino7jkh8b8k1qafr36.apps.googleusercontent.com"
-                buttonText="Login with Google"
-                onSuccess={responseSuccessGoogle}
-                onFailure={responseErrorGoogle}
-                cookiePolicy={'single_host_origin'}
-                />
-            </Col>
-            <Col>
-                <FacebookLogin
-                //appId="347074947211845"  //main app id, requires https
-                appId="397967475101703"    //test app id 
-                autoLoad={false}
-                fields="name,email,picture" />
-            </Col>
+        <Row>
+          <Col className="text-center"> 
+              <GoogleLogin
+              clientId="946133447752-iu32go0864pc5pino7jkh8b8k1qafr36.apps.googleusercontent.com"
+              buttonText="Login with Google"
+              onSuccess={responseSuccessGoogle}
+              onFailure={responseErrorGoogle}
+              cookiePolicy={'single_host_origin'}
+              />
+          </Col>
+          <Col>
+              <FacebookLogin
+              //appId="347074947211845"  //main app id, requires https
+              appId="397967475101703"    //test app id 
+              autoLoad={false}
+              fields="name,email,picture" />
+          </Col>
+        </Row>
         </>
     )
 }
