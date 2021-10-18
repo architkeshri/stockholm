@@ -21,9 +21,7 @@ const Createpost = ({user, callFeed}) => {
                 body: data
             })
             const file = await res1.json();
-            //setimg_link(file.url);
             img_link=file.url;
-            //document.getElementById('file').value = null;
         }
         else{
             alert('No file Choosen');
@@ -54,15 +52,25 @@ const Createpost = ({user, callFeed}) => {
         }
         
     }
-  
+    let filestyle = {
+        
+    }
     return (
         <Card className= "createpost" style={{ width: '35rem', margin: '1% auto', borderRadius: '20px', transitionDuration: '0.5s', cursor: 'pointer' }}>
             <Card.Body>
                 <Card.Title>Create Post</Card.Title>
                 {/* <Card.Subtitle className="mb-1 text-muted">Posted on: {item.createdAt}</Card.Subtitle> */}
                 <textarea id="description" style={{width: '100%'}} placeHolder="Write Something Here..." ref={description}/>
-                <input id="file" style={{marginLeft: '5%'}} type='file'/>
-                <button id="submit" style={{marginLeft: '20%'}} onClick={handlePost}>Post</button>
+                <div id="choose-file">
+                    <label htmlFor="file"><i class="fas fa-plus"></i></label>
+                    <input style={filestyle} id="file" onChange={() => document.getElementById('cross').style.visibility = 'visible'} type='file'/>
+                    <span id="cross" onClick={() => {
+                        document.getElementById('file').value = '';
+                        document.getElementById('cross').style.visibility = 'hidden';
+                        }}><i class="fas fa-times"></i></span>
+                    <button id="submit" style={{marginLeft: '50%', height: '80%'}} onClick={handlePost}>Post</button>
+                </div>
+                
             </Card.Body>
             {/* <Card.Img variant="top" style={{border: '2px solid #bebebe', borderRadius: '20px', margin: '2%', width: '96%'}} src={item.imageurl} /> */}
         </Card>

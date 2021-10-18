@@ -11,7 +11,7 @@
 }
 
 .recommend-card{
-    
+    display: flex;
     border: 2px solid black;
     margin: 4% 10%;
     border-radius: 10px;
@@ -19,12 +19,34 @@
 }
 
 .recommend-card h4{
-    display: inline;
-    margin: 5% 10%;
+    display: flex;
+    margin: 5% 5%;
+    width: 60%;
 }
 
 .recommend-card img{
-    
-    width: 15%;
+    display: flex;
+    width: 18%;
+    padding: 1%;
     border-radius: 50%;
+}
+
+.recommend-card span{
+    display: flex;
+    width: 15%;
+    padding: 1%;
+    border-radius: 50%;
+}
+
+.recommend-card span i{
+    color:rgb(230, 217, 223);
+    width: 100%;
+    margin: 40% 30%;
+    transition-duration: 0.5s;
+    cursor: pointer;
+}
+
+.recommend-card span i:hover{
+    color:rgb(255, 0, 119);
+   
 }

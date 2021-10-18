@@ -6,6 +6,7 @@ nav{
     margin: 1% auto;
     border-radius: 10px;
     background-color: rgb(206, 165, 245);
+    
 }
 nav img{
     display: inline;
@@ -13,6 +14,7 @@ nav img{
     margin: 0%;
     vertical-align: middle;
     border-radius: 10px;
+    transition-duration: 0.5s;
 }
 
 nav img:hover{
