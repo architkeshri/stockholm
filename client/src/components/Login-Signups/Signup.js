@@ -20,14 +20,14 @@ const Signup = ({ setUser }) => {
         alert("Invalid Credentials!!");
         console.log("error");
       })
-    signupCall(
+    /*signupCall(
       {
         name: name.current.value.trim(),
         email: email.current.value.trim(),
         password: password.current.value,
       },
       dispatch
-    );
+    );*/
   };
   return (
     <>
@@ -46,6 +46,7 @@ const Signup = ({ setUser }) => {
           <input type="password" placeholder="Password" ref={password} />
         </div>
         <input
+          type="submit"
           style={{
             backgroundColor: "#5995fd",
             color: "#fff",

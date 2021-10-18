@@ -1,6 +1,7 @@
 import { Stack, Row, Col, Button } from "react-bootstrap";
 import { useRef } from "react";
 import API from '../../utils/API';
+import '../../styles/buildprofile.css';
 const Buildprofile = ({ user, setUser }) => {
 
     const dob = useRef(undefined);
@@ -16,6 +17,8 @@ const Buildprofile = ({ user, setUser }) => {
     var img_link = "";
     var gender = "";
     var sex_preference = "";
+    var lat="";
+    var long="";
 
     const handleGender = (e) => {
         gender = e.target.value;
@@ -41,6 +44,38 @@ const Buildprofile = ({ user, setUser }) => {
         img_link = file.url;
     }
 
+    const getLocation= ()=> {
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(getCoordinates, handleLocationError);
+        } else {
+            alert("Geolocation is not supported by this browser");
+        }
+    }
+
+    const getCoordinates=(position) =>{
+        lat= position.coords.latitude;
+        long= position.coords.longitude;
+        console.log(lat,long);
+    }
+
+    const handleLocationError=(error)=> {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+              alert("User denied the request for Geolocation.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              alert("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              alert("The request to get user location timed out.");
+              break;
+            case error.UNKNOWN_ERROR:
+              alert("An unknown error occurred.")
+              break;
+            default: alert("An unknown error occurred.");
+          }
+    }
+
 
     const handleSubmit = () => {
         const body = {
@@ -56,7 +91,9 @@ const Buildprofile = ({ user, setUser }) => {
             interests: [],
             fb_link: fb_link.current.value,
             ig_link: ig_link.current.value,
-            imagesurl: img_link
+            imagesurl: img_link,
+            latitude: lat,
+            longitude: long
         };
         const config = { headers: { "Content-Type": "application/json" } };
         API.post("/updateprofile", body, config)
@@ -70,7 +107,7 @@ const Buildprofile = ({ user, setUser }) => {
     }
     let style = {
         margin: '1% 25%',
-        padding: '3% 0.5%',
+        padding: '0.5% 3%',
         width: '60%',
         boxShadow: '0 0 10px 10px rgb(253, 173, 247)'
     };
@@ -135,7 +172,7 @@ const Buildprofile = ({ user, setUser }) => {
                                         <Col ><h6>Location</h6></Col>
                                     </Row>
                                     <Row>
-                                        <Col><input type='text' ref={location}/></Col>
+                                        <Col><input type='text' ref={location} onChange={getLocation}/></Col>
                                     </Row>
                                 </Stack>
                             </Col>

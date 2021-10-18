@@ -11,7 +11,7 @@ const Socialauth = ({ setUser }) => {
       url: "http://localhost:9000/googlelogin",
       data: { tokenId: response.tokenId },
     }).then((response) => {
-      setUser(response.profileObj);
+      setUser(response.data);
       console.log("Google Login success", response);
     });
   };

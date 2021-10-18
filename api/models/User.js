@@ -44,7 +44,16 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: "default",
     },
-    location: String,
+    location: {
+        type: {
+          type: String, 
+          enum: ['Point'], 
+        },
+        coordinates: {
+          type: [Number]
+        },
+        address: String
+    },    
     education: String,
     occupation: String,
     activated: {
@@ -73,7 +82,10 @@ const userSchema = new mongoose.Schema(
     },
     fb_link: String,
     ig_link: String,
-    imagesurl: String,
+    imagesurl: {
+        type: String,
+        default: "https://res.cloudinary.com/cloudoj/image/upload/v1634487635/webster_images/blank-profile-picture-973460_640_ndbpqi.png"
+    }
   },
   { timestamps: true }
 );
