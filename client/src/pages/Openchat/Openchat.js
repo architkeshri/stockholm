@@ -5,6 +5,7 @@ import "./openchat.css";
 import React, { useState, useEffect, useRef } from "react";
 import Picker from "emoji-picker-react";
 import { io } from "socket.io-client";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 // Api calls
 import API from "../../utils/API";
@@ -23,6 +24,8 @@ const Openchat = ({ user }) => {
   const [conversations, setConversations] = useState([]);
   const [emojiBtn, setEmojiBtn] = useState(false);
   const [emojiObj, setEmojiObj] = useState(null);
+  const [matchedUser, setMatchedUser] = useState(null);
+  const [active, setActive] = useState(false);
 
   // refs
   const scrollRef = useRef();
@@ -84,6 +87,20 @@ const Openchat = ({ user }) => {
   }, [currentChat]);
 
   useEffect(() => {
+    const getMatchedUser = async () => {
+      try {
+        const matchId = currentChat.members?.find((m) => m !== user?.user._id);
+
+        const res = await API.get("/users/" + matchId);
+        setMatchedUser(res.data);
+        console.log(matchedUser);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getMatchedUser();
+  }, [currentChat]);
+  useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
@@ -117,6 +134,10 @@ const Openchat = ({ user }) => {
     setEmojiObj(emojiObj);
     setNewMessage(newMessage + emojiObj?.emoji);
   };
+  const handleClick = (c) => {
+    setCurrentChat(c);
+    setActive(!active);
+  };
   return (
     <>
       <div className="messenger">
@@ -125,66 +146,88 @@ const Openchat = ({ user }) => {
             {conversations.map((c) => {
               return (
                 <>
-                  <div onClick={() => setCurrentChat(c)}>
-                    <ChatHead conversation={c} currentUser={user} />
+                  <div className={active ? "sliderDeactive" : "sliderActive"}>
+                    <div onClick={() => handleClick(c)}>
+                      <ChatHead conversation={c} currentUser={user} />
+                    </div>
                   </div>
                 </>
               );
             })}
           </div>
         </div>
-        <div className="chatBox">
-          <div className="chatBoxWrapper">
-            {currentChat ? (
-              <>
-                <div className="chatBoxTop">
-                  {messages.map((message) => {
-                    return (
-                      <>
-                        <div ref={scrollRef}>
-                          <Message
-                            message={message}
-                            own={message.sender === user.user._id}
-                          />
-                        </div>
-                      </>
-                    );
-                  })}
+        <div className={active ? "sliderActive" : "sliderDeactive"}>
+          <div className="chatBox">
+            {currentChat && (
+              <div className="matchInfo">
+                <div onClick={() => setActive(!active)} className="backIcon">
+                  <IoMdArrowRoundBack />
                 </div>
-                <div className="chatBoxBottom">
-                  <textarea
-                    className="chatMessageInput"
-                    placeholder="write something..."
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    value={newMessage}
-                  ></textarea>
-                  <button className="chatSubmitButton" onClick={handleSubmit}>
-                    Send
-                  </button>
-                  <button
-                    onClick={() => setEmojiBtn(!emojiBtn)}
-                    className="chatSubmitButton"
-                  >
-                    Emoji
-                  </button>
+                <img
+                  src="https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg"
+                  alt=""
+                  className="matchInfoImg"
+                />
 
-                  {emojiBtn && (
-                    <Picker
-                      onEmojiClick={onEmojiClick}
-                      disableSearchBar={true}
-                    />
-                  )}
-                </div>
-              </>
-            ) : (
-              <h1>Open a convo</h1>
+                <h3>{matchedUser?.name}</h3>
+              </div>
             )}
+            <div
+              className={currentChat ? "chatBoxWrapper" : "chatBoxWrapperFalse"}
+            >
+              {currentChat ? (
+                <>
+                  <div className="chatBoxTop">
+                    {messages.map((message) => {
+                      return (
+                        <>
+                          <div ref={scrollRef}>
+                            <Message
+                              message={message}
+                              own={message.sender === user.user._id}
+                            />
+                          </div>
+                        </>
+                      );
+                    })}
+                  </div>
+                  <div className="chatBoxBottom">
+                    <textarea
+                      className="chatMessageInput"
+                      placeholder="write something..."
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      value={newMessage}
+                    ></textarea>
+                    <button className="chatSubmitButton" onClick={handleSubmit}>
+                      Send
+                    </button>
+                    <button
+                      onClick={() => setEmojiBtn(!emojiBtn)}
+                      className="chatSubmitButton"
+                    >
+                      Emoji
+                    </button>
+
+                    {emojiBtn && (
+                      <Picker
+                        onEmojiClick={onEmojiClick}
+                        disableSearchBar={true}
+                      />
+                    )}
+                  </div>
+                </>
+              ) : (
+                <h3 className="noConversationText">Open a convo</h3>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="matches">
-          <p>All the new Matches goes here</p>
-        </div>
+        {/* <div className="matches">
+          <div className="matchesWrapper">
+            <p>All the new Matches goes here</p>
+          </div>
+        </div> */}
       </div>
     </>
   );

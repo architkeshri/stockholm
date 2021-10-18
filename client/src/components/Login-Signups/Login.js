@@ -26,6 +26,7 @@ const Login = ({ setUser }) => {
     API.post("/login", body, config)
       .then((response) => {
         setUser(response.data);
+
         console.log("Login success", response);
       })
       .catch(() => {
