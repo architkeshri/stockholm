@@ -1,6 +1,7 @@
 import { Stack, Row, Col, Button } from "react-bootstrap";
 import { useRef } from "react";
 import API from '../../utils/API';
+import '../../styles/buildprofile.css';
 const Buildprofile = ({ user, setUser }) => {
 
     const dob = useRef(undefined);
@@ -110,7 +111,7 @@ const Buildprofile = ({ user, setUser }) => {
     }
     let style = {
         margin: '1% 25%',
-        padding: '3% 0.5%',
+        padding: '0.5% 3%',
         width: '60%',
         boxShadow: '0 0 10px 10px rgb(253, 173, 247)'
     };

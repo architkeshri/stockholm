@@ -5,6 +5,7 @@ import { loginCall } from "../../apiCalls";
 import API from "../../utils/API";
 import Socialauth from "./Socialauth";
 import { AuthContext } from "../../context/AuthContext";
+import { Row } from "react-bootstrap";
 const Login = ({ setUser }) => {
   const email = useRef(undefined);
   const password = useRef(undefined);
@@ -26,6 +27,7 @@ const Login = ({ setUser }) => {
     API.post("/login", body, config)
       .then((response) => {
         setUser(response.data);
+
         console.log("Login success", response);
       })
       .catch(() => {
@@ -58,7 +60,9 @@ const Login = ({ setUser }) => {
         Login
       </button>
       <p class="social-text">Or Sign in with social platforms</p>
+      <Row>
       <Socialauth setUser={setUser} />
+      </Row>
     </div>
   );
 };

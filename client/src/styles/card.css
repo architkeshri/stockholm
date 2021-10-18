@@ -21,3 +21,42 @@
 .createpost button:hover{
     background-color: rgb(100, 97, 238);
 }
+
+.createpost input[type='file']::file-selector-button {
+    display: none;
+    transition: 1s;
+}
+
+#choose-file{
+    display: flex;
+}
+#choose-file label, input[type='file']{
+    display: flex;
+}
+
+#choose-file label{
+    width: auto;
+    padding: 2%;
+    margin: 1% 2%;
+    border-radius: 50%;
+    color: white;
+    background-color: rgb(202, 67, 255);
+}
+
+#choose-file label:hover{
+    background-color: rgb(180, 0, 252);
+}
+
+#choose-file input[type='file']{
+    margin-left: 0;
+    margin: 2.5% 1%;
+    height: 2%;
+    width: 25%;
+    padding: 0;
+}
+
+
+#choose-file span{
+    padding: 2.5% 1%;
+    visibility: hidden;
+}

@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,300&display=swap');
+
+
+.buildprofile .row{
+    padding: 0.5%;
+    font-family: 'Love Ya Like A Sister', cursive;
+}
+
+.buildprofile h6{
+   font-weight: 700;
+   font-size: 1.1rem;
+}
+
+.buildprofile input[type='text'], input[type='number']{
+    padding: 2% 3%;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid rgb(51, 2, 10);
+    width: 70%;
+}
+
+.buildprofile input[type='radio'], label{
+    height: 90%;
+    width: 90%;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+textarea{
+    padding: 2% 3%;
+}
