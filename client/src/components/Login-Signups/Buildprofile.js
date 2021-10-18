@@ -97,8 +97,12 @@ const Buildprofile = ({ user, setUser }) => {
         const config = { headers: { "Content-Type": "application/json" } };
         API.post("/updateprofile", body, config)
             .then(response => {
+                //const id=response.data._id;
+                //API.get(`/users/${id}`,config)
+                //.then(res => {
                 setUser(response.data);
-                console.log("Login success", response);
+                console.log("Profile Updated", response);
+               //})
             }).catch(() => {
                 alert("Invalid Credentials!!");
             })

@@ -47,10 +47,13 @@ const userSchema = new mongoose.Schema(
     location: {
         type: {
           type: String, 
-          enum: ['Point'], 
+          enum: ['Point'],
+          default: "Point"
         },
         coordinates: {
-          type: [Number]
+          type: [Number],
+          default: [0,0]
+          //index: '2dsphere'
         },
         address: String
     },    
@@ -90,6 +93,8 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+userSchema.index({location: '2dsphere'});
+
 userSchema.pre("save", async function (next) {
   const salt = await bcrypt.genSalt(); //password encryption
   this.password = await bcrypt.hash(this.password, salt);
@@ -115,4 +120,8 @@ userSchema.statics.login = async function (email, password) {
 };
 
 const User = mongoose.model("users", userSchema);
+
+User.on('index', function(err) {
+    if (err) console.log(err);
+  });
 module.exports = User;
