@@ -29,3 +29,45 @@
 textarea{
     padding: 2% 3%;
 }
+
+#choose-file{
+    display: flex;
+}
+#choose-file label, input[type='file']{
+    display: flex;
+}
+input[type='file']::file-selector-button {
+    display: none;
+    transition: 1s;
+}
+#choose-file label{
+    width: auto;
+    padding: 4%;
+    margin: 4% 2%;
+    border-radius: 50%;
+    color: white;
+    background-color: rgb(202, 67, 255);
+}
+
+#choose-file label:hover{
+    background-color: rgb(180, 0, 252);
+}
+
+#choose-file input[type='file']{
+
+    margin: 6.5% 3%;
+    height: 2%;
+    width: 55%;
+    padding: 0;
+}
+
+#choose-file span{
+    padding: 6% 1%;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+select, input[type='date']{
+    padding: 2% 3%;
+    cursor: pointer;
+}

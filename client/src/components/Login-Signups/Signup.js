@@ -1,33 +1,22 @@
-import { Component, useRef, useState, useContext } from "react";
-import { signupCall } from "../../apiCalls";
-import { AuthContext } from "../../context/AuthContext";
+import { useRef } from "react";
 import API from "../../utils/API";
 
 const Signup = ({ setUser }) => {
   const name = useRef(undefined);
   const email = useRef(undefined);
   const password = useRef(undefined);
-  const { user, isFetching, error, dispatch } = useContext(AuthContext);
   const sendData = (e) => {
       const body = {name: name.current.value.trim(), email: email.current.value.trim(), password: password.current.value};
       const config = {headers: {"Content-Type":"application/json"}};
       API.post("/signup",body,config)
       
         .then(response => {
-        setUser(response.data.user);
+        setUser(response.data);
         console.log("Login success", response);
       }).catch(() => {
         alert("Invalid Credentials!!");
         console.log("error");
       })
-    /*signupCall(
-      {
-        name: name.current.value.trim(),
-        email: email.current.value.trim(),
-        password: password.current.value,
-      },
-      dispatch
-    );*/
   };
   return (
     <>

@@ -2,8 +2,9 @@ import { Stack, Row, Col, Button } from "react-bootstrap";
 import { useRef } from "react";
 import API from '../../utils/API';
 import '../../styles/buildprofile.css';
+import swal from 'sweetalert';
 const Buildprofile = ({ user, setUser }) => {
-
+   
     const dob = useRef(undefined);
     const emergency_contact = useRef(undefined);
     const location = useRef(undefined);
@@ -12,13 +13,12 @@ const Buildprofile = ({ user, setUser }) => {
     const fb_link = useRef(undefined);
     const ig_link = useRef(undefined);
     const about = useRef(undefined);
-    const image_url = useRef(undefined);
     const occupation = useRef(undefined);
     var img_link = "";
     var gender = "";
     var sex_preference = "";
-    var lat="";
-    var long="";
+    var lat = "";
+    var long = "";
 
     const handleGender = (e) => {
         gender = e.target.value;
@@ -28,86 +28,117 @@ const Buildprofile = ({ user, setUser }) => {
         sex_preference = e.target.value;
     }
 
-    const uploadImage = async e => {
-        console.log("uploading image");
-        const files = e.target.files;
-        const data = new FormData();
-        data.append('file', files[0]);
-        data.append('upload_preset', 'webster_images');
-        //  setLoading(true);
-        const res1 = await fetch("https://api.cloudinary.com/v1_1/cloudoj/image/upload", {
-            method: 'POST',
-            body: data
-        })
-        const file = await res1.json();
-        console.log(file.url);
-        img_link = file.url;
-    }
-
-    const getLocation= ()=> {
-        if(navigator.geolocation) {
+    const getLocation = () => {
+        if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(getCoordinates, handleLocationError);
         } else {
-            alert("Geolocation is not supported by this browser");
+            swal("Good job!", "Geolocation is not supported by this browser", "error");
         }
     }
 
-    const getCoordinates=(position) =>{
-        lat= position.coords.latitude;
-        long= position.coords.longitude;
-        console.log(lat,long);
+    const getCoordinates = (position) => {
+        lat = position.coords.latitude;
+        long = position.coords.longitude;
+        console.log(lat, long);
     }
 
-    const handleLocationError=(error)=> {
-        switch(error.code) {
+    const handleLocationError = (error) => {
+        switch (error.code) {
             case error.PERMISSION_DENIED:
-              alert("User denied the request for Geolocation.");
-              break;
+                swal("Good job!", "User denied the request for Geolocation.", "error");
+                break;
             case error.POSITION_UNAVAILABLE:
-              alert("Location information is unavailable.");
-              break;
+                swal("Good job!", "Location information is unavailable.", "error");
+                break;
             case error.TIMEOUT:
-              alert("The request to get user location timed out.");
-              break;
+                swal("Good job!", "The request to get user location timed out.", "error");
+                break;
             case error.UNKNOWN_ERROR:
-              alert("An unknown error occurred.")
-              break;
-            default: alert("An unknown error occurred.");
-          }
+                swal("Good job!", "An unknown error occurred.", "error");
+                break;
+            default: swal("Good job!", "An unknown error occurred.", "error");
+        }
+    }
+    var validated = false;
+    const validation = () => {
+       
+        if(dob.current.value === '')
+            swal("Required", "Please provide your DOB", "warning");
+        else if(gender === '')
+            swal("Required", "Bhaisahab! Gender cannot be empty", "warning");
+        else if(sex_preference === '')
+            swal("Required", "Arey! Koi to preference hogi", "warning");
+        else if(location.current.value === '')
+        {
+            if(gender === 'Male')
+                swal("Required", "Arey dada! Provide your Location", "warning");
+            else
+                swal("Required", "Arey didi! Provide your Location", "warning");
+        }
+        else if(emergency_contact.current.value === '')
+            swal("Required", "Provide Emergency Contact", "warning");
+        else if(emergency_contact.current.value.length !== 10)
+            swal("Invalid Number", "Provide Valid Emergengy Contact", "error");
+        else
+            validated=true;
+        
+        
     }
 
-
-    const handleSubmit = () => {
-        const body = {
-            _id: user._id,
-            dob: dob.current.value,
-            about: about.current.value,
-            emergency_contact: emergency_contact.current.value,
-            gender: gender,
-            sexual_preference: sex_preference,
-            location: location.current.value,
-            education: education.current.value,
-            occupation: occupation.current.value,
-            interests: [],
-            fb_link: fb_link.current.value,
-            ig_link: ig_link.current.value,
-            imagesurl: img_link,
-            latitude: lat,
-            longitude: long
-        };
-        const config = { headers: { "Content-Type": "application/json" } };
-        API.post("/updateprofile", body, config)
-            .then(response => {
-                //const id=response.data._id;
-                //API.get(`/users/${id}`,config)
-                //.then(res => {
-                setUser(response.data);
-                console.log("Profile Updated", response);
-               //})
-            }).catch(() => {
-                alert("Invalid Credentials!!");
+    const handleSubmit = async () => {
+        validation();
+        console.log(education.current.value);
+        const files = document.getElementById('file').files;
+        if (files[0] !== undefined) {
+            const data = new FormData();
+            data.append('file', files[0]);
+            data.append('upload_preset', 'webster_images');
+            //  setLoading(true);
+            const res1 = await fetch("https://api.cloudinary.com/v1_1/cloudoj/image/upload", {
+                method: 'POST',
+                body: data
             })
-        
+            const file = await res1.json();
+            console.log(file.url);
+            img_link = file.url;
+        }
+        else {
+            swal("Ugh Ohh!", "Please Upload Profile Picture", "error");
+        }
+        if (validated === true && img_link !== "") {
+            const body = {
+                _id: user.user._id,
+                dob: dob.current.value,
+                about: about.current.value,
+                emergency_contact: emergency_contact.current.value,
+                gender: gender,
+                sexual_preference: sex_preference,
+                location: location.current.value,
+                education: education.current.value,
+                occupation: occupation.current.value,
+                interests: [],
+                fb_link: fb_link.current.value,
+                ig_link: ig_link.current.value,
+                imagesurl: img_link,
+                latitude: lat,
+                longitude: long
+            };
+            const config = { headers: { "Content-Type": "application/json" } };
+            API.post("/updateprofile", body, config)
+                .then(response => {
+                    //const id=response.data._id;
+                    //API.get(`/users/${id}`,config)
+                    //.then(res => {
+                    setUser(response.data);
+                    console.log("Profile Updated", response);
+                    //})
+                }).catch(() => {
+                    swal("Sorry!", "Something went wrong from our side", "error");
+                })
+        }
+        else {
+            console.log('Image not uploaded Succesfully');
+        }
     }
     let style = {
         margin: '1% 25%',
@@ -123,7 +154,7 @@ const Buildprofile = ({ user, setUser }) => {
                 </Row>
                 <Stack direction="horizontal" gap={2}>
                     <Stack gap={4}>
-                        
+
                         <Row>
                             <Col>
                                 <Stack gap={3}>
@@ -131,7 +162,7 @@ const Buildprofile = ({ user, setUser }) => {
                                         <Col ><h6>Date of Birth</h6></Col>
                                     </Row>
                                     <Row>
-                                        <Col><input type='date' ref={dob}/></Col>
+                                        <Col><input type='date' max="2003-01-01" ref={dob} /></Col>
                                     </Row>
                                 </Stack>
                             </Col>
@@ -176,7 +207,7 @@ const Buildprofile = ({ user, setUser }) => {
                                         <Col ><h6>Location</h6></Col>
                                     </Row>
                                     <Row>
-                                        <Col><input type='text' ref={location} onChange={getLocation}/></Col>
+                                        <Col><input type='text' ref={location} onChange={getLocation} /></Col>
                                     </Row>
                                 </Stack>
                             </Col>
@@ -188,7 +219,17 @@ const Buildprofile = ({ user, setUser }) => {
                                         <Col ><h6>Highest Education</h6></Col>
                                     </Row>
                                     <Row>
-                                        <Col><input type='text' ref={education}/></Col>
+                                        <Col>
+                                        <select ref={education} >
+                                            <option value="NA">Don't Want to tell</option>
+                                            <option value="PHD">PHD</option>
+                                            <option value="Post Graduation">Post Graduation</option>
+                                            <option value="Graduation">Graduation</option>
+                                            <option value="12th Class">12th Class</option>
+                                            <option value="10th Class">10th Class</option>
+                                            <option value="10th Class">Uneducated</option>
+                                        </select>
+                                        </Col>
                                     </Row>
                                 </Stack>
                             </Col>
@@ -200,12 +241,12 @@ const Buildprofile = ({ user, setUser }) => {
                                         <Col ><h6>Occupation</h6></Col>
                                     </Row>
                                     <Row>
-                                        <Col><input type='text' ref={occupation}/></Col>
+                                        <Col><input type='text' ref={occupation} /></Col>
                                     </Row>
                                 </Stack>
                             </Col>
                         </Row>
-                                        
+
                     </Stack>
                     <Stack gap={4}>
                         <Row>
@@ -215,7 +256,7 @@ const Buildprofile = ({ user, setUser }) => {
                                         <Col ><h6>Interest</h6></Col>
                                     </Row>
                                     <Row>
-                                        <Col><input type='text' ref={interest}/></Col>
+                                        <Col><input type='text' ref={interest} /></Col>
                                     </Row>
                                 </Stack>
                             </Col>
@@ -227,7 +268,7 @@ const Buildprofile = ({ user, setUser }) => {
                                         <Col ><h6>Link to Facebook</h6></Col>
                                     </Row>
                                     <Row>
-                                        <Col><input type='text' ref={fb_link}/></Col>
+                                        <Col><input type='text' ref={fb_link} /></Col>
                                     </Row>
                                 </Stack>
                             </Col>
@@ -239,7 +280,7 @@ const Buildprofile = ({ user, setUser }) => {
                                         <Col ><h6>Link to Instagram</h6></Col>
                                     </Row>
                                     <Row>
-                                        <Col><input type='text' ref={ig_link}/></Col>
+                                        <Col><input type='text' ref={ig_link} /></Col>
                                     </Row>
                                 </Stack>
                             </Col>
@@ -251,12 +292,12 @@ const Buildprofile = ({ user, setUser }) => {
                                         <Col ><h6>Emergency Contact</h6></Col>
                                     </Row>
                                     <Row>
-                                        <Col><input type='number' ref={emergency_contact}/></Col>
+                                        <Col><input type='number' ref={emergency_contact} /></Col>
                                     </Row>
                                 </Stack>
                             </Col>
                         </Row>
-                        
+
                         <Row>
                             <Col>
                                 <Stack gap={3}>
@@ -273,7 +314,18 @@ const Buildprofile = ({ user, setUser }) => {
                 </Stack>
                 <Row className="justify-content-md-center" style={{ margin: '2%' }}>
                     <Col xs md="3" className="text-center"><h5 style={{ margin: '8%' }}>Upload DP</h5></Col>
-                    <Col xs md="4" className="text-center"><input type="file" onChange={uploadImage} style={{ margin: '5%', backgroundColor: '#fff' }} ref={image_url} placeholder="Image" /></Col>
+                    <Col xs md="4" className="text-center">
+                        <div id="choose-file">
+                            <label htmlFor="file"><i class="fas fa-plus"></i></label>
+                            <input id="file" onChange={() => document.getElementById('cross').style.visibility = 'visible'} type='file' />
+                            <span id="cross" onClick={() => {
+                                document.getElementById('file').value = '';
+                                document.getElementById('cross').style.visibility = 'hidden';
+                            }}><i class="fas fa-times"></i></span>
+                        
+                        </div>
+                    
+                    </Col>
                 </Row>
                 <Row>
                     <Col className="text-center"><Button variant="primary" size="lg" onClick={() => handleSubmit()} active>Let's Go</Button></Col>

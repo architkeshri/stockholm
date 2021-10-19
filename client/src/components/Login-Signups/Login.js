@@ -1,23 +1,12 @@
 import "../../styles/loginsign.css";
-import { useRef, useContext } from "react";
-//import axios from 'axios';
-import { loginCall } from "../../apiCalls";
+import { useRef} from "react";
 import API from "../../utils/API";
 import Socialauth from "./Socialauth";
-import { AuthContext } from "../../context/AuthContext";
 import { Row } from "react-bootstrap";
 const Login = ({ setUser }) => {
   const email = useRef(undefined);
   const password = useRef(undefined);
-  const { user, isFetching, error, dispatch } = useContext(AuthContext);
   const sendData = (e) => {
-    loginCall(
-      {
-        email: email.current.value.trim(),
-        password: password.current.value,
-      },
-      dispatch
-    );
     if (email.current.value === "") console.log("yes");
     const body = {
       email: email.current.value.trim(),
@@ -31,7 +20,7 @@ const Login = ({ setUser }) => {
         console.log("Login success", response);
       })
       .catch(() => {
-        alert("Invalid Credentials!!");
+        
         console.log("Invalid Credentials!!");
       });
   };

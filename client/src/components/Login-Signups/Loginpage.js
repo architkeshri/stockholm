@@ -25,7 +25,7 @@ const Loginpage = () => {
   return (
     <>
       {user !== null ? (
-        user.activated === false ? (
+        user.user.activated === false ? (
           <Buildprofile user={user} setUser={setUser} />
         ) : (
           <Home user={user} setUser={setUser} />
