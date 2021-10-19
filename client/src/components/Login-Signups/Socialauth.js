@@ -2,18 +2,29 @@ import axios from "axios";
 import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login";
 import { Col } from "react-bootstrap";
+import API from "../../utils/API";
+
 const Socialauth = ({ setUser }) => {
   const responseSuccessGoogle = (response) => {
     //function called for login/signup with Google: success
     console.log(response);
-    axios({
+    const body = {tokenId: response.tokenId };
+    const config = { headers: { "Content-Type": "application/json" } };
+    API.post("/googlelogin", body, config)
+      .then((response)=> {
+        setUser(response.data);
+      console.log("Google Login success", response);
+      })
+
+   /*axios({
       method: "POST",
       url: "http://localhost:9000/googlelogin",
       data: { tokenId: response.tokenId },
     }).then((response) => {
       setUser(response.data);
       console.log("Google Login success", response);
-    });
+    });*/
+    
   };
 
   const responseErrorGoogle = (response) => {
