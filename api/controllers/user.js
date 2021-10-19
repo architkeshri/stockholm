@@ -68,27 +68,42 @@ module.exports.filtersearch = (req,res) => {
     const lat=req.body.latitude;
     const lng=req.body.longitude;
     const maxDistance=req.body.distance;
-    //User.createIndex({location:"2dsphere"});
-    /*const pref=req.body.sexual_preference;
-    const age= req.body.age;
+    const maxage= req.body.maxage;
     const interests=req.body.interests;
+    const pref=req.body.sexual_preference;
+
+    var YearsAgo = new Date();
+    YearsAgo = YearsAgo.setFullYear(YearsAgo.getFullYear()-maxage);
+
     var arr;
     if(pref==='Male') arr=['Male']
     else if(pref==='Female') arr=['Female']
     else if(pref==='Other') arr=['Other']
-    else if(pref==='Both') arr=['Male', 'Female']*/
+    else if(pref==='Both') arr=['Male', 'Female']
 
-    //const results = 
     User.find(
         {
-          location:
-            {
-              $near:
-                {
-                  $geometry: { type: "Point", coordinates: [lng, lat] },
-                  $maxDistance: maxDistance
-                }
-            }
+            $and: [
+             {
+                 location:
+                  { 
+                       $near:
+                         {
+                             $geometry: { type: "Point", coordinates: [lng, lat] },
+                             $maxDistance: maxDistance
+                         }
+                  }
+             },
+             {
+                gender: { $in : arr},
+             },
+             {
+                interests: {$in : interests}
+             },
+             {
+                 dob: {$gte: YearsAgo}
+             }
+            ]
         }).exec((err, results)=>{
             if(err) {
                 console.log(err);
