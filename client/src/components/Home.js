@@ -44,7 +44,9 @@ const Home = ({ user, setUser }) => {
     const config = { headers: { "Content-Type": "application/json" } };
     API.post("/timeline", body, config)
       .then((response) => {
-        setfeeds(response.data);
+        setfeeds(response.data.sort((p1,p2)=>{
+          return new Date(p2.createdAt) - new Date(p1.createdAt);
+        }));
         console.log("data: ", response.data);
       })
       .catch(() => {
