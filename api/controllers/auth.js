@@ -80,11 +80,13 @@ module.exports.googlelogin = (req, res) => {
             if (user) {
               //login
               const token = createToken(user._id);
+              console.log("Token:", token);
               res.cookie("jwt", token, {
                 secure: process.env.NODE_ENV === "production"? true: false,
                 httpOnly: process.env.NODE_ENV === "production"? true: false,
                 maxAge: maxAge * 1000,
               });
+              console.log("Google Login Success!");
               res.status(201).json({ user: user });
             } else {
               let password = email + process.env.JWT_SECRET_USER;
@@ -98,14 +100,14 @@ module.exports.googlelogin = (req, res) => {
                   });
                 } else {
                     //login
-                    const token = createToken(data._id);
+                    const token = createToken(newUser._id);
+                    console.log("Token:", token);
                     res.cookie("jwt", token, {
-                      secure:
-                        process.env.NODE_ENV === "production" ? true : false,
-                      httpOnly:
-                        process.env.NODE_ENV === "production" ? true : false,
+                      secure: process.env.NODE_ENV === "production" ? true : false,
+                      httpOnly: process.env.NODE_ENV === "production" ? true : false,
                       maxAge: maxAge * 1000,
                     });
+                    console.log("Google Signup Success!");
                     res.status(200).json({ user: newUser });
                   } 
             })

@@ -28,6 +28,7 @@ module.exports.updateprofile= (req,res)=>{
                 console.log(err);
             }
             else {
+                console.log("User updateddd!!!");
                 User.findOne({ _id }).exec((err, user) => {
                     if (err) {
                       return res.status(400).json({
