@@ -146,8 +146,24 @@ const Buildprofile = ({ user, setUser }) => {
         width: '60%',
         boxShadow: '0 0 10px 10px rgb(253, 173, 247)'
     };
+    const sendData = (e) => {
+        API.get("/logout");
+        setUser(null);
+        
+    };
+
     return (
         <>
+            
+                <img
+                src="icons/log-out.png"
+                height="6%"
+                width="3%"
+                style={{position: 'fixed', right: '1%', cursor: 'pointer'}}
+                alt="Logout_Icon"
+                onClick={(e) => sendData(e)}
+                />
+           
             <div className="buildprofile" style={style}>
                 <Row>
                     <Col className="text-center"><h3 style={{ margin: '5%' }}>Tell us something more about you</h3></Col>
