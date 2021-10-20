@@ -24,17 +24,11 @@ const ChatHead = ({ conversation, currentUser }) => {
   return (
     <>
       {user ? (
-      
-        <article className="person-chat" style={{cursor: 'pointer'}}>
-          <img
-            src={
-              " https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg"
-            }
-            alt={user.name}
-          />
-         
-            <h5 style={{fontSize: '16px'}}>{user.name}</h5>
-          
+        <article className="person-chat" style={{ cursor: "pointer" }}>
+          <img src={user.imagesurl} alt={user.name} />
+
+          <h5 style={{ fontSize: "16px" }}>{user.name}</h5>
+
           {/* <h1>{user ? user.name : "userName"}</h1> */}
         </article>
       ) : (
