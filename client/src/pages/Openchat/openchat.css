@@ -148,8 +148,55 @@
   cursor: default;
 }
 
+.incomingCall {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.acceptCallBtn {
+  background-color: rgb(243, 161, 236);
+  width: 150px;
+  color: black;
+  padding: 0px 10px;
+  border-radius: 50px;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.endCallBtn {
+  background-color: rgb(243, 161, 236);
+  width: 150px;
+  color: black;
+  padding: 0px 25px;
+  border-radius: 50px;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.smallVideo {
+  margin-left: 2rem;
+  background-color: rgb(17, 16, 16);
+  padding: 0rem 1.5rem;
+  width: 40%;
+
+  box-shadow: var(--dark-shadow);
+}
+.largeVideo {
+  margin-left: 2rem;
+  margin-top: 1rem;
+  background-color: rgb(17, 16, 16);
+  padding: 0rem 1.5rem;
+  width: 70%;
+  height: 70%;
+  box-shadow: var(--dark-shadow);
+}
+
 div::-webkit-scrollbar {
-  width: 10px;
+  width: 3px;
   background: #7a7878;
 }
 ::-webkit-scrollbar-thumb {

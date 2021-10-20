@@ -1,6 +1,6 @@
 //css files
 import "./openchat.css";
-
+import { Card } from "react-bootstrap";
 //node pacakages
 import React, { useState, useEffect, useRef } from "react";
 import Picker from "emoji-picker-react";
@@ -12,7 +12,8 @@ import Peer from "simple-peer";
 //Icons
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { FaVideo } from "react-icons/fa";
-
+import { MdVideoCall } from "react-icons/md";
+import { FcEndCall } from "react-icons/fc";
 // Api calls
 import API from "../../utils/API";
 
@@ -32,7 +33,8 @@ const Openchat = ({ user }) => {
   const [emojiObj, setEmojiObj] = useState(null);
   const [matchedUser, setMatchedUser] = useState(null);
   const [active, setActive] = useState(false);
-
+  const [callerName, setCallerName] = useState("");
+  const [smallVid, setSmallVid] = useState(true);
   const [connectedUser, setConnectedUser] = useState([]);
 
   //Video chat
@@ -46,13 +48,13 @@ const Openchat = ({ user }) => {
 
   const [isCamera, setIsCamera] = useState(false);
   const [isCalling, setIsCalling] = useState(false);
-  let callCheck = false;
-  let callReceived = false;
+  // const [endCall, setEndCall] = useState(false);
   // refs
   const scrollRef = useRef();
   const socket = useRef();
   const userVideo = useRef(null);
   const partnerVideo = useRef();
+  const peerRef = useRef();
 
   // ---------------------------------------------------------------Messages START---------------------------------------------------------------------
   // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -180,12 +182,12 @@ const Openchat = ({ user }) => {
       setReceivingCall(true);
       setCaller(data.from);
       setCallerSignal(data.signal);
+      // console.log(data.name);
+      setCallerName(data.name);
     });
   }, [isCalling]);
 
   function callPeer() {
-    callCheck = true;
-
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
@@ -210,11 +212,11 @@ const Openchat = ({ user }) => {
         console.log("cu", loggedUserSocketId);
 
         peer.on("signal", (data) => {
-          setIsCalling(true);
           socket.current.emit("callUser", {
             userToCall: toCall.socketId,
             signalData: data,
             from: loggedUserSocketId,
+            name: user.user.name,
           });
         });
 
@@ -227,6 +229,8 @@ const Openchat = ({ user }) => {
           setCallAccepted(true);
           peer.signal(signal);
         });
+
+        peerRef.current = peer;
 
         setIsCalling(true);
       });
@@ -242,7 +246,7 @@ const Openchat = ({ user }) => {
           userVideo.current.srcObject = stream;
         }
         setCallAccepted(true);
-        callReceived = true;
+
         const peer = new Peer({
           initiator: false,
           trickle: false,
@@ -258,7 +262,17 @@ const Openchat = ({ user }) => {
         });
 
         peer.signal(callerSignal);
+        peerRef.current = peer;
       });
+  }
+
+  function endCall() {
+    stream.getTracks().forEach((track) => {
+      track.stop();
+    });
+    setCallAccepted(false);
+    setReceivingCall(false);
+    setStream(null);
   }
 
   // ---------------------------------------------------------------------Video Call END-------------------------------------------------------------------
@@ -277,32 +291,64 @@ const Openchat = ({ user }) => {
   // --------------------------------------------------Video of user-----------------------------------------------------------
   let UserVideo;
   if (stream) {
-    UserVideo = <video ref={userVideo} autoPlay />;
+    UserVideo = (
+      <video
+        className={smallVid ? "smallVideo" : "largeVideo"}
+        onClick={() => setSmallVid(!smallVid)}
+        ref={userVideo}
+        autoPlay
+      />
+    );
   }
 
   //sets up parter video if call is accepted
   let PartnerVideo;
   if (callAccepted) {
-    PartnerVideo = <video ref={partnerVideo} autoPlay />;
+    PartnerVideo = (
+      <>
+        <video
+          className={smallVid ? "largeVideo" : "smallVideo"}
+          onClick={() => setSmallVid(!smallVid)}
+          ref={partnerVideo}
+          autoPlay
+        />
+        <div onClick={endCall} className="endCallBtn">
+          End Call <FcEndCall className="videoCall" />
+        </div>
+      </>
+    );
   }
 
   let incomingCall;
 
   if (receivingCall) {
     incomingCall = (
-      <div>
-        <h1>{caller} is calling you</h1>
-        <button onClick={acceptCall}>Accept</button>
+      <div className="incomingCall">
+        <h3>{callerName || "userName"} is calling you</h3>
+        <div onClick={acceptCall} className="acceptCallBtn">
+          Accept Call <MdVideoCall className="videoCall" />
+        </div>
+
+        {/* <button onClick={acceptCall}>Accept</button> */}
       </div>
     );
   }
   return (
     <>
-      <div>{UserVideo}</div>
+      <Card>
+        <div>
+          {/* <p>my video</p> */}
+          {UserVideo}
+        </div>
 
-      <div>{PartnerVideo}</div>
+        <div>
+          {/* <p>parner video</p> */}
+          {PartnerVideo}
+        </div>
 
-      <div>{incomingCall}</div>
+        <div>{incomingCall}</div>
+      </Card>
+
       <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">

@@ -39,10 +39,11 @@ io.on("connection", (socket) => {
   //videocall
   socket.emit("LoggedUserSocketId", socket.id);
   socket.on("callUser", (data) => {
-    console.log(data.userToCall);
+    console.log(data.name);
     io.to(data.userToCall).emit("hey", {
       signal: data.signalData,
       from: data.from,
+      name: data.name,
     });
   });
 
