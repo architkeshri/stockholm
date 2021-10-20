@@ -25,12 +25,7 @@ const ChatHead = ({ conversation, currentUser }) => {
     <>
       {user ? (
         <article className="person-chat">
-          <img
-            src={
-              " https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg"
-            }
-            alt={user.name}
-          />
+          <img src={user.imagesurl} alt={user.name} />
           <div>
             <h4>{user.name}</h4>
           </div>

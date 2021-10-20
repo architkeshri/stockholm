@@ -3,6 +3,7 @@ import { useRef} from "react";
 import API from "../../utils/API";
 import Socialauth from "./Socialauth";
 import { Row } from "react-bootstrap";
+import swal from "sweetalert";
 const Login = ({ setUser }) => {
   const email = useRef(undefined);
   const password = useRef(undefined);
@@ -20,7 +21,7 @@ const Login = ({ setUser }) => {
         console.log("Login success", response);
       })
       .catch(() => {
-        
+        swal('Invalid Credentials', '', 'error')
         console.log("Invalid Credentials!!");
       });
   };
