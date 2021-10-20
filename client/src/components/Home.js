@@ -61,7 +61,7 @@ const Home = ({ user, setUser }) => {
       <div className="outer">
         <div className="inner">
           <h2>Recommendations</h2>
-          <Recommend recommendations={recommendations} />
+          <Recommend recommendations={recommendations} user={user}/>
         </div>
         <div className="inner">
           <Createpost user={user} callFeed={callFeed} />
