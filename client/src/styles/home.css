@@ -1,8 +1,21 @@
 .outer {
+  padding-top: 2%;
   display: flex;
 }
 .inner {
-  flex: 3;
+  width: 33%;
+  margin: 0 1%;
+}
+.inner:nth-child(1) {
+  width: 28%;
+}
+.inner:nth-child(2) {
+  width: 35%;
+  padding: 1%;
+}
+.inner:nth-child(3) {
+  width: 35%;
+  padding: 1%;
 }
 
 .inner h2 {
@@ -10,45 +23,19 @@
   font-family: "Style Script", cursive;
 }
 
-.recommend-card {
-  display: flex;
-  border: 2px solid black;
-  margin: 4% 10%;
-  border: none;
-  border-radius: 10px;
-  padding: 1% 5%;
-  box-shadow: 0 0 15px 2px rgba(255, 0, 119, 0.7);
-}
-
-.recommend-card h4 {
-  display: flex;
-  margin: 5% 5%;
-  width: 60%;
-  font-family: "Eczar", serif;
-}
-
-.recommend-card img {
-  display: flex;
-  width: 18%;
-  padding: 1%;
-  border-radius: 50%;
-}
-
 .recommend-card span {
-  display: flex;
-  width: 15%;
+  width: 25%;
   padding: 1%;
-  border-radius: 50%;
+  margin: 0 auto;
 }
 
 .recommend-card span i {
-  color: rgb(230, 217, 223);
+  color: rgb(255, 160, 204);
   width: 100%;
-  margin: 40% 30%;
   transition-duration: 0.5s;
   cursor: pointer;
 }
 
 .recommend-card span i:hover {
-  color: rgb(255, 0, 119);
+  color: rgb(255, 0, 0);
 }

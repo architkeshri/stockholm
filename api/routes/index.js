@@ -4,7 +4,7 @@ var router = express.Router();
 //import controller
 const {signup, login, googlelogin, facebooklogin, logout} = require("../controllers/auth");
 const {checkUser} = require('../middleware/auth');
-const {updateprofile, recommendations, filtersearch} = require("../controllers/user");
+const {updateprofile, recommendations, filtersearch, like} = require("../controllers/user");
 const {addpost, timeline, deletepost} = require('../controllers/post');
 
 /* GET home page. */
@@ -24,6 +24,7 @@ router.post('/deletepost/:id',deletepost);
 router.post('/timeline',timeline);
 router.post('/recommendations', recommendations);
 router.post('/filtersearch',filtersearch)
+router.put('/:id/like',like);
 router.get('/logout', logout);
 
 module.exports = router;

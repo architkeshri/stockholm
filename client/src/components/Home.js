@@ -57,16 +57,19 @@ const Home = ({ user, setUser }) => {
   };
 
   return (
-    <>
+    <div style={{marginTop: '-1%', background: 'linear-gradient(200deg, rgba(247,147,23,0.6) 26%, rgba(248, 23, 94, 0.7) 83%)'}}>
       <Navbar callFeed={callFeed} setUser={setUser} setrecommendations={setrecommendations} user={user}/>
       <div className="outer">
         <div className="inner">
           <h2>Recommendations</h2>
-          <Recommend recommendations={recommendations} />
+          <Recommend recommendations={recommendations} user={user} />
         </div>
         <div className="inner">
           <Createpost user={user} callFeed={callFeed} />
+          <div id="abc" style={{height: '500px', scrollbarWidth: '0px', overflowY: 'auto', borderRadius: '20px'}}>
           <Feedpost feeds={feeds} />
+          </div>
+          
         </div>
         {/* <div className="inner"></div> */}
         <div className="inner">
@@ -74,7 +77,7 @@ const Home = ({ user, setUser }) => {
         </div>
       </div>
     
-    </>
+    </div>
   );
 };
 

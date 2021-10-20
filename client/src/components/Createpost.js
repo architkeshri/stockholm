@@ -53,7 +53,7 @@ const Createpost = ({ user, callFeed }) => {
     }
  
     return (
-        <Card className="createpost" style={{ width: '100%', margin: '1% 2%', borderRadius: '20px', transitionDuration: '0.5s', cursor: 'pointer' }}>
+        <Card className="createpost" style={{ width: '100%', marginBottom: '3%', borderRadius: '20px', transitionDuration: '0.5s', cursor: 'pointer' }}>
             <Card.Body>
                 <Card.Title>Create Post</Card.Title>
                 {/* <Card.Subtitle className="mb-1 text-muted">Posted on: {item.createdAt}</Card.Subtitle> */}

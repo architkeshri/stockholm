@@ -403,29 +403,35 @@ const Openchat = ({ user }) => {
                       );
                     })}
                   </div>
+                  
                   <div className="chatBoxBottom">
-                    <textarea
-                      className="chatMessageInput"
-                      placeholder="write something..."
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      value={newMessage}
-                    ></textarea>
-                    <button className="chatSubmitButton" onClick={handleSubmit}>
-                      Send
-                    </button>
-                    <button
-                      onClick={() => setEmojiBtn(!emojiBtn)}
-                      className="chatSubmitButton"
-                    >
-                      Emoji
-                    </button>
-
+                  
+                        <button
+                          onClick={() => setEmojiBtn(!emojiBtn)}
+                          className="chatSubmitButton"
+                        >
+                          <i class="far fa-smile-beam fa-lg"></i>
+                        </button>
+                        <textarea
+                          
+                          placeholder="Type a message"
+                          onChange={(e) => setNewMessage(e.target.value)}
+                          value={newMessage}
+                        ></textarea>
+                        <button className="chatSubmitButton" onClick={handleSubmit}>
+                        <i class="far fa-paper-plane fa-lg"></i>
+                        </button>
+                    
+                    
+                  </div>
+                  <div className="chatBoxBottom">
                     {emojiBtn && (
-                      <Picker
+                      <Picker 
+                        style={{width: '120%'}}
                         onEmojiClick={onEmojiClick}
                         disableSearchBar={true}
                       />
-                    )}
+                    )} 
                   </div>
                 </>
               ) : (
