@@ -1,33 +1,40 @@
-import { Component, useRef, useState, useContext } from "react";
-import { signupCall } from "../../apiCalls";
-import { AuthContext } from "../../context/AuthContext";
+import { useRef } from "react";
 import API from "../../utils/API";
-
+import swal from "sweetalert";
 const Signup = ({ setUser }) => {
   const name = useRef(undefined);
   const email = useRef(undefined);
   const password = useRef(undefined);
-  const { user, isFetching, error, dispatch } = useContext(AuthContext);
+  let validated = false;
+  const validate = () => {
+    if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.current.value) === false){
+      swal('Invalid', '', 'warning');
+    }
+    else if(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/.test(password.current.value) === false){
+      swal('Weak Password', 'Password must contain minimum 8 characters, at least one numeric digit and a special character.', 'warning');
+    }
+    else{
+      validated = true;
+    }
+
+  }
+
   const sendData = (e) => {
-      const body = {name: name.current.value.trim(), email: email.current.value.trim(), password: password.current.value};
-      const config = {headers: {"Content-Type":"application/json"}};
-      API.post("/signup",body,config)
+      validate();
+      if(validated === true){
+        const body = {name: name.current.value.trim(), email: email.current.value.trim(), password: password.current.value};
+        const config = {headers: {"Content-Type":"application/json"}};
+        API.post("/signup",body,config)
+        
+          .then(response => {
+          setUser(response.data);
+          console.log("Login success", response);
+        }).catch(() => {
+          swal('User Already Exist', '', 'error');
+          console.log("error");
+        })
+      }
       
-        .then(response => {
-        setUser(response.data.user);
-        console.log("Login success", response);
-      }).catch(() => {
-        alert("Invalid Credentials!!");
-        console.log("error");
-      })
-    /*signupCall(
-      {
-        name: name.current.value.trim(),
-        email: email.current.value.trim(),
-        password: password.current.value,
-      },
-      dispatch
-    );*/
   };
   return (
     <>

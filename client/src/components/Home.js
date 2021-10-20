@@ -2,31 +2,23 @@ import Navbar from "./Navbar";
 import Feedpost from "./Feedpost";
 import Createpost from "./Createpost";
 import API from "../utils/API";
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import Recommend from "./Recommend";
 import "../styles/home.css";
 import Openchat from "../pages/Openchat/Openchat";
-
-import { Link } from "react-router-dom";
+import swal from 'sweetalert';
 
 const Home = ({ user, setUser }) => {
   const [feeds, setfeeds] = useState([]);
   const [recommendations, setrecommendations] = useState([]);
-
+  
+  // call following functions yo fetch feeds and recommendations on refresh
   useEffect(() => {
     if (feeds) {
       callFeed();
     }
     recommend();
   }, []);
-
-  // useEffect(() => {
-  //    (JSON.parse(window.localStorage.getItem("recommend")));
-  // }, []);
-
-  // useEffect(() => {
-  //   window.localStorage.setItem("recommend", JSON.stringify(recommendations));
-  // }, [recommendations]);
 
   const recommend = () => {
     const body = {
@@ -40,7 +32,7 @@ const Home = ({ user, setUser }) => {
         console.log("data: ", response.data);
       })
       .catch(() => {
-        alert("Error Occured!!");
+        swal("Good job!", "An unknown error occurred.", "error");
       });
   };
 
@@ -53,23 +45,20 @@ const Home = ({ user, setUser }) => {
     const config = { headers: { "Content-Type": "application/json" } };
     API.post("/timeline", body, config)
       .then((response) => {
-        setfeeds(response.data);
+        setfeeds(response.data.sort((p1,p2)=>{
+          return new Date(p2.createdAt) - new Date(p1.createdAt);
+        }));
         console.log("data: ", response.data);
       })
       .catch(() => {
-        alert("Error Occured!!");
+       
       });
     recommend();
   };
 
   return (
     <>
-      <Navbar
-        callFeed={callFeed}
-        setUser={setUser}
-        setrecommendations={setrecommendations}
-        user={user}
-      />
+      <Navbar callFeed={callFeed} setUser={setUser} setrecommendations={setrecommendations} user={user}/>
       <div className="outer">
         <div className="inner">
           <h2>Recommendations</h2>
@@ -84,6 +73,7 @@ const Home = ({ user, setUser }) => {
           <Openchat user={user} />
         </div>
       </div>
+    
     </>
   );
 };
