@@ -1,12 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,300&display=swap');
 
-.cardi{
-    box-shadow: 0 0 15px 2px rgba(122, 158, 255, 0.76);
-}
-
-.cardi:hover{
-    background-color: bisque;
-}
 
 .createpost textarea{
     border: none;

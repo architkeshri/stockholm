@@ -5,9 +5,9 @@ const Feedpost = ({feeds}) => {
 
     const print = feeds.map((item)=>{
         return (
-            <Card className= "cardi" style={{ width: '100%', margin: '3% 2%', borderRadius: '20px', transitionDuration: '0.5s', cursor: 'pointer' }}>
+            <Card className= "cardi" style={{ width: '100%', margin: '3% 0', borderRadius: '20px', transitionDuration: '0.5s', cursor: 'pointer' }}>
                 <Card.Body>
-                    <Card.Title><img src={item.imageurl} style={{ width: '10%', height: '60%', borderRadius: '50%' }} alt=""/><h4 style={{display: 'inline', margin: '1% 1.5%'}}>{item.name}</h4></Card.Title>
+                    <Card.Title><img src={item.imageurl} style={{ width: '10%', height: '50px', borderRadius: '50%', objectFit: 'cover'}} alt=""/><h4 style={{display: 'inline', margin: '1% 1.5%'}}>{item.name}</h4></Card.Title>
                     <Card.Subtitle className="mb-1 text-muted">Posted: {format(item.createdAt)}</Card.Subtitle>
                     <Card.Text>{item.desc}</Card.Text>
                 </Card.Body>

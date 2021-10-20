@@ -170,7 +170,7 @@ main {
   border-radius: 50%;
   box-shadow: var(--light-shadow);
 }
-.person-chat h4 {
+.person-chat h5 {
   margin-bottom: 0.35rem;
 }
 .person-chat:hover {
