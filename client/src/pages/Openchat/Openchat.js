@@ -4,8 +4,14 @@ import "./openchat.css";
 //node pacakages
 import React, { useState, useEffect, useRef } from "react";
 import Picker from "emoji-picker-react";
+
+//sockets
 import { io } from "socket.io-client";
+import Peer from "simple-peer";
+
+//Icons
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { FaVideo } from "react-icons/fa";
 
 // Api calls
 import API from "../../utils/API";
@@ -27,9 +33,29 @@ const Openchat = ({ user }) => {
   const [matchedUser, setMatchedUser] = useState(null);
   const [active, setActive] = useState(false);
 
+  const [connectedUser, setConnectedUser] = useState([]);
+
+  //Video chat
+  const [loggedUserSocketId, setLoggedUserSocketId] = useState("");
+
+  const [stream, setStream] = useState();
+  const [receivingCall, setReceivingCall] = useState(false);
+  const [callerSignal, setCallerSignal] = useState();
+  const [caller, setCaller] = useState("");
+  const [callAccepted, setCallAccepted] = useState(false);
+
+  const [isCamera, setIsCamera] = useState(false);
+  const [isCalling, setIsCalling] = useState(false);
+  let callCheck = false;
+  let callReceived = false;
   // refs
   const scrollRef = useRef();
   const socket = useRef();
+  const userVideo = useRef(null);
+  const partnerVideo = useRef();
+
+  // ---------------------------------------------------------------Messages START---------------------------------------------------------------------
+  // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
   // connect to web socket and get the message from socket
 
@@ -42,6 +68,10 @@ const Openchat = ({ user }) => {
         createdAt: Date.now(),
       });
     });
+    // for video call
+    socket.current.on("LoggedUserSocketId", (socketId) => {
+      setLoggedUserSocketId(socketId);
+    });
   }, []);
 
   // add new message to messages
@@ -53,10 +83,15 @@ const Openchat = ({ user }) => {
 
   useEffect(() => {
     socket.current.emit("addUser", user.user._id);
+
     socket.current.on("getUsers", (users) => {
+      setConnectedUser(users);
+
       console.log(users);
     });
   }, [user.user]);
+
+  console.log(connectedUser);
 
   // API call to conversation/:id to get all conversation of the current user
   useEffect(() => {
@@ -93,13 +128,14 @@ const Openchat = ({ user }) => {
 
         const res = await API.get("/users/" + matchId);
         setMatchedUser(res.data);
-        console.log(matchedUser);
       } catch (error) {
         console.log(error);
       }
     };
     getMatchedUser();
   }, [currentChat]);
+
+  console.log(matchedUser);
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -130,6 +166,105 @@ const Openchat = ({ user }) => {
       console.log(err);
     }
   };
+
+  // -------------------------------------------------Messages END-------------------------------------------------------------------------------
+  // --------------------------------------------------------------------------------------------------------------------------------------------
+
+  // -------------------------------------------------Video Call START-----------------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------------------------------------------
+
+  // from socket when hey is triggerd => call is initaited by a peer (user 1) and data conatins ice credntialas and sdp to be sent to user 2
+  //  so that it can communicate with user 2
+  useEffect(() => {
+    socket.current.on("hey", (data) => {
+      setReceivingCall(true);
+      setCaller(data.from);
+      setCallerSignal(data.signal);
+    });
+  }, [isCalling]);
+
+  function callPeer() {
+    callCheck = true;
+
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        const peer = new Peer({
+          initiator: true,
+          trickle: false,
+          stream: stream,
+        });
+        setStream(stream);
+        if (userVideo.current) {
+          userVideo.current.srcObject = stream;
+        }
+
+        const matchId = currentChat.members?.find((m) => m !== user?.user._id);
+
+        console.log(matchId);
+
+        console.log("connected user", connectedUser);
+
+        const toCall = connectedUser.find((user) => user.userId === matchId);
+        console.log("tc", toCall.socketId);
+        console.log("cu", loggedUserSocketId);
+
+        peer.on("signal", (data) => {
+          setIsCalling(true);
+          socket.current.emit("callUser", {
+            userToCall: toCall.socketId,
+            signalData: data,
+            from: loggedUserSocketId,
+          });
+        });
+
+        peer.on("stream", (stream) => {
+          if (partnerVideo.current) {
+            partnerVideo.current.srcObject = stream;
+          }
+        });
+        socket.current.on("callAccepted", (signal) => {
+          setCallAccepted(true);
+          peer.signal(signal);
+        });
+
+        setIsCalling(true);
+      });
+  }
+
+  function acceptCall() {
+    setReceivingCall(false);
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        setStream(stream);
+        if (userVideo.current) {
+          userVideo.current.srcObject = stream;
+        }
+        setCallAccepted(true);
+        callReceived = true;
+        const peer = new Peer({
+          initiator: false,
+          trickle: false,
+          stream: stream,
+        });
+
+        peer.on("signal", (data) => {
+          socket.current.emit("acceptCall", { signal: data, to: caller });
+        });
+
+        peer.on("stream", (stream) => {
+          partnerVideo.current.srcObject = stream;
+        });
+
+        peer.signal(callerSignal);
+      });
+  }
+
+  // ---------------------------------------------------------------------Video Call END-------------------------------------------------------------------
+  // --------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  //Emoji Picker
   const onEmojiClick = (e, emojiObj) => {
     setEmojiObj(emojiObj);
     setNewMessage(newMessage + emojiObj?.emoji);
@@ -138,8 +273,36 @@ const Openchat = ({ user }) => {
     setCurrentChat(c);
     setActive(!active);
   };
+
+  // --------------------------------------------------Video of user-----------------------------------------------------------
+  let UserVideo;
+  if (stream) {
+    UserVideo = <video ref={userVideo} autoPlay />;
+  }
+
+  //sets up parter video if call is accepted
+  let PartnerVideo;
+  if (callAccepted) {
+    PartnerVideo = <video ref={partnerVideo} autoPlay />;
+  }
+
+  let incomingCall;
+
+  if (receivingCall) {
+    incomingCall = (
+      <div>
+        <h1>{caller} is calling you</h1>
+        <button onClick={acceptCall}>Accept</button>
+      </div>
+    );
+  }
   return (
     <>
+      <div>{UserVideo}</div>
+
+      <div>{PartnerVideo}</div>
+
+      <div>{incomingCall}</div>
       <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">
@@ -164,14 +327,17 @@ const Openchat = ({ user }) => {
                   <IoMdArrowRoundBack />
                 </div>
                 <img
-                  src="https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg"
+                  src={matchedUser?.imagesurl}
                   alt=""
                   className="matchInfoImg"
                 />
 
                 <h3>{matchedUser?.name}</h3>
+
+                <FaVideo onClick={callPeer} className="videoCall" />
               </div>
             )}
+
             <div
               className={currentChat ? "chatBoxWrapper" : "chatBoxWrapperFalse"}
             >

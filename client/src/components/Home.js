@@ -14,9 +14,11 @@ const Home = ({ user, setUser }) => {
   const [recommendations, setrecommendations] = useState([]);
 
   useEffect(() => {
-    callFeed();
+    if (feeds) {
+      callFeed();
+    }
     recommend();
- }, []);
+  }, []);
 
   // useEffect(() => {
   //    (JSON.parse(window.localStorage.getItem("recommend")));

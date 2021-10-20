@@ -101,6 +101,11 @@
   margin-left: 5px;
   margin-top: 5px;
 }
+.videoCall {
+  font-size: 2.5rem;
+  margin-left: auto;
+  padding: 0px;
+}
 .chatBoxBottom {
   margin-top: 5px;
   display: flex;
