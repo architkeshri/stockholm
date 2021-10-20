@@ -1,16 +1,17 @@
 import { Stack, Row, Col, Button } from "react-bootstrap";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import API from '../../utils/API';
+import Interest from './Interest';
 import '../../styles/buildprofile.css';
 import swal from 'sweetalert';
 const Buildprofile = ({ user, setUser }) => {
-   
+    const [interest, setinterest] = useState([]);
     const dob = useRef(undefined);
     const emergency_contact = useRef(undefined);
     const location = useRef(undefined);
     const education = useRef(undefined);
-    const interest = useRef(undefined);
-    const fb_link = useRef(undefined);
+    
+    // const fb_link = useRef(undefined);
     const ig_link = useRef(undefined);
     const about = useRef(undefined);
     const occupation = useRef(undefined);
@@ -87,7 +88,6 @@ const Buildprofile = ({ user, setUser }) => {
 
     const handleSubmit = async () => {
         validation();
-        console.log(education.current.value);
         const files = document.getElementById('file').files;
         if (files[0] !== undefined) {
             const data = new FormData();
@@ -116,8 +116,8 @@ const Buildprofile = ({ user, setUser }) => {
                 location: location.current.value,
                 education: education.current.value,
                 occupation: occupation.current.value,
-                interests: [],
-                fb_link: fb_link.current.value,
+                interests: interest,
+                fb_link: "",
                 ig_link: ig_link.current.value,
                 imagesurl: img_link,
                 latitude: lat,
@@ -169,8 +169,26 @@ const Buildprofile = ({ user, setUser }) => {
                     <Col className="text-center"><h3 style={{ margin: '5%' }}>Tell us something more about you</h3></Col>
                 </Row>
                 <Stack direction="horizontal" gap={2}>
-                    <Stack gap={4}>
-
+                    <Stack gap={4} style={{maxWidth: '50%'}}>
+                        <Row>
+                            <Col>
+                                <Stack gap={3}>
+                                    <Row>
+                                        <Col ><h6>Interest</h6></Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                        <div style={{margin: '0', width: '80%', whiteSpace: 'nowrap', padding: '2%', overflowX: 'scroll'}}>
+                                            <Tabs interest={interest}/>
+                                        </div>
+                                        </Col>
+                                    </Row>
+                                    <Row>{console.log(interest)}
+                                        <Col><Interest interest={interest} setinterest={setinterest}/></Col>
+                                    </Row>
+                                </Stack>
+                            </Col>
+                        </Row>
                         <Row>
                             <Col>
                                 <Stack gap={3}>
@@ -228,6 +246,11 @@ const Buildprofile = ({ user, setUser }) => {
                                 </Stack>
                             </Col>
                         </Row>
+                        
+                        
+
+                    </Stack>
+                    <Stack gap={4}>
                         <Row>
                             <Col>
                                 <Stack gap={3}>
@@ -262,38 +285,11 @@ const Buildprofile = ({ user, setUser }) => {
                                 </Stack>
                             </Col>
                         </Row>
-
-                    </Stack>
-                    <Stack gap={4}>
                         <Row>
                             <Col>
                                 <Stack gap={3}>
                                     <Row>
-                                        <Col ><h6>Interest</h6></Col>
-                                    </Row>
-                                    <Row>
-                                        <Col><input type='text' ref={interest} /></Col>
-                                    </Row>
-                                </Stack>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Stack gap={3}>
-                                    <Row>
-                                        <Col ><h6>Link to Facebook</h6></Col>
-                                    </Row>
-                                    <Row>
-                                        <Col><input type='text' ref={fb_link} /></Col>
-                                    </Row>
-                                </Stack>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Stack gap={3}>
-                                    <Row>
-                                        <Col ><h6>Link to Instagram</h6></Col>
+                                        <Col ><h6>Instagram Username</h6></Col>
                                     </Row>
                                     <Row>
                                         <Col><input type='text' ref={ig_link} /></Col>
@@ -350,5 +346,18 @@ const Buildprofile = ({ user, setUser }) => {
         </>
     )
 };
+
+const Tabs = ({interest}) => {
+    const print = interest.map((item)=>{
+        return (
+            <span class="tabs">{item}</span>
+        )
+    })
+    return (
+        <>
+            {print}
+        </>
+    )
+}
 
 export default Buildprofile;
