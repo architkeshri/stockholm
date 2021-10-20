@@ -1,4 +1,5 @@
 const User= require('../models/User');
+const Conversation = require('../models/Conversation');
 
 module.exports.updateprofile= (req,res)=>{
     const{_id, dob, about,emergency_contact,gender,sexual_preference,location,education,occupation,interests, fb_link,ig_link,imagesurl, latitude, longitude} = req.body;
@@ -113,4 +114,41 @@ module.exports.filtersearch = (req,res) => {
             return res.status(201).json(results);
         }
         );
+}
+
+module.exports.like = async (req,res) => {
+    if(req.body.userId!==req.params.id) {
+    try {
+        const user = await User.findById(req.params.id);
+        const currentUser=await User.findById(req.body.userId);
+        if(!user.liked_by.includes(req.body.userId)) {
+            await user.updateOne({$push:{liked_by: req.body.userId}})
+            await currentUser.updateOne({$push:{likes: req.params.id}});
+
+            if((currentUser.liked_by.includes(user._id))) {
+                await user.updateOne({$push:{matches: req.body.userId}})
+                await currentUser.updateOne({$push:{matches: req.params.id}});
+                //also add conversation table entry here later
+                const members=[user._id, currentUser._id];
+                let conversation = new Conversation({members});
+                conversation.save((err, data) => {
+                    if(err){
+                        console.log("Conversation can't be created", err);
+                    } else {
+                    console.log("Conversation created", data);
+                    }
+                });
+                res.status(201).json("It's a match!");
+            } else {
+                res.status(201).json("User liked");
+            }
+        } else {
+            res.status(403).json("You have already like this user!");
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+} else {
+    res.status(403).json("You can't like yourself");
+}
 }
