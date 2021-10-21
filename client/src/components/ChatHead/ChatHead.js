@@ -24,15 +24,12 @@ const ChatHead = ({ conversation, currentUser }) => {
   return (
     <>
       {user ? (
-        <article className="person-chat" style={{ cursor: "pointer" }}>
+        <div className="person-chat">
           <img src={user.imagesurl} alt={user.name} />
-
-          <h5 style={{ fontSize: "16px" }}>{user.name}</h5>
-
-          {/* <h1>{user ? user.name : "userName"}</h1> */}
-        </article>
+          <h5>{user.name}</h5>
+        </div>
       ) : (
-        <p>loading...</p>
+        <img src="../../icons/loading.gif" width="30%" alt="Loading..."/>
       )}
     </>
   );

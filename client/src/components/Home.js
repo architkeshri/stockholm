@@ -57,12 +57,11 @@ const Home = ({ user, setUser }) => {
   };
 
   return (
-    <div style={{marginTop: '-1%', background: 'linear-gradient(200deg, rgba(247,147,23,0.6) 26%, rgba(248, 23, 94, 0.7) 83%)'}}>
+    <div style={{marginTop: '-1%'}}>
       <Navbar callFeed={callFeed} setUser={setUser} setrecommendations={setrecommendations} user={user}/>
       <div className="outer">
         <div className="inner">
-          <h2>Recommendations</h2>
-          <Recommend recommendations={recommendations} user={user} />
+          <Profile user={user}/>
         </div>
         <div className="inner">
           <Createpost user={user} callFeed={callFeed} />
@@ -71,10 +70,13 @@ const Home = ({ user, setUser }) => {
           </div>
           
         </div>
-        {/* <div className="inner"></div> */}
         <div className="inner">
-          <Openchat user={user} />
+          <h2>Recommendations</h2>
+          <Recommend recommendations={recommendations} user={user} />
         </div>
+        {/* <div className="inner">
+         <Openchat user={user} /> 
+        </div> */}
       </div>
     
     </div>
@@ -82,3 +84,24 @@ const Home = ({ user, setUser }) => {
 };
 
 export default Home;
+
+const Profile = ({user}) => {
+  const [toggle, settoggle] = useState(0);
+    return (
+      <>
+        <div id="profile">
+          <img src={user.user.imagesurl} />
+          <div id="edit-profile">Edit Profile</div>
+        </div>
+        <div id="match-chat">
+          <button id="message" onClick={() => {settoggle(0)}}>Chat</button>
+          <button id="matches" onClick={() => {settoggle(1)}}>Matches</button>
+        </div>
+        {(toggle === 0) ? <Openchat user={user} /> 
+        :
+        <div id="match-section"></div>
+        }
+        
+      </>
+    )
+}
