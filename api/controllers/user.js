@@ -69,19 +69,28 @@ module.exports.recommendations = (req,res) => {
 module.exports.filtersearch = (req,res) => {
     const lat=req.body.latitude;
     const lng=req.body.longitude;
-    const maxDistance=req.body.distance;
+    const maxDistance=req.body.maxDistance;
     const maxage= req.body.maxage;
     const interests=req.body.interests;
-    const pref=req.body.sexual_preference;
+    const pref=req.body.pref;
 
-    var YearsAgo = new Date();
-    YearsAgo = YearsAgo.setFullYear(YearsAgo.getFullYear()-maxage);
+    console.log("maxage",maxage);
+    console.log("maxdist",maxDistance);
+    console.log("interests",interests);
+    const maxd = parseInt(maxDistance)*1000;
+    console.log("maxd",maxd);
+    const YearsAgo = new Date();
+    console.log(YearsAgo);
+    YearsAgo.setFullYear(YearsAgo.getFullYear()-maxage);
+    console.log((YearsAgo));
 
     var arr;
     if(pref==='Male') arr=['Male']
     else if(pref==='Female') arr=['Female']
     else if(pref==='Other') arr=['Other']
     else if(pref==='Both') arr=['Male', 'Female']
+
+    console.log('pref', pref);
 
     User.find(
         {
@@ -92,7 +101,7 @@ module.exports.filtersearch = (req,res) => {
                        $near:
                          {
                              $geometry: { type: "Point", coordinates: [lng, lat] },
-                             $maxDistance: maxDistance
+                             $maxDistance: maxd
                          }
                   }
              },

@@ -4,6 +4,7 @@ import Createpost from "./Createpost";
 import API from "../utils/API";
 import { useState, useEffect } from "react";
 import Recommend from "./Recommend";
+import Filtersearch from './Filtersearch';
 import "../styles/home.css";
 import Openchat from "../pages/Openchat/Openchat";
 import swal from "sweetalert";
@@ -83,8 +84,12 @@ const Home = ({ user, setUser }) => {
           </div>
         </div>
         <div className="inner">
+          <h2>Search</h2>
+          <Filtersearch user={user}/>
+
           <h2>Recommendations</h2>
           <Recommend recommendations={recommendations} user={user} />
+          
         </div>
         {/* <div className="inner">
          <Openchat user={user} /> 

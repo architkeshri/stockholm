@@ -16,14 +16,14 @@ const Interest = ({interest, setinterest}) => {
                 <option id="Teaching" value="Teaching">Teaching</option>
                 <option id="Sports" value="Sports">Sports</option>
                 <option id="Travelling" value="Travelling">Travelling</option>
-                <option id="Anchor" value="Anchor">Anchor</option>
+                <option id="Anchor" value="Anchor">Anchoring</option>
                 <option id="Coding" value="Coding">Coding</option>
                 <option id="Photography" value="Photography">Photography</option>
                 <option id="Freelancing" value="Freelancing">Freelancing</option>
                 <option id="Volunteering" value="Volunteering">Volunteering</option>
-                <option id="Podcast" value="Podcast">Podcast Listening</option>
+                <option id="Podcast" value="Podcast">Podcasts</option>
                 <option id="Spirituality" value="Spirituality">Spirituality</option>
-                <option id="Anime" value="Anime">Anime Watching</option>
+                <option id="Anime" value="Anime">Anime</option>
                 <option id="Binge" value="Binge">Binge Watching</option>
                 <option id="Cooking" value="Cooking">Cooking</option>
                 <option id="Development" value="Development">Development</option>
