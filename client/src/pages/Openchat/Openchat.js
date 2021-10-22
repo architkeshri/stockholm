@@ -335,19 +335,17 @@ const Openchat = ({ user }) => {
   }
   return (
     <>
-      <Card>
-        <div>
-          {/* <p>my video</p> */}
-          {UserVideo}
-        </div>
+      <div>
+        {/* <p>my video</p> */}
+        {UserVideo}
+      </div>
 
-        <div>
-          {/* <p>parner video</p> */}
-          {PartnerVideo}
-        </div>
+      <div>
+        {/* <p>parner video</p> */}
+        {PartnerVideo}
+      </div>
 
-        <div>{incomingCall}</div>
-      </Card>
+      <div>{incomingCall}</div>
 
       <div className="messenger">
         <div className="chatMenu">
@@ -403,35 +401,31 @@ const Openchat = ({ user }) => {
                       );
                     })}
                   </div>
-                  
+
                   <div className="chatBoxBottom">
-                  
-                        <button
-                          onClick={() => setEmojiBtn(!emojiBtn)}
-                          className="chatSubmitButton"
-                        >
-                          <i class="far fa-smile-beam fa-lg"></i>
-                        </button>
-                        <textarea
-                          
-                          placeholder="Type a message"
-                          onChange={(e) => setNewMessage(e.target.value)}
-                          value={newMessage}
-                        ></textarea>
-                        <button className="chatSubmitButton" onClick={handleSubmit}>
-                        <i class="far fa-paper-plane fa-lg"></i>
-                        </button>
-                    
-                    
+                    <button
+                      onClick={() => setEmojiBtn(!emojiBtn)}
+                      className="chatSubmitButton"
+                    >
+                      <i class="far fa-smile-beam fa-lg"></i>
+                    </button>
+                    <textarea
+                      placeholder="Type a message"
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      value={newMessage}
+                    ></textarea>
+                    <button className="chatSubmitButton" onClick={handleSubmit}>
+                      <i class="far fa-paper-plane fa-lg"></i>
+                    </button>
                   </div>
                   <div className="chatBoxBottom">
                     {emojiBtn && (
-                      <Picker 
-                        style={{width: '120%'}}
+                      <Picker
+                        style={{ width: "120%" }}
                         onEmojiClick={onEmojiClick}
                         disableSearchBar={true}
                       />
-                    )} 
+                    )}
                   </div>
                 </>
               ) : (
