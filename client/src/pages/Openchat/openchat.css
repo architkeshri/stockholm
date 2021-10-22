@@ -99,12 +99,6 @@
   display: inline;
   margin: 4% 3%;
 }
-.videoCall {
-  display: inline;
-  margin-left: 47%;
-  font-size: 2rem;
-  cursor: pointer;
-}
 
 .chatMessageInput {
   width: 80%;
@@ -140,45 +134,61 @@
   flex-direction: column;
 }
 .acceptCallBtn {
-  background-color: rgb(243, 161, 236);
-  width: 150px;
-  color: black;
-  padding: 0px 10px;
+  background-color: rgb(48, 185, 14);
+  width: 40%;
+  color: rgb(255, 255, 255);
+  padding: 2% 3%;
+  font-weight: 700;
   border-radius: 50px;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 2% auto;
+  cursor: pointer;
+  animation: call 1s infinite;
 }
-
+@keyframes call{
+	0%{
+		box-shadow: 0 0 5px 0px rgb(79, 248, 36);
+	}
+	100%{
+		box-shadow: 0 0 8px 10px rgb(79, 248, 36);
+	}
+}
+.videoCall {
+  display: inline;
+  margin-left: 17%;
+  cursor: pointer;
+}
 .endCallBtn {
-  background-color: rgb(243, 161, 236);
+  background-color: rgb(252, 71, 71);
   width: 150px;
-  color: black;
-  padding: 0px 25px;
+  color: rgb(255, 255, 255);
+  padding: 2% 3%;
+  font-weight: 700;
   border-radius: 50px;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 2% auto;
+  cursor: pointer;
+}
+.endCallBtn:hover{
+  background-color: rgb(255, 4, 4);
+  box-shadow: 0 0 5px 2px rgb(255, 120, 120);
 }
 
 .smallVideo {
-  margin-left: 2rem;
+  z-index: 6;
   background-color: rgb(17, 16, 16);
-  padding: 0rem 1.5rem;
-  width: 40%;
-
+  width: 20%;
+  height: 100px;
+  background-color: #ffa0d3;
+  border-radius: 20px;
   box-shadow: var(--dark-shadow);
+  cursor: pointer;
 }
 .largeVideo {
-  margin-left: 2rem;
-  margin-top: 1rem;
-  background-color: rgb(17, 16, 16);
-  padding: 0rem 1.5rem;
-  width: 70%;
-  height: 70%;
+  background-color: #ffa0d3;
+  width: 100%;
+  height: 300px;
   box-shadow: var(--dark-shadow);
+  border-radius: 20px;
+  cursor: pointer;
 }
 
 div::-webkit-scrollbar {
@@ -250,4 +260,20 @@ textarea::-webkit-scrollbar{
   .chatOnline {
     flex: 1px;
   }
+}
+
+#video-calling{
+  display: none;
+  position: fixed;
+  top: 15%;
+  left: 25%;
+  width: 50%;
+  border: none;
+  box-shadow: 0 0 10px 3px #faaba6;
+  background-color: white;
+  border-radius: 20px;
+  z-index: 5;
+  background-color: #d19592;
+  background-image: linear-gradient(315deg, #ffafaa 0%, #e937e9 100%);
+  transition: width 2s ease-in 1s;
 }

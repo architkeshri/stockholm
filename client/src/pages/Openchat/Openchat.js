@@ -187,6 +187,7 @@ const Openchat = ({ user }) => {
   }, [isCalling]);
 
   function callPeer() {
+    document.getElementById('video-calling').style.display="block";
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
@@ -237,6 +238,7 @@ const Openchat = ({ user }) => {
 
   function acceptCall() {
     setReceivingCall(false);
+    document.getElementById('video-calling').style.display="block";
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
@@ -272,6 +274,7 @@ const Openchat = ({ user }) => {
     setCallAccepted(false);
     setReceivingCall(false);
     setStream(null);
+    document.getElementById('video-calling').style.display="none";
   }
 
   // ---------------------------------------------------------------------Video Call END-------------------------------------------------------------------
@@ -290,6 +293,7 @@ const Openchat = ({ user }) => {
   // --------------------------------------------------Video of user-----------------------------------------------------------
   let UserVideo;
   if (stream) {
+    // if (true) {
     UserVideo = (
       <video
         className={smallVid ? "smallVideo" : "largeVideo"}
@@ -303,6 +307,7 @@ const Openchat = ({ user }) => {
   //sets up parter video if call is accepted
   let PartnerVideo;
   if (callAccepted) {
+    // if (true) {
     PartnerVideo = (
       <>
         <video
@@ -312,7 +317,7 @@ const Openchat = ({ user }) => {
           autoPlay
         />
         <div onClick={endCall} className="endCallBtn">
-          End Call <FcEndCall className="videoCall" />
+          End Call <i class="fas fa-phone-slash fa-xl videoCall"></i>
         </div>
       </>
     );
@@ -325,7 +330,7 @@ const Openchat = ({ user }) => {
       <div className="incomingCall">
         <h3>{callerName || "userName"} is calling you</h3>
         <div onClick={acceptCall} className="acceptCallBtn">
-          Accept Call <MdVideoCall className="videoCall" />
+          Accept Call <i class="fas fa-phone fa-xl videoCall"></i>
         </div>
 
         {/* <button onClick={acceptCall}>Accept</button> */}
@@ -334,6 +339,8 @@ const Openchat = ({ user }) => {
   }
   return (
     <>
+
+      <div id="video-calling">
       <div>
         {/* <p>my video</p> */}
         {UserVideo}
@@ -344,6 +351,8 @@ const Openchat = ({ user }) => {
         {PartnerVideo}
       </div>
 
+      </div>
+      
       <div>{incomingCall}</div>
 
       <div className="messenger">
@@ -370,7 +379,7 @@ const Openchat = ({ user }) => {
                 />
                 <h3>{matchedUser?.name}</h3>
 
-                <FaVideo onClick={callPeer} className="videoCall" />
+                <FaVideo onClick={callPeer} style={{fontSize: '2rem', marginLeft: '45%', cursor: 'pointer'}} />
               </div>
             )}
 
