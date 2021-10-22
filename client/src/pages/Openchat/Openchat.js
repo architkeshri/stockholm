@@ -1,6 +1,5 @@
 //css files
 import "./openchat.css";
-import { Card } from "react-bootstrap";
 //node pacakages
 import React, { useState, useEffect, useRef } from "react";
 import Picker from "emoji-picker-react";
@@ -349,19 +348,13 @@ const Openchat = ({ user }) => {
 
       <div className="messenger">
         <div className="chatMenu">
-          <div className="chatMenuWrapper">
             {conversations.map((c) => {
               return (
-                <>
-                  <div className={active ? "sliderDeactive" : "sliderActive"}>
-                    <div onClick={() => handleClick(c)}>
-                      <ChatHead conversation={c} currentUser={user} />
-                    </div>
-                  </div>
-                </>
+                <div className={active ? "sliderDeactive" : "sliderActive"} onClick={() => handleClick(c)}>
+                    <ChatHead conversation={c} currentUser={user} />
+                </div>
               );
             })}
-          </div>
         </div>
         <div className={active ? "sliderActive" : "sliderDeactive"}>
           <div className="chatBox">
@@ -375,7 +368,6 @@ const Openchat = ({ user }) => {
                   alt=""
                   className="matchInfoImg"
                 />
-
                 <h3>{matchedUser?.name}</h3>
 
                 <FaVideo onClick={callPeer} className="videoCall" />
@@ -418,15 +410,15 @@ const Openchat = ({ user }) => {
                       <i class="far fa-paper-plane fa-lg"></i>
                     </button>
                   </div>
-                  <div className="chatBoxBottom">
+                  
                     {emojiBtn && (
                       <Picker
-                        style={{ width: "120%" }}
+                        style={{ position: 'fixed' }}
                         onEmojiClick={onEmojiClick}
                         disableSearchBar={true}
                       />
                     )}
-                  </div>
+                  
                 </>
               ) : (
                 <h3 className="noConversationText">Open a convo</h3>

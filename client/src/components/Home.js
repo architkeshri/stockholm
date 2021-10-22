@@ -9,6 +9,8 @@ import "../styles/home.css";
 import Openchat from "../pages/Openchat/Openchat";
 import swal from "sweetalert";
 
+import { MdLogout } from "react-icons/md";
+
 const Home = ({ user, setUser }) => {
   const [feeds, setfeeds] = useState([]);
   const [recommendations, setrecommendations] = useState([]);
@@ -59,15 +61,15 @@ const Home = ({ user, setUser }) => {
 
   return (
     <div style={{ marginTop: "-1%" }}>
-      <Navbar
+      {/* <Navbar
         callFeed={callFeed}
         setUser={setUser}
         setrecommendations={setrecommendations}
         user={user}
-      />
+      /> */}
       <div className="outer">
         <div className="inner">
-          <Profile user={user} />
+          <Profile user={user} setUser={setUser} />
         </div>
         <div className="inner">
           <Createpost user={user} callFeed={callFeed} />
@@ -101,13 +103,21 @@ const Home = ({ user, setUser }) => {
 
 export default Home;
 
-const Profile = ({ user }) => {
+const Profile = ({ user, setUser }) => {
+  const logout = (e) => {
+    API.get("/logout");
+    setUser(null);
+  };
+  let iconStyles = { color: "white", fontSize: "2em" };
   const [toggle, settoggle] = useState(0);
   return (
     <>
       <div id="profile">
         <img src={user.user.imagesurl} />
         <h5 id="edit-profile">My Profile</h5>
+        <div className="logout">
+          <MdLogout style={iconStyles} onClick={(e) => logout(e)} />
+        </div>
       </div>
       <div id="match-chat">
         <div

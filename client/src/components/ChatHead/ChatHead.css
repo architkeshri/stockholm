@@ -57,7 +57,13 @@ main {
 .person-chat{
   display: flex;
   margin: 1% 0;
+  cursor: pointer;
 }
+
+.person-chat:hover{
+  background-color: antiquewhite;
+}
+
 .person-chat img{
   width: 15%;
   border-radius: 50%;
@@ -65,7 +71,5 @@ main {
   object-fit: cover;
 }
 .person-chat h5{
-  display: flex;
-  position: relative;
-  height: 3%;
+  margin: 6% 4%;
 }
