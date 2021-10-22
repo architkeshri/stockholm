@@ -26,7 +26,11 @@ const ChatHead = ({ conversation, currentUser }) => {
       {user ? (
         <div className="person-chat">
           <img src={user.imagesurl} alt={user.name} />
-          <h5>{user.name}</h5>
+          <div style={{padding: '5% 1% 0'}}>
+            <h6><b>{user.name}</b></h6>
+            <p>Hello How are you?</p>
+          </div>
+          
         </div>
       ) : (
         <img src="../../icons/loading.gif" width="30%" alt="Loading..."/>
