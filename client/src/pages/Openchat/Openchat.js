@@ -377,9 +377,9 @@ const Openchat = ({ user }) => {
                   alt=""
                   className="matchInfoImg"
                 />
-                <h3>{matchedUser?.name}</h3>
+                <h4>{matchedUser?.name}</h4>
 
-                <FaVideo onClick={callPeer} style={{fontSize: '2rem', marginLeft: '45%', cursor: 'pointer'}} />
+                <FaVideo onClick={callPeer} style={{fontSize: '1.5rem', marginLeft: '52%', marginTop: '2.5%', color: 'white', cursor: 'pointer'}} />
               </div>
             )}
 
@@ -406,7 +406,7 @@ const Openchat = ({ user }) => {
                   <div className="chatBoxBottom">
                     <button
                       onClick={() => setEmojiBtn(!emojiBtn)}
-                      className="chatSubmitButton"
+                      
                     >
                       <i class="far fa-smile-beam fa-lg"></i>
                     </button>
@@ -416,7 +416,7 @@ const Openchat = ({ user }) => {
                       value={newMessage}
                     ></textarea>
                     <button className="chatSubmitButton" onClick={handleSubmit}>
-                      <i class="far fa-paper-plane fa-lg"></i>
+                      <i class="fas fa-paper-plane fa-md"></i>
                     </button>
                   </div>
                   

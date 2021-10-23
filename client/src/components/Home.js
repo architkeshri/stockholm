@@ -86,8 +86,8 @@ const Home = ({ user, setUser }) => {
           </div>
         </div>
         <div className="inner">
-          <h2>Search</h2>
-          <Filtersearch user={user}/>
+         
+          <Filtersearch user={user} setrecommendations={setrecommendations}/>
 
           <h2>Recommendations</h2>
           <Recommend recommendations={recommendations} user={user} />
