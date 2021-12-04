@@ -8,7 +8,21 @@ const Navbar = ({ callFeed, setUser, user, setrecommendations }) => {
     
   };
   return (
-    <>
+    <img
+          src="icons/log-out.png"
+          height="5%"
+          width="3%"
+          alt="Logout_Icon"
+          style={{position: 'fixed', right: '2%', top: '2%', cursor: 'pointer'}}
+          onClick={(e) => sendData(e)}
+        />
+  );
+};
+
+export default Navbar;
+
+
+{/* <>
       <nav>
         <img
           src="icons/love.png"
@@ -37,8 +51,4 @@ const Navbar = ({ callFeed, setUser, user, setrecommendations }) => {
           onClick={(e) => sendData(e)}
         />
       </nav>
-    </>
-  );
-};
-
-export default Navbar;
+    </> */}

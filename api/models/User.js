@@ -44,7 +44,19 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: "default",
     },
-    location: String,
+    location: {
+        type: {
+          type: String, 
+          enum: ['Point'],
+          default: "Point"
+        },
+        coordinates: {
+          type: [Number],
+          default: [0,0]
+          //index: '2dsphere'
+        },
+        address: String
+    },    
     education: String,
     occupation: String,
     activated: {
@@ -73,10 +85,15 @@ const userSchema = new mongoose.Schema(
     },
     fb_link: String,
     ig_link: String,
-    imagesurl: String,
+    imagesurl: {
+        type: String,
+        default: "https://res.cloudinary.com/cloudoj/image/upload/v1634487635/webster_images/blank-profile-picture-973460_640_ndbpqi.png"
+    }
   },
   { timestamps: true }
 );
+
+userSchema.index({location: '2dsphere'});
 
 userSchema.pre("save", async function (next) {
   const salt = await bcrypt.genSalt(); //password encryption
@@ -103,4 +120,8 @@ userSchema.statics.login = async function (email, password) {
 };
 
 const User = mongoose.model("users", userSchema);
+
+User.on('index', function(err) {
+    if (err) console.log(err);
+  });
 module.exports = User;

@@ -1,30 +1,103 @@
-.outer{
-    display: flex;
+.outer {
+  display: flex;
 }
-.inner{
-    display: flexbox;
-    width: 33%;
+.inner {
+  width: 33%;
+  margin: 0 1%;
 }
-
-.inner h2{
-    text-align: center;
+.inner:nth-child(1) {
+  width: 28%;
+  margin-left: 0;
 }
-
-.recommend-card{
-    
-    border: 2px solid black;
-    margin: 4% 10%;
-    border-radius: 10px;
-    padding: 1% 5%;
+.inner:nth-child(2) {
+  width: 33%;
+  padding: 1%;
 }
-
-.recommend-card h4{
-    display: inline;
-    margin: 5% 10%;
+.inner:nth-child(3) {
+  width: 33%;
+  padding: 1%;
 }
 
-.recommend-card img{
-    
-    width: 15%;
-    border-radius: 50%;
+
+.inner h2 {
+  text-align: center;
+  font-family: "Style Script", cursive;
+}
+.recommend-card img {
+  display: flex;
+  width: 25%;
+  padding: 1%;
+}
+
+.recommend-card span {
+  width: 25%;
+  padding: 1%;
+  margin: 0 auto;
+}
+
+.recommend-card span i {
+  color: rgb(255, 160, 204);
+  width: 100%;
+  transition-duration: 0.5s;
+  cursor: pointer;
+}
+
+.recommend-card span i:hover {
+  color: rgb(255, 0, 0);
+}
+
+/*-------------Match and Chat(side nav) --------------*/
+
+#profile {
+  display: flex;
+  align-items: center;
+  cursor: default;
+  width: 100%;
+  background: linear-gradient(90deg, #00c9ff 0%, #92fe9d 100%);
+}
+
+#profile img {
+  width: 45px;
+  cursor: pointer;
+  flex: 1;
+  padding: 1%;
+  background-color: white;
+  border-radius: 50px;
+  margin: 5% 3% 3%;
+  object-fit: cover;
+  vertical-align: middle;
+}
+
+#profile #edit-profile {
+  /* display: inline; */
+  color: white;
+  /* background-color: white; */
+  flex: 3;
+  padding: 2%;
+}
+.logout {
+  cursor: pointer;
+  flex: 1;
+}
+
+#match-chat {
+  display: flex;
+  width: 100%;
+
+  padding: 2%;
+}
+
+#message,
+#matches {
+  display: flex;
+  padding: 2% 5%;
+  background-color: white;
+  cursor: pointer;
+  align-content: center;
+  font-weight: 500;
+}
+
+.line {
+  border-radius: 4px;
+  border-bottom: 3px solid rgb(82, 219, 123);
 }

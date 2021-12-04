@@ -1,22 +1,13 @@
 import "../../styles/loginsign.css";
-import { useRef, useContext } from "react";
-//import axios from 'axios';
-import { loginCall } from "../../apiCalls";
+import { useRef} from "react";
 import API from "../../utils/API";
 import Socialauth from "./Socialauth";
-import { AuthContext } from "../../context/AuthContext";
+import { Row } from "react-bootstrap";
+import swal from "sweetalert";
 const Login = ({ setUser }) => {
   const email = useRef(undefined);
   const password = useRef(undefined);
-  const { user, isFetching, error, dispatch } = useContext(AuthContext);
   const sendData = (e) => {
-    loginCall(
-      {
-        email: email.current.value.trim(),
-        password: password.current.value,
-      },
-      dispatch
-    );
     if (email.current.value === "") console.log("yes");
     const body = {
       email: email.current.value.trim(),
@@ -26,10 +17,11 @@ const Login = ({ setUser }) => {
     API.post("/login", body, config)
       .then((response) => {
         setUser(response.data);
+
         console.log("Login success", response);
       })
       .catch(() => {
-        alert("Invalid Credentials!!");
+        swal('Invalid Credentials', '', 'error')
         console.log("Invalid Credentials!!");
       });
   };
@@ -58,7 +50,9 @@ const Login = ({ setUser }) => {
         Login
       </button>
       <p class="social-text">Or Sign in with social platforms</p>
+      <Row>
       <Socialauth setUser={setUser} />
+      </Row>
     </div>
   );
 };
