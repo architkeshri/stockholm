@@ -159,14 +159,17 @@
   cursor: pointer;
 }
 .endCallBtn {
+  position: absolute;
+  left: 80%;
   background-color: rgb(252, 71, 71);
-  width: 150px;
+  width: 18%;
   color: rgb(255, 255, 255);
   padding: 2% 3%;
   font-weight: 700;
   border-radius: 50px;
   margin: 2% auto;
   cursor: pointer;
+  z-index: 6;
 }
 .endCallBtn:hover{
   background-color: rgb(255, 4, 4);
@@ -174,22 +177,24 @@
 }
 
 .smallVideo {
+  position: absolute;
   z-index: 6;
   background-color: rgb(17, 16, 16);
-  width: 20%;
-  height: 100px;
+  height: 150px;
   background-color: #ffa0d3;
   border-radius: 20px;
   box-shadow: var(--dark-shadow);
   cursor: pointer;
+  transition: height 0.5s ease-in 0.5s;
 }
 .largeVideo {
+  position: absolute;
   background-color: #ffa0d3;
-  width: 100%;
-  height: 300px;
+  height: 680px;
   box-shadow: var(--dark-shadow);
   border-radius: 20px;
   cursor: pointer;
+  transition: height 0.5s ease-out 0.6s;
 }
 
 div::-webkit-scrollbar {
@@ -277,9 +282,9 @@ textarea::-webkit-scrollbar{
 #video-calling{
   display: none;
   position: fixed;
-  top: 15%;
-  left: 25%;
-  width: 50%;
+  top: 0%;
+  left: 23%;
+  width: 60%;
   border: none;
   box-shadow: 0 0 10px 3px #faaba6;
   background-color: white;

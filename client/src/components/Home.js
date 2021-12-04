@@ -8,12 +8,13 @@ import Filtersearch from './Filtersearch';
 import "../styles/home.css";
 import Openchat from "../pages/Openchat/Openchat";
 import swal from "sweetalert";
-
+import Profile from "./Profile";
 import { MdLogout } from "react-icons/md";
 
 const Home = ({ user, setUser }) => {
   const [feeds, setfeeds] = useState([]);
   const [recommendations, setrecommendations] = useState([]);
+  const[showProfile, setShowProfile] = useState(false);
 
   // call following functions yo fetch feeds and recommendations on refresh
   useEffect(() => {
@@ -69,33 +70,33 @@ const Home = ({ user, setUser }) => {
       /> */}
       <div className="outer">
         <div className="inner">
-          <Profile user={user} setUser={setUser} />
+          <SideNav user={user} setUser={setUser} setShowProfile={setShowProfile} showProfile={showProfile}/>
         </div>
-        <div className="inner">
-          <Createpost user={user} callFeed={callFeed} />
-          <div
-            id="abc"
-            style={{
-              height: "500px",
-              scrollbarWidth: "0px",
-              overflowY: "auto",
-              borderRadius: "20px",
-            }}
-          >
-            <Feedpost feeds={feeds} />
+        {(showProfile) ? 
+        <>
+          <div className="inner">
+            <Createpost user={user} callFeed={callFeed} />
+            <div
+              id="abc"
+              style={{
+                height: "500px",
+                scrollbarWidth: "0px",
+                overflowY: "auto",
+                borderRadius: "20px",
+              }}
+            >
+              <Feedpost feeds={feeds} />
+            </div>
           </div>
-        </div>
-        <div className="inner">
-         
-          <Filtersearch user={user} setrecommendations={setrecommendations}/>
-
-          <h2>Recommendations</h2>
-          <Recommend recommendations={recommendations} user={user} />
+          <div className="inner">
           
-        </div>
-        {/* <div className="inner">
-         <Openchat user={user} /> 
-        </div> */}
+            <Filtersearch user={user} setrecommendations={setrecommendations}/>
+            <h2>Recommendations</h2>
+            <Recommend recommendations={recommendations} user={user} />
+            
+          </div></>
+        :<Profile user={user} setUser={setUser} feeds={feeds}/>
+        }
       </div>
     </div>
   );
@@ -103,7 +104,7 @@ const Home = ({ user, setUser }) => {
 
 export default Home;
 
-const Profile = ({ user, setUser }) => {
+const SideNav = ({ user, setUser, setShowProfile, showProfile }) => {
   const logout = (e) => {
     API.get("/logout");
     setUser(null);
@@ -113,7 +114,7 @@ const Profile = ({ user, setUser }) => {
   return (
     <>
       <div id="profile">
-        <img src={user.user.imagesurl} />
+        <img src={user.user.imagesurl} onClick={()=> setShowProfile(!showProfile)} title="Show Profile"/>
         <h5 id="edit-profile">My Profile</h5>
         <div className="logout">
           <MdLogout style={iconStyles} onClick={(e) => logout(e)} />

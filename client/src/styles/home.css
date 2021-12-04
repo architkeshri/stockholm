@@ -10,21 +10,14 @@
   margin-left: 0;
 }
 .inner:nth-child(2) {
-  width: 35%;
+  width: 33%;
   padding: 1%;
 }
 .inner:nth-child(3) {
-  width: 35%;
+  width: 33%;
   padding: 1%;
-}
-.inner:nth-child(1) {
-  width: 28%;
 }
 
-.inner:nth-child(3) {
-  width: 35%;
-  padding: 1%;
-}
 
 .inner h2 {
   text-align: center;
@@ -65,7 +58,7 @@
 
 #profile img {
   width: 45px;
-
+  cursor: pointer;
   flex: 1;
   padding: 1%;
   background-color: white;

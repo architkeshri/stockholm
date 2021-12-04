@@ -305,7 +305,7 @@ const Openchat = ({ user }) => {
   }
 
   //sets up parter video if call is accepted
-  let PartnerVideo;
+  let PartnerVideo = null;
   if (callAccepted) {
     // if (true) {
     PartnerVideo = (
