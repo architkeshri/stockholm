@@ -69,9 +69,11 @@
 }
 .submitbtn{
     margin: 10px;
+    margin-left: 200px;
     padding: 5px;
     background: #00c9ff ;
-    border-radius: 0.40em;
+    color: white;
+    border-radius: 10px;
     border: none;
     font-size: larger;
 }

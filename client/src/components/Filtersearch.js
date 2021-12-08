@@ -104,9 +104,9 @@ const Filtersearch = ({user}) => {
             </div>
             <Interest interest={interests} setinterest={setinterests}/>
 
-            <div>
+            
             <button className= "submitbtn" size="xl" onClick={() => filtersearch()} active>Search</button>
-            </div>
+            
         </div>
         <div>
         <Carousel style={{borderRadius: '50px'}}>
