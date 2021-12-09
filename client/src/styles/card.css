@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,300&display=swap');
 
 
+.createpost {
+    margin-top: 5px;
+}
 .createpost textarea{
     border: none;
     outline: none;
@@ -8,18 +11,19 @@
 }
 
 .createpost button{
+    margin-top: 10px;
     border-radius: 10px;
     border: none;
     padding: 1% 3%;
     color:rgb(255, 255, 255);
     font-weight: 700;
-    background-color: rgb(145, 143, 253);
+    background-color: #00c8ffda;
     transition-duration: 0.3s;
-    box-shadow: 0 0 5px 2px rgba(166, 164, 255, 0.7);
+    /*box-shadow: 0 0 5px 2px rgba(166, 164, 255, 0.7);*/
 }
 
 .createpost button:hover{
-    background-color: rgb(100, 97, 238);
+    background-color: #00c9ff;
 }
 
 .createpost input[type='file']::file-selector-button {
@@ -40,11 +44,11 @@
     margin: 1% 2%;
     border-radius: 50%;
     color: white;
-    background-color: rgb(202, 67, 255);
+    background-color: #00c8ffda;
 }
 
 .createpost #choose-file label:hover{
-    background-color: rgb(180, 0, 252);
+    background-color: #00c9ff
 }
 
 .createpost #choose-file input[type='file']{
