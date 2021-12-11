@@ -14,7 +14,7 @@ import { MdLogout } from "react-icons/md";
 const Home = ({ user, setUser }) => {
   const [feeds, setfeeds] = useState([]);
   const [recommendations, setrecommendations] = useState([]);
-  const[showProfile, setShowProfile] = useState(false);
+  const[showProfile, setShowProfile] = useState(true);
 
   // call following functions yo fetch feeds and recommendations on refresh
   useEffect(() => {
