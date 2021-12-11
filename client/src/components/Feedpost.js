@@ -19,7 +19,7 @@ const Feedpost = ({feeds}) => {
 
     return (
         <>
-        {(feeds.length === 0) ? (<img src="../../icons/loading.gif" style={{marginLeft: '15%', marginTop: '20%'}} alt="Loading..."/>)
+        {(feeds.length === 0) ? (<img src="../../icons/Runningheart.gif" style={{marginLeft: '40%', marginTop: '20%'}} alt="Loading..."/>)
         : (print)
         }
         </>
