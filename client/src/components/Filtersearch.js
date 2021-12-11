@@ -75,7 +75,7 @@ const Filtersearch = ({ user, setrecommendations }) => {
 
     return (
         <>
-            <button onClick={() => {setVisible(true)}} style={{backgroundColor: 'white', color: "red", opacity: '0.5', border: 'none', marginLeft: '90%', marginTop: '5%'}}><i class="fas fa-filter fa-2x"></i></button>
+            <button onClick={() => {setVisible(true)}} style={{backgroundColor: 'white', border: 'none', marginLeft: '90%', marginTop: '5%'}}><img src="icons/filter.png" height="5%"></img></button>
             <Popup visible={visible} style={{ width: '500px' }} onClose={() => setVisible(false)}>
                 <div >
                     <input className="slider"

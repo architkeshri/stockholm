@@ -1,6 +1,8 @@
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.css';
 import API from '../utils/API';
+import "../styles/recommend.css";
+
 const Recommend = ({recommendations, user}) => {
 
     const handleLike = (ID) => {
@@ -17,9 +19,42 @@ const Recommend = ({recommendations, user}) => {
         })
     }
     const print = recommendations.map((item)=>{
+        var dateString= item.dob;
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
         return (
-       
-            <Carousel.Item className="recommend-card">
+            <Carousel.Item>
+            <div className="card1">
+                <img src={item.imagesurl}/>
+                <div className="info">
+                <h1>{item.name}<span id="age"> ,{age}</span></h1>
+                <p>{item.about}</p>
+                <button id="btn-heart"><span onClick={()=>handleLike(item._id)}><i class="fas fa-heart fa-3x"></i></span></button>
+                <button id="btn-bolt" ><span><i class="fa fa-bolt fa-3x" aria-hidden="true"></i></span></button>
+                </div>
+            </div>
+            </Carousel.Item>
+        )
+    })
+
+    return(
+        <>
+        <Carousel style={{borderRadius: '50px'}}>
+              {print}
+        </Carousel>
+            
+        </>
+    )
+}
+
+export default Recommend;
+
+{/*<Carousel.Item className="recommend-card">
                 <img
                     className="d-block w-100"
                     src={item.imagesurl}
@@ -29,26 +64,4 @@ const Recommend = ({recommendations, user}) => {
                     <h4>{item.name}</h4>
                     <span onClick={()=>handleLike(item._id)}><i class="fas fa-heart fa-3x"></i></span>
                 </Carousel.Caption>
-            </Carousel.Item>
-           
-         
-            // <div className="recommend-card">
-            //     <img src={item.imagesurl} alt=""/>
-            //     <h4>{item.name}</h4>
-            //onClick={()=>handleLike(item._id)}
-            //     <span><i class="fas fa-heart fa-lg"></i></span>
-            // </div>
-        )
-    })
-
-    return(
-        <>
-        <Carousel style={{borderRadius: '50px'}}>
-            {print}
-        </Carousel>
-            
-        </>
-    )
-}
-
-export default Recommend;
+            </Carousel.Item>*/}

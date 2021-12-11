@@ -33,7 +33,7 @@ const ChatHead = ({ conversation, currentUser }) => {
           
         </div>
       ) : (
-        <img src="../../icons/loading.gif" width="30%" alt="Loading..."/>
+        <img src="../../icons/loadingheart.gif" width="10%" alt="Loading..."/>
       )}
     </>
   );
