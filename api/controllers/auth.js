@@ -4,7 +4,7 @@ const { OAuth2Client } = require("google-auth-library");
 const fetch = require("node-fetch");
 
 const client = new OAuth2Client(
-  "946133447752-iu32go0864pc5pino7jkh8b8k1qafr36.apps.googleusercontent.com"
+  process.env.CLIENT_ID_1
 );
 const maxAge = 3 * 24 * 60 * 60;
 
@@ -64,7 +64,7 @@ module.exports.googlelogin = (req, res) => {
   const { tokenId } = req.body;
   client.verifyIdToken({
       idToken: tokenId,
-      audience: "946133447752-iu32go0864pc5pino7jkh8b8k1qafr36.apps.googleusercontent.com",
+      audience: process.env.CLIENT_ID_1,
     }).then((response) => {
       const { email_verified, name, email } = response.payload;
       //console.log(response.payload);
