@@ -1,7 +1,7 @@
 .profile-outer{
 margin: 1%;
 display: flex;
-width: 66%;
+width: 70%;
 }
 
 .profile-inner{
@@ -12,7 +12,7 @@ width: 66%;
     width: 60%;
 }
 .profile-inner:nth-child(2){
-    width: 35%;
+    width: 39%;
 }
 .profile-stats{
     display: block;

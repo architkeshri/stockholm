@@ -6,12 +6,12 @@ const Profile = ({user, setUser, feeds}) => {
             <div class="profile-inner">
                 <div class='profile-stats'>
                     <div class="profile-card">
-                        <h2>50</h2>
+                        <h2>5</h2>
                         <h4>Posts</h4>
                     </div>
                     <hr class="sep-line"/>
                     <div class="profile-card">
-                        <h2>25</h2>
+                        <h2>2</h2>
                         <h4>Matches</h4>
                     </div>
                 </div>

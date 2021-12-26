@@ -207,7 +207,7 @@ const Buildprofile = ({ user, setUser }) => {
                                     <Row>
                                         <Col md={{ span: 3 }}><h6>Gender:</h6></Col>
                                     </Row>
-                                    <Row>
+                                    <Row> 
                                         <Col md={{ span: 1 }}><input type="radio" id="male" name="gender" onChange={handleGender} value="Male" /></Col>
                                         <Col md={{ span: 2 }}><label htmlFor="male">Male</label></Col>
                                         <Col md={{ span: 1 }}><input type="radio" id="female" name="gender" onChange={handleGender} value="Female" /></Col>

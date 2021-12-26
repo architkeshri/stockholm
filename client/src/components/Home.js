@@ -9,14 +9,17 @@ import "../styles/home.css";
 import Openchat from "../pages/Openchat/Openchat";
 import swal from "sweetalert";
 import Profile from "./Profile";
+import Popup from 'react-animated-popup'
 import { MdLogout } from "react-icons/md";
 import Calendar from "./Calendar";
 
 const Home = ({ user, setUser }) => {
   const [feeds, setfeeds] = useState([]);
   const [recommendations, setrecommendations] = useState([]);
-  const[showProfile, setShowProfile] = useState(false);
-
+  const[showProfile, setShowProfile] = useState(true);
+  //show Profile Popup in feedpost
+  const [visible, setVisible] = useState({details: null, vis: false});
+  const [temp, settemp] = useState([]);
   // call following functions yo fetch feeds and recommendations on refresh
   useEffect(() => {
     if (feeds) {
@@ -46,29 +49,34 @@ const Home = ({ user, setUser }) => {
     const body = {
       userId: user.user._id,
     };
-    console.log(user.user._id);
+
     const config = { headers: { "Content-Type": "application/json" } };
     API.post("/timeline", body, config)
       .then((response) => {
-        setfeeds(
+        
           response.data.sort((p1, p2) => {
             return new Date(p2.createdAt) - new Date(p1.createdAt);
           })
-        );
-        console.log("data: ", response.data);
+          response.data.forEach((item)=>{
+            API.get(`/users/${item.userId}`,{userId: item.userId},{ headers: { "Content-Type": "application/json" }})
+            .then(rest => {
+              
+                settemp(temp.push({... item, userInfo: rest.data}));
+            }).catch((err) => {
+                console.log(err);
+            })
+          })
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(()=>{
+        setfeeds(temp);
+      });
     recommend();
   };
-
+  
   return (
     <div style={{ marginTop: "-1%" }}>
-      {/* <Navbar
-        callFeed={callFeed}
-        setUser={setUser}
-        setrecommendations={setrecommendations}
-        user={user}
-      /> */}
+    
       <div className="outer">
         <div className="inner">
           <SideNav user={user} setUser={setUser} setShowProfile={setShowProfile} showProfile={showProfile}/>
@@ -86,7 +94,12 @@ const Home = ({ user, setUser }) => {
                 borderRadius: "20px",
               }}
             >
-              <Feedpost feeds={feeds} />
+              <Feedpost feeds={feeds} visible={visible} setVisible={setVisible}/>
+              <Popup visible={visible.vis} style={{ width: '500px' }} onClose={() => setVisible({details: null, vis: false})}>
+                <img src={visible.details?.imagesurl} style={{ width: '50%', height: '150px', borderRadius: '50%', marginLeft: '25%', objectFit: 'cover'}} alt=""/>
+                <h3 style={{textAlign: 'center'}}>{visible.details?.name}</h3>
+                <h6 style={{textAlign: 'center', color: '#565656'}}>{visible.details?.about}</h6>
+              </Popup>
             </div>
           </div>
           <div className="inner">
@@ -115,8 +128,8 @@ const SideNav = ({ user, setUser, setShowProfile, showProfile }) => {
   return (
     <>
       <div id="profile">
-        <img src={user.user.imagesurl} onClick={()=> setShowProfile(!showProfile)} title="Show Profile"/>
-        <h5 id="edit-profile">My Profile</h5>
+        <img src={user.user.imagesurl} onClick={()=> setShowProfile(!showProfile)} title="Show Profile" height="80px"/>
+        <h5 id="edit-profile">{user.user.name}</h5>
         <div className="logout">
           <MdLogout style={iconStyles} onClick={(e) => logout(e)} />
         </div>

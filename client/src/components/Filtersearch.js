@@ -28,11 +28,13 @@ const Filtersearch = ({ user, setrecommendations }) => {
         API.post("/filtersearch", body, config)
             .then((response) => {
                 console.log(response);
+                setinterests([]);
                 setrecommendations(response.data);
                 // setresults(response.data);
             }).catch((err) => {
                 console.log(err);
             })
+            setVisible(false);
     }
 
     // const handleLike = (ID) => {
@@ -75,7 +77,7 @@ const Filtersearch = ({ user, setrecommendations }) => {
 
     return (
         <>
-            <button onClick={() => {setVisible(true)}} style={{backgroundColor: 'white', border: 'none', marginLeft: '90%', marginTop: '5%'}}><img src="icons/filter.png" height="5%"></img></button>
+            <button onClick={() => {setVisible(true)}} style={{backgroundColor: 'white', border: 'none', marginLeft: '90%', marginTop: '5%'}}><img src="icons/filter.png" width="100%"></img></button>
             <Popup visible={visible} style={{ width: '500px' }} onClose={() => setVisible(false)}>
                 <div >
                     <input className="slider"
