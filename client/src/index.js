@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./styles/index.css";
 import App from "./App";
+import "react-datetime/css/react-datetime.css";
 
 import { AuthContextProvider } from "./context/AuthContext";
 ReactDOM.render(
