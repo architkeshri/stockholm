@@ -10,6 +10,7 @@ import Openchat from "../pages/Openchat/Openchat";
 import swal from "sweetalert";
 import Profile from "./Profile";
 import { MdLogout } from "react-icons/md";
+import Calendar from "./Calendar";
 
 const Home = ({ user, setUser }) => {
   const [feeds, setfeeds] = useState([]);
@@ -139,9 +140,19 @@ const SideNav = ({ user, setUser, setShowProfile, showProfile }) => {
         >
           Matches
         </div>
+
+        <div
+          id="dates"
+          className={toggle === 2 && "line"}
+          onClick={() => {
+            settoggle(2);
+          }}
+        >
+          Dates
+        </div>
       </div>
 
-      {toggle === 0 ? <Openchat user={user} /> : <div id="match-section"></div>}
+      {toggle === 0 ? <Openchat user={user} /> : ( toggle ===1 ? <div id="match-section"></div>: <div id="dates-section"><Calendar user={user}/></div>)}
     </>
   );
 };
