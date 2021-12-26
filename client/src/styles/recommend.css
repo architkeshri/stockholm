@@ -126,7 +126,7 @@
 }
 
 .card1:hover{
-    transform: translateY(20px);
+    transform: translateY(0px);
 }
 
 .card1:hover::before{
@@ -177,6 +177,7 @@
 }
 
 .card1 .info h1 {
+    font-size: 180%;
     margin: 0px;
 }
 

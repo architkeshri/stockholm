@@ -28,11 +28,13 @@ const Filtersearch = ({ user, setrecommendations }) => {
         API.post("/filtersearch", body, config)
             .then((response) => {
                 console.log(response);
+                setinterests([]);
                 setrecommendations(response.data);
                 // setresults(response.data);
             }).catch((err) => {
                 console.log(err);
             })
+            setVisible(false);
     }
 
     // const handleLike = (ID) => {

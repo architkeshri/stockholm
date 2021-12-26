@@ -62,7 +62,10 @@
   object-fit: cover;
   vertical-align: middle;
 }
-
+#profile h5{
+  margin-top: 4%;
+  font-size: 150%;
+}
 #profile #edit-profile {
   /* display: inline; */
   color: white;

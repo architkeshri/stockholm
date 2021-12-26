@@ -98,8 +98,10 @@
   margin-left: 2%;
 }
 .matchInfo h4 {
-  display: flex;
-  margin: 1.5% 3%;
+  display: block;
+  width: 73%;
+  font-size: 140%;
+  margin: 1.5% 2%;
 }
 
 .chatMessageInput {
