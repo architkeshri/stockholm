@@ -14,6 +14,8 @@ var chatRouter = require("./routes/chat");
 
 var conversationRouter = require("./routes/conversation");
 var messageRouter = require("./routes/message");
+//var calenderRouter = require("./routes/calender");
+var calendarRouter = require("./routes/calendar");
 
 var app = express();
 dotenv.config({ path: "../.env" });
@@ -36,6 +38,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
+//app.use("/calender",calenderRouter);
+app.use("/calendar",calendarRouter);
 app.use("/users", usersRouter);
 app.use("/testAPI", testAPIRouter);
 app.use("/chat", chatRouter);

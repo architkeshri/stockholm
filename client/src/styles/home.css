@@ -86,7 +86,8 @@
 }
 
 #message,
-#matches {
+#matches,
+#dates {
   display: flex;
   padding: 2% 5%;
   background-color: white;
