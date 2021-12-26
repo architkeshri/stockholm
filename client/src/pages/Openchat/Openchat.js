@@ -379,7 +379,7 @@ const Openchat = ({ user }) => {
                 />
                 <h4>{matchedUser?.name}</h4>
 
-                <FaVideo onClick={callPeer} style={{fontSize: '1.5rem', marginLeft: '52%', marginTop: '2.5%', color: 'white', cursor: 'pointer'}} />
+                <FaVideo onClick={callPeer} style={{fontSize: '1.7rem', marginTop: '2%', color: 'white', cursor: 'pointer'}} />
               </div>
             )}
 

@@ -72,12 +72,15 @@
     background-color: rgb(250, 250, 250);
 }
 .submitbtn{
-    margin: 10px;
-    margin-left: 200px;
-    padding: 5px;
+    margin-top: 25px;
+    margin-left: 120px;
+    padding: 3%;
     background: #00c9ff ;
     color: white;
     border-radius: 10px;
     border: none;
     font-size: larger;
+}
+.submitbtn:hover{
+    background: #0094bd ;
 }

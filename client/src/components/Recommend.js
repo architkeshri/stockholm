@@ -5,7 +5,8 @@ import "../styles/recommend.css";
 
 const Recommend = ({recommendations, user}) => {
 
-    const handleLike = (ID) => {
+    const handleLike = (ID, e) => {
+        e.target.style.color="red";
         const body= {
             userId: user.user._id
         }
@@ -13,6 +14,7 @@ const Recommend = ({recommendations, user}) => {
         console.log(body, ID);
         API.put(`/${ID}/like`,body,config)
         .then(response => {
+            
             console.log(response);
         }).catch((err) => {
             console.log(err);
@@ -28,14 +30,14 @@ const Recommend = ({recommendations, user}) => {
             age--;
         }
         return (
-            <Carousel.Item>
+            <Carousel.Item style={{width: '80%'}}>
             <div className="card1">
                 <img src={item.imagesurl}/>
                 <div className="info">
-                <h1>{item.name}<span id="age"> ,{age}</span></h1>
-                <p>{item.about}</p>
-                <button id="btn-heart"><span onClick={()=>handleLike(item._id)}><i class="fas fa-heart fa-3x"></i></span></button>
-                <button id="btn-bolt" ><span><i class="fa fa-bolt fa-3x" aria-hidden="true"></i></span></button>
+                    <h1>{item.name}<span id="age"> ,{age}</span></h1>
+                    <p>{item.about}</p>
+                    <button id="btn-heart" onClick={(e)=>handleLike(item._id, e)}><span ><i class="fas fa-heart fa-3x" title="Like"></i></span></button>
+                    <button id="btn-bolt" ><span><i class="fa fa-bolt fa-3x" aria-hidden="true" title="Super-Like"></i></span></button>
                 </div>
             </div>
             </Carousel.Item>

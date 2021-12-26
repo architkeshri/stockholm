@@ -1,23 +1,18 @@
 .outer {
   display: flex;
 }
-.inner {
-  width: 33%;
-  margin: 0 1%;
-}
 .inner:nth-child(1) {
   width: 28%;
   margin-left: 0;
 }
 .inner:nth-child(2) {
-  width: 33%;
-  padding: 1%;
+  width: 39%;
+  padding: 2%;
 }
 .inner:nth-child(3) {
   width: 33%;
   padding: 1%;
 }
-
 
 .inner h2 {
   text-align: center;
@@ -67,7 +62,10 @@
   object-fit: cover;
   vertical-align: middle;
 }
-
+#profile h5{
+  margin-top: 4%;
+  font-size: 150%;
+}
 #profile #edit-profile {
   /* display: inline; */
   color: white;
