@@ -187,7 +187,7 @@ const Openchat = ({ user }) => {
   }, [isCalling]);
 
   function callPeer() {
-    document.getElementById('video-calling').style.display="block";
+    document.getElementById("video-calling").style.display = "block";
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
@@ -238,7 +238,7 @@ const Openchat = ({ user }) => {
 
   function acceptCall() {
     setReceivingCall(false);
-    document.getElementById('video-calling').style.display="block";
+    document.getElementById("video-calling").style.display = "block";
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
@@ -274,7 +274,7 @@ const Openchat = ({ user }) => {
     setCallAccepted(false);
     setReceivingCall(false);
     setStream(null);
-    document.getElementById('video-calling').style.display="none";
+    document.getElementById("video-calling").style.display = "none";
   }
 
   // ---------------------------------------------------------------------Video Call END-------------------------------------------------------------------
@@ -289,6 +289,85 @@ const Openchat = ({ user }) => {
     setCurrentChat(c);
     setActive(!active);
   };
+
+  function srcShare() {
+    document.getElementById("video-calling").style.display = "block";
+    navigator.mediaDevices.getDisplayMedia({ cursor: true }).then((stream) => {
+      const peer = new Peer({
+        initiator: true,
+        trickle: false,
+        stream: stream,
+      });
+      setStream(stream);
+      if (userVideo.current) {
+        userVideo.current.srcObject = stream;
+      }
+
+      const matchId = currentChat.members?.find((m) => m !== user?.user._id);
+
+      console.log(matchId);
+
+      console.log("connected user", connectedUser);
+
+      const toCall = connectedUser.find((user) => user.userId === matchId);
+      console.log("tc", toCall.socketId);
+      console.log("cu", loggedUserSocketId);
+
+      peer.on("signal", (data) => {
+        socket.current.emit("callUser", {
+          userToCall: toCall.socketId,
+          signalData: data,
+          from: loggedUserSocketId,
+          name: user.user.name,
+        });
+      });
+
+      peer.on("stream", (stream) => {
+        if (partnerVideo.current) {
+          partnerVideo.current.srcObject = stream;
+        }
+      });
+      socket.current.on("callAccepted", (signal) => {
+        setCallAccepted(true);
+        peer.signal(signal);
+      });
+
+      peerRef.current = peer;
+
+      setIsCalling(true);
+    });
+  }
+
+  function srcAccepted() {
+    setReceivingCall(false);
+    document.getElementById("video-calling").style.display = "block";
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        setStream(stream);
+        if (userVideo.current) {
+          userVideo.current.srcObject = stream;
+        }
+        setCallAccepted(true);
+
+        const peer = new Peer({
+          initiator: false,
+          trickle: false,
+          stream: stream,
+        });
+
+        peer.on("signal", (data) => {
+          socket.current.emit("acceptCall", { signal: data, to: caller });
+        });
+
+        peer.on("stream", (stream) => {
+          partnerVideo.current.srcObject = stream;
+        });
+
+        peer.signal(callerSignal);
+        peerRef.current = peer;
+      });
+  }
 
   // --------------------------------------------------Video of user-----------------------------------------------------------
   let UserVideo;
@@ -329,7 +408,7 @@ const Openchat = ({ user }) => {
     incomingCall = (
       <div className="incomingCall">
         <h3>{callerName || "userName"} is calling you</h3>
-        <div onClick={acceptCall} className="acceptCallBtn">
+        <div onClick={acceptCall || srcAccepted} className="acceptCallBtn">
           Accept Call <i class="fas fa-phone fa-xl videoCall"></i>
         </div>
 
@@ -339,31 +418,32 @@ const Openchat = ({ user }) => {
   }
   return (
     <>
-
       <div id="video-calling">
-      <div>
-        {/* <p>my video</p> */}
-        {UserVideo}
+        <div>
+          {/* <p>my video</p> */}
+          {UserVideo}
+        </div>
+
+        <div>
+          {/* <p>parner video</p> */}
+          {PartnerVideo}
+        </div>
       </div>
 
-      <div>
-        {/* <p>parner video</p> */}
-        {PartnerVideo}
-      </div>
-
-      </div>
-      
       <div>{incomingCall}</div>
 
       <div className="messenger">
         <div className="chatMenu">
-            {conversations.map((c) => {
-              return (
-                <div className={active ? "sliderDeactive" : "sliderActive"} onClick={() => handleClick(c)}>
-                    <ChatHead conversation={c} currentUser={user} />
-                </div>
-              );
-            })}
+          {conversations.map((c) => {
+            return (
+              <div
+                className={active ? "sliderDeactive" : "sliderActive"}
+                onClick={() => handleClick(c)}
+              >
+                <ChatHead conversation={c} currentUser={user} />
+              </div>
+            );
+          })}
         </div>
         <div className={active ? "sliderActive" : "sliderDeactive"}>
           <div className="chatBox">
@@ -379,7 +459,16 @@ const Openchat = ({ user }) => {
                 />
                 <h4>{matchedUser?.name}</h4>
 
-                <FaVideo onClick={callPeer} style={{fontSize: '1.7rem', marginTop: '2%', color: 'white', cursor: 'pointer'}} />
+                <FaVideo
+                  onClick={callPeer}
+                  style={{
+                    fontSize: "1.7rem",
+                    marginTop: "2%",
+                    color: "white",
+                    cursor: "pointer",
+                  }}
+                />
+                <button onClick={srcShare}> ss </button>
               </div>
             )}
 
@@ -404,10 +493,7 @@ const Openchat = ({ user }) => {
                   </div>
 
                   <div className="chatBoxBottom">
-                    <button
-                      onClick={() => setEmojiBtn(!emojiBtn)}
-                      
-                    >
+                    <button onClick={() => setEmojiBtn(!emojiBtn)}>
                       <i class="far fa-smile-beam fa-lg"></i>
                     </button>
                     <textarea
@@ -419,15 +505,14 @@ const Openchat = ({ user }) => {
                       <i class="fas fa-paper-plane fa-md"></i>
                     </button>
                   </div>
-                  
-                    {emojiBtn && (
-                      <Picker
-                        style={{ position: 'fixed' }}
-                        onEmojiClick={onEmojiClick}
-                        disableSearchBar={true}
-                      />
-                    )}
-                  
+
+                  {emojiBtn && (
+                    <Picker
+                      style={{ position: "fixed" }}
+                      onEmojiClick={onEmojiClick}
+                      disableSearchBar={true}
+                    />
+                  )}
                 </>
               ) : (
                 <h3 className="noConversationText">Open a convo</h3>
