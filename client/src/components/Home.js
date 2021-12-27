@@ -23,10 +23,10 @@ const Home = ({ user, setUser }) => {
   const [matchDetails, setmatchDetails] = useState([]);
   // call following functions yo fetch feeds and recommendations on refresh
   useEffect(() => {
-    if (feeds) {
+   
       callFeed();
       fetchMatchDetails();
-    }
+    
 
     recommend();
   }, []);
@@ -72,20 +72,26 @@ const Home = ({ user, setUser }) => {
           response.data.sort((p1, p2) => {
             return new Date(p2.createdAt) - new Date(p1.createdAt);
           })
-          response.data.forEach((item)=>{
+          response.data.map((item, i)=>{
+            
             API.get(`/users/${item.userId}`,{userId: item.userId},{ headers: { "Content-Type": "application/json" }})
             .then(rest => {
-              
-                settemp(temp.push({... item, userInfo: rest.data}));
-            }).catch((err) => {
+                response.data[i] = ({... item, userInfo: rest.data})
+                //settemp(temp.push({... item, userInfo: rest.data}));
+            })
+            .catch((err) => {
                 console.log(err);
             })
+            
           })
+          setfeeds(response.data);
       })
-      .catch(() => {})
-      .finally(()=>{
-        setfeeds(temp);
-      });
+      .catch((err) => {
+        console.log(err);
+      })
+      // .finally(()=>{
+      //   setfeeds();
+      // });
     recommend();
   };
   
@@ -109,12 +115,8 @@ const Home = ({ user, setUser }) => {
                 borderRadius: "20px",
               }}
             >
-              <Feedpost feeds={feeds} visible={visible} setVisible={setVisible}/>
-              <Popup visible={visible.vis} style={{ width: '500px' }} onClose={() => setVisible({details: null, vis: false})}>
-                <img src={visible.details?.imagesurl} style={{ width: '50%', height: '150px', borderRadius: '50%', marginLeft: '25%', objectFit: 'cover'}} alt=""/>
-                <h3 style={{textAlign: 'center'}}>{visible.details?.name}</h3>
-                <h6 style={{textAlign: 'center', color: '#565656'}}>{visible.details?.about}</h6>
-              </Popup>
+              <Feedpost feeds={feeds} setVisible={setVisible}/>
+              
             </div>
           </div>
           <div className="inner">
@@ -124,8 +126,18 @@ const Home = ({ user, setUser }) => {
             <Recommend recommendations={recommendations} user={user} />
             
           </div></>
-        :<Profile user={user} setUser={setUser} feeds={feeds}/>
+        :<Profile user={user} setUser={setUser} feeds={feeds} setVisible={setVisible}/>
         }
+        <Popup visible={visible.vis} style={{ width: '500px' }} onClose={() => setVisible({details: null, vis: false})}>
+          <img src={visible.details?.imagesurl} style={{ width: '50%', height: '150px', borderRadius: '50%', marginLeft: '25%', objectFit: 'cover'}} alt=""/>
+          <h3 style={{textAlign: 'center'}}>{visible.details?.name}</h3>
+          <h6 style={{textAlign: 'center', color: '#565656'}}>{visible.details?.about}</h6>
+          <div style={{textAlign: 'center', marginTop: '5%'}}>
+            {visible.details?.interests.map((item, i)=>
+              <span key={i} style={{padding: '2%', margin: '2% 1%', backgroundColor:'rgb(20, 12, 49)', color: 'white', borderRadius: '7px'}}>{item}</span>
+            )}
+          </div>
+        </Popup>
       </div>
     </div>
   );
@@ -141,7 +153,7 @@ const SideNav = ({ user, setUser, setShowProfile, showProfile, matchDetails }) =
   let iconStyles = { color: "white", fontSize: "2em" };
 
   const [toggle, settoggle] = useState(0);
-  console.log("mdtest: ", matchDetails)
+  //console.log("mdtest: ", matchDetails)
   return (
     <>
       <div id="profile">
@@ -161,16 +173,7 @@ const SideNav = ({ user, setUser, setShowProfile, showProfile, matchDetails }) =
         >
           Chat
         </div>
-        <div
-          id="matches"
-          className={toggle === 1 && "line"}
-          onClick={() => {
-            settoggle(1);
-          }}
-        >
-          Matches
-        </div>
-
+        
         <div
           id="dates"
           className={toggle === 2 && "line"}
@@ -182,7 +185,7 @@ const SideNav = ({ user, setUser, setShowProfile, showProfile, matchDetails }) =
         </div>
       </div>
 
-      {toggle === 0 ? <Openchat user={user} /> : ( toggle ===1 ? <div id="match-section"></div>: <div id="dates-section"><Calendar user={user} matchDetails={matchDetails}/></div>)}
+      {toggle === 0 ? <Openchat user={user} /> : <div id="dates-section"><Calendar user={user} matchDetails={matchDetails}/></div>}
     </>
   );
 };

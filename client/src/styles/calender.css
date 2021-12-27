@@ -1,0 +1,51 @@
+.plan-date{
+    margin: 5% auto;
+    margin-left: 35%;
+    background-color: rgb(20, 12, 49);
+    color: white;
+    padding: 2%;
+    border-radius: 5px;
+    transition: .3s;
+}
+.plan-date:hover{
+    background-color: rgb(47, 34, 92);
+}
+.fc a{
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+
+/*---plan date----*/
+
+label{
+    font-weight: 700;
+    width: 40%;
+}
+
+input[type="text"]{
+    padding: 1%;
+}
+
+.schedule-date div{
+    margin-top: 3%;
+}
+.schedule-date h2{
+    margin-bottom: 5%;
+    color:rgb(46, 27, 116);
+   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.schedule-date button{
+    margin-top: 4%;
+    margin-left: 33%;
+    background-color: rgb(20, 12, 49);
+    color: white;
+    padding: 2% 3%;
+    border-radius: 5px;
+    font-weight: 700;
+    transition: .3s;
+}
+
+.schedule-date button:hover{
+    background-color: rgb(47, 34, 92);
+}

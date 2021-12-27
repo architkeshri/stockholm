@@ -23,6 +23,7 @@ router.get("/:id", async (req, res) => {
     const conversation = await Conversation.find({
       members: { $in: [req.params.id] },
     });
+    console.log(conversation);
     res.status(200).json(conversation);
   } catch (err) {
     res.status(500).json(err);

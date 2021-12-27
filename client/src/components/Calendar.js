@@ -4,7 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 import AddEventModal from "./AddEventModal";
 import API from '../utils/API';
 import moment from "moment";
-
+import "../styles/calender.css";
 
 export default function({user, matchDetails}) {
     const [modalOpen, setModalOpen] = useState(false);
@@ -48,8 +48,6 @@ export default function({user, matchDetails}) {
 
     return (
         <section>
-            <button onClick={()=> setModalOpen(true)}>Plan a Date!</button>
-
             <div style={{position: "relative", zIndex: 0}}>
                 <FullCalendar
                     ref={calendarRef}
@@ -60,7 +58,7 @@ export default function({user, matchDetails}) {
                     datesSet={(date)=>handleDateSet(date)}
                 />
             </div>
-            
+            <button class="plan-date" onClick={()=> setModalOpen(true)}>Plan a Date!</button>
  
             <AddEventModal 
             isOpen={modalOpen} 

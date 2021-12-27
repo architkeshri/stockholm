@@ -1,7 +1,7 @@
 import React, {useState, useRef} from "react";
 import Popup from 'react-animated-popup';
 import Datetime from 'react-datetime';
-
+import "../styles/calender.css"
 export default function({isOpen, onClose, onEventAdded, matchDetails}) {
     const [title, setTitle] = useState("");
     const [start, setStart] = useState(new Date());
@@ -28,10 +28,17 @@ export default function({isOpen, onClose, onEventAdded, matchDetails}) {
 
     return (
         <Popup visible={isOpen} onClose={onClose}>
-            <form onSubmit={onSubmit}>
-
-                <input placeholder="Title" value={title} onChange={e=>setTitle(e.target.value)} />
-                <select onChange={() => setDateId(matchId?.current?.value)} ref={matchId}>{print}</select>
+            <form class="schedule-date" onSubmit={onSubmit}>
+                <h2>Schedule a Date</h2>
+                <div>
+                    <label>Title</label>
+                    <input type="text" placeholder="Title" value={title} onChange={e=>setTitle(e.target.value)} />
+                </div>
+                <div>
+                    <label>Choose Friend</label>
+                    <select onChange={() => setDateId(matchId?.current?.value)} ref={matchId}>{print}</select>
+                </div>
+                
                 <div>
                     <label>Start Date</label>
                     <Datetime value={start} onChange={date=> setStart(date)}/>
@@ -41,7 +48,7 @@ export default function({isOpen, onClose, onEventAdded, matchDetails}) {
                     <label>End Date</label>
                     <Datetime value={end} onChange={date=> setEnd(date)}/>
                 </div>
-                <button>Add Date!</button>
+                <button>Schedule</button>
             </form>
         </Popup>
     )
