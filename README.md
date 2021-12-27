@@ -29,4 +29,4 @@ Come, explore, interact and find yourself a perfect partner or match on our plat
 - Archit Keshri
 - Prakhar Gupta
 
-Youtube Video[https://youtube.com/watch?v=5AR-hkV_YBg&feature=share]
+[Youtube Video](https://youtube.com/watch?v=5AR-hkV_YBg&feature=share)
