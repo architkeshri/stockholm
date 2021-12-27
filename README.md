@@ -2,6 +2,21 @@
 # Event Webster 
 ## Theme: Stockholm Pairing
 ## App Name: Let's Date
+Let's Date is a dating app in which one can find his perfect match and chat with matches.
+
+# Features
+1. Login/ Signup
+2. Social Login/Signups
+3. Create Posts
+4. View posts of friends
+5. Recommendations based on interests, location, and age group
+6. Delete Post
+7. Swipe Cards for Recommendations
+8. Live Chat with friend (plus emoji feature)
+9. Video Call 
+10. Screen Sharing
+11. Plan and schedule a Date
+12. View Profile
 
 # Tech Stack:
 1. MongoDB
