@@ -1,9 +1,15 @@
-# stockholm
+# MNNIT Avishkar 2021
+# Event Webster 
+## Theme: Stockholm Pairing
+## App Name: Let's Date
 
-# FORK -> CLONE 
+# Tech Stack:
+1. MongoDB
+2. Express Js
+3. React Js
+4. Node Js
 
-# How to run locally
-Go to stockholm -> api -> run npm i
-In another terminal stockholm->client-> run npm i
-You are good to go
-
+# Team Members
+- Ojasvi Gupta
+- Archit Keshri
+- Prakhar Gupta
