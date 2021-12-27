@@ -6,7 +6,7 @@ import API from '../utils/API';
 import moment from "moment";
 
 
-export default function({user}) {
+export default function({user, matchDetails}) {
     const [modalOpen, setModalOpen] = useState(false);
     const [events, setEvents] = useState([]);
     const calendarRef = useRef(null);
@@ -65,7 +65,9 @@ export default function({user}) {
             <AddEventModal 
             isOpen={modalOpen} 
             onClose={()=> setModalOpen(false)} 
-            onEventAdded={(event)=>onEventAdded(event)}>
+            onEventAdded={(event)=>onEventAdded(event)}
+            matchDetails={matchDetails}
+            >
 
             </AddEventModal>
         </section>

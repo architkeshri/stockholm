@@ -20,14 +20,29 @@ const Home = ({ user, setUser }) => {
   //show Profile Popup in feedpost
   const [visible, setVisible] = useState({details: null, vis: false});
   const [temp, settemp] = useState([]);
+  const [matchDetails, setmatchDetails] = useState([]);
   // call following functions yo fetch feeds and recommendations on refresh
   useEffect(() => {
     if (feeds) {
       callFeed();
+      fetchMatchDetails();
     }
+
     recommend();
   }, []);
 
+  const fetchMatchDetails = ()=>{
+    user.user.matches.forEach((item)=>{
+      API.get(`/users/${item}`,{userId: item},{ headers: { "Content-Type": "application/json" }})
+      .then(rest => {
+        
+          setmatchDetails(matchDetails=>[...matchDetails, rest.data]);
+      }).catch((err) => {
+          console.log(err);
+      })
+    })
+    
+  }
   const recommend = () => {
     const body = {
       sexual_preference: user.user.sexual_preference,
@@ -79,7 +94,7 @@ const Home = ({ user, setUser }) => {
     
       <div className="outer">
         <div className="inner">
-          <SideNav user={user} setUser={setUser} setShowProfile={setShowProfile} showProfile={showProfile}/>
+          <SideNav user={user} setUser={setUser} setShowProfile={setShowProfile} showProfile={showProfile} matchDetails={matchDetails}/>
         </div>
         {(showProfile) ? 
         <>
@@ -118,13 +133,15 @@ const Home = ({ user, setUser }) => {
 
 export default Home;
 
-const SideNav = ({ user, setUser, setShowProfile, showProfile }) => {
+const SideNav = ({ user, setUser, setShowProfile, showProfile, matchDetails }) => {
   const logout = (e) => {
     API.get("/logout");
     setUser(null);
   };
   let iconStyles = { color: "white", fontSize: "2em" };
+
   const [toggle, settoggle] = useState(0);
+  console.log("mdtest: ", matchDetails)
   return (
     <>
       <div id="profile">
@@ -165,7 +182,7 @@ const SideNav = ({ user, setUser, setShowProfile, showProfile }) => {
         </div>
       </div>
 
-      {toggle === 0 ? <Openchat user={user} /> : ( toggle ===1 ? <div id="match-section"></div>: <div id="dates-section"><Calendar user={user}/></div>)}
+      {toggle === 0 ? <Openchat user={user} /> : ( toggle ===1 ? <div id="match-section"></div>: <div id="dates-section"><Calendar user={user} matchDetails={matchDetails}/></div>)}
     </>
   );
 };
