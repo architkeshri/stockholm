@@ -44,8 +44,7 @@ const Loginpage = () => {
               <div class="content">
                 <h3>New here ?</h3>
                 <p>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Debitis, ex ratione. Aliquid!
+                  Signup and find your perfect Match!
                 </p>
                 <button
                   class="btn transparent"
@@ -66,8 +65,7 @@ const Loginpage = () => {
               <div class="content">
                 <h3>One of us ?</h3>
                 <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Nostrum laboriosam ad deleniti.
+                  Login and start exploring, to find your perfect match!
                 </p>
                 <button
                   class="btn transparent"
